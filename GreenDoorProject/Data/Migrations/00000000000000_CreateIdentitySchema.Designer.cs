@@ -9,7 +9,7 @@ using System;
 
 namespace GreenDoorProject.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(GreenDoorProjectDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
