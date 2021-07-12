@@ -26,7 +26,7 @@
         [Required]
         public string AuthorId { get; set; }
         public Author Author { get; set; }
-        
-        public double Recomendations { get; set; }
+
+        public double Recomendations { get; set; } = 0.0;
     }
 }
