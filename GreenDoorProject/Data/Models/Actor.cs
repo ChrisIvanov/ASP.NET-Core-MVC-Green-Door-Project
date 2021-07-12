@@ -11,6 +11,6 @@
 
         public string LastName { get; set; }
 
-        public ICollection<Movie> ActorMovies { get; set; } = new List<Movie>();
+        public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
     }
 }
