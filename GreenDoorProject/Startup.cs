@@ -30,8 +30,8 @@ namespace GreenDoorProject
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
                 })
                 .AddEntityFrameworkStores<GreenDoorProjectDbContext>();
 
@@ -41,7 +41,6 @@ namespace GreenDoorProject
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             app.PrepareDatabase();
 
             if (env.IsDevelopment())

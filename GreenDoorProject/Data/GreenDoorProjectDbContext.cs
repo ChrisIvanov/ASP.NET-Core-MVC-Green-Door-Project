@@ -1,5 +1,4 @@
-﻿
-namespace GreenDoorProject.Data
+﻿namespace GreenDoorProject.Data
 {
     using GreenDoorProject.Data.Models;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
