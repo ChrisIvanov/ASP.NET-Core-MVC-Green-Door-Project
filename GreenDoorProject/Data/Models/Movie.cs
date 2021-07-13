@@ -15,7 +15,7 @@
         public string Director { get; set; }
 
         [Required]
-        public DateTime YearOfRelease { get; set; }
+        public int YearOfRelease { get; set; }
 
         public string Description { get; set; }
 

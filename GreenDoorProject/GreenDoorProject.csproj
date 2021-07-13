@@ -16,4 +16,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Games\" />
+    <Folder Include="Models\Music\" />
+    <Folder Include="Views\Games\" />
+    <Folder Include="Views\Cinema\" />
+    <Folder Include="Views\Music\" />
+  </ItemGroup>
+
 </Project>
