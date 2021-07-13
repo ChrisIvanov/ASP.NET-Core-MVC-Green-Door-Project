@@ -15,8 +15,9 @@
 
         public string ImagePath { get; set; }
 
+        public int GenreId { get; set; }
         [Required]
-        public string Genre { get; set; }
+        public Genre Genre { get; set; }
 
         [Required]
         public decimal Price { get; set; }

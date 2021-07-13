@@ -16,8 +16,11 @@
         [Required]
         public DateTime TimeOfProjection { get; set; }
 
-        public Hall CinemaHall { get; set; }
+        public int HallId { get; set; }
+        [Required]
+        public Hall Hall { get; set; }
 
+        [Required]
         public int AvailableSeats { get; set; } = 50;
 
         public string MovieId { get; set; }

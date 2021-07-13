@@ -97,6 +97,9 @@ namespace GreenDoorProject.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
@@ -112,6 +115,8 @@ namespace GreenDoorProject.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("Books");
                 });
@@ -138,6 +143,36 @@ namespace GreenDoorProject.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Hall", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Halls");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Movie", b =>
@@ -201,7 +236,11 @@ namespace GreenDoorProject.Data.Migrations
                     b.Property<int>("AvailableSeats")
                         .HasColumnType("int");
 
-                    b.Property<int>("CinemaHall")
+                    b.Property<string>("Hall")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HallId")
                         .HasColumnType("int");
 
                     b.Property<string>("MovieId")
@@ -219,6 +258,8 @@ namespace GreenDoorProject.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HallId");
 
                     b.HasIndex("MovieId");
 
@@ -473,11 +514,23 @@ namespace GreenDoorProject.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("GreenDoorProject.Data.Models.Genre", null)
+                        .WithMany("Books")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Author");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Projection", b =>
                 {
+                    b.HasOne("GreenDoorProject.Data.Models.Hall", null)
+                        .WithMany("Projections")
+                        .HasForeignKey("HallId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GreenDoorProject.Data.Models.Movie", "Movie")
                         .WithMany("Projections")
                         .HasForeignKey("MovieId");
@@ -553,6 +606,16 @@ namespace GreenDoorProject.Data.Migrations
             modelBuilder.Entity("GreenDoorProject.Data.Models.Author", b =>
                 {
                     b.Navigation("AuthorBooks");
+                });
+
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Genre", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Hall", b =>
+                {
+                    b.Navigation("Projections");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Movie", b =>

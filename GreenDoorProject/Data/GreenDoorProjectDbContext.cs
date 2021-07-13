@@ -12,10 +12,12 @@
         {
         }
 
+        public DbSet<Hall> Halls { get; set; }
         public DbSet<Book> Books { get; init; }
         public DbSet<Game> Games { get; init; }
         public DbSet<Song> Songs { get; init; }
         public DbSet<Music> Music { get; init; }
+        public DbSet<Genre> Genres { get; set; }
         public DbSet<Actor> Actors { get; init; }
         public DbSet<Movie> Movies { get; init; }
         public DbSet<Author> Authors { get; init; }
@@ -44,6 +46,19 @@
                .WithMany(x => x.ActorMovies)
                .HasForeignKey(x => x.MovieId)
                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Projection>()
+                .HasOne(x => x.Hall)
+                .WithMany(y => y.Projections)
+                .HasForeignKey(x => x.HallId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Book>()
+                .HasOne(x => x.Genre)
+                .WithMany(y => y.Books)
+                .HasForeignKey(x => x.GenreId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             base.OnModelCreating(builder);
         }
