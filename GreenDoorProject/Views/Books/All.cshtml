@@ -1,0 +1,48 @@
+﻿@model AllBooksListingModel
+
+@{
+    ViewData["Title"] = "All Books";
+}
+<html>
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/4.3.1/js/bootstrap.min/js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+</head>
+<body>
+    <section class="py-5">
+        <div class="container">
+            <h1 style="margin: 2%; text-align: center;">All Books</h1>
+            <div style="padding: 5%;">
+                <div class="container">
+                    <div class="row">
+                        <div id="content" class="category-list col-sm-12">
+                            <div class="contnt-wrapper grid-wrapper">
+                                <div class="row">
+                                    <ul class="tab-content grid cf">
+
+                                        @*@foreach (var book in Model)
+                                        {
+                                            <li>
+                                                <div class="product-list">
+                                                    @book.Image
+                                                    @book.BookTitle
+                                                    @book.Author
+                                                    @book.Price
+                                                    @book.Recomendations
+                                                </div>
+                                            </li>
+                                        }*@
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
