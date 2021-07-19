@@ -4,7 +4,8 @@
     
     public class AllBooksListingModel
     {
-        
+        public int Id { get; set; }
+
         public string BookTitle { get; set; }
 
         public int Pages { get; set; }

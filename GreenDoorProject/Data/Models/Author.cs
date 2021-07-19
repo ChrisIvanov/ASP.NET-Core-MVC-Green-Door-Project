@@ -15,9 +15,9 @@
         public string LastName { get; set; }
 
         [Required]
-        public DateTime YearOfBirth { get; set; }
+        public int YearOfBirth { get; set; }
 
-        public DateTime? YearOfDeath { get; set; }
+        public int? YearOfDeath { get; set; }
 
         public string Details { get; set; }
 

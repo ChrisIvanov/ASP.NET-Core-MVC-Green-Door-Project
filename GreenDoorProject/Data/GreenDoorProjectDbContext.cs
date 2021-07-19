@@ -16,7 +16,7 @@
         public DbSet<Book> Books { get; init; }
         public DbSet<Game> Games { get; init; }
         public DbSet<Song> Songs { get; init; }
-        public DbSet<Music> Music { get; init; }
+        public DbSet<Music> Music { get; init; } 
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Actor> Actors { get; init; }
         public DbSet<Movie> Movies { get; init; }

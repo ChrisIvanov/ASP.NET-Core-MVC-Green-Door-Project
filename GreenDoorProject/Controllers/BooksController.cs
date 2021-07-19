@@ -123,7 +123,7 @@
             this.data.Authors.Add(author);
             this.data.SaveChanges();
 
-            return RedirectToAction("/Views/Books/Add");
+            return RedirectToAction("Books", "Add");
         }
 
         private bool ExistingAuthorCheck(AddBookFormModel bookModel)

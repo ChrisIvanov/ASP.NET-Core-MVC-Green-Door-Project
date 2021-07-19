@@ -26,7 +26,6 @@
         [Display(Name = "Genre")]
         public int GenreId { get; set; }
 
-        [Required]
         public IEnumerable<BookGenreViewModel> Genres { get; set; }
 
         [Required]

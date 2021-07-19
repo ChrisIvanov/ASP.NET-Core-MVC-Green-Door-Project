@@ -54,14 +54,14 @@
 
             data.Genres.AddRange(new[]
             {
-                new Genre { Name = "Romance", Id = 1 },
-                new Genre { Name = "Mystery", Id = 2 },
-                new Genre { Name = "Fantasy/SciFi", Id = 3 },
-                new Genre { Name = "Thriller/Horror", Id = 4 },
-                new Genre { Name = "Young adult", Id = 5 },
-                new Genre { Name = "Children's Fiction", Id = 6 },
-                new Genre { Name = "Inspirational/Self-help/Religious", Id = 7 },
-                new Genre { Name = "Biography/Autobiography/Memoir", Id = 8 }
+                new Genre { Name = "Romance" },
+                new Genre { Name = "Mystery" },
+                new Genre { Name = "Fantasy/SciFi" },
+                new Genre { Name = "Thriller/Horror" },
+                new Genre { Name = "Young adult" },
+                new Genre { Name = "Children's Fiction" },
+                new Genre { Name = "Inspirational/Self-help/Religious" },
+                new Genre { Name = "Biography/Autobiography/Memoir" }
             });
 
             data.SaveChanges();
