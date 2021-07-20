@@ -1,43 +1,82 @@
-﻿namespace GreenDoorProject.Data
+﻿using System;
+
+namespace GreenDoorProject.Data
 {
     public class DataConstants
     {
-        //Book, Author, Game and Movie description constant
-        internal const int DefaultDescriptionMaxLength = 1000;
+        internal class Description
+        {
+            internal const int DefaultDescriptionMaxLength = 1000;
+        }
 
-        //Add User details validation constants
-        internal const int UserFirstAndLastNameMinLength = 3;
-        internal const int UserFirstAndLastNameMaxLength = 50;
+        internal class User
+        {
+            internal const int FirstAndLastNameMinLength = 3;
+            internal const int FirstAndLastNameMaxLength = 50;
 
-        internal const int UsernameMinLength = 3;
-        internal const int UsernameMaxLength = 20;
+            internal const int UsernameMinLength = 3;
+            internal const int UsernameMaxLength = 20;
 
-        internal const int UserPasswordMinLength = 6;
-        internal const int UserPasswordMaxLength = 20;
+            internal const int PasswordMinLength = 6;
+            internal const int PasswordMaxLength = 20;
 
-        internal const string EmailRegexPattern =
-            @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+            internal const string EmailRegexPattern =
+                @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+        }
 
-        //Add Book details validation constants
-        internal const int BookTitleMinLength = 5;
-        internal const int BookTitleMaxLength = 50;
+        internal class Book
+        {
+            internal const int TitleMinLength = 5;
+            internal const int TitleMaxLength = 50;
 
-        internal const int BookPagesMinLength = 5;
-        internal const int BookPagesMaxLength = 2500;
+            internal const int PagesMinLength = 5;
+            internal const int PagesMaxLength = 2500;
+        }
 
-        //Add Author details validation constants
-        internal const int AuthorNameMinLength = 3;
-        internal const int AuthorNameMaxLength = 50;
+        internal class Author
+        {
+            internal const int NameMinLength = 3;
+            internal const int NameMaxLength = 50;
+        }
 
-        //Add Movie details validation constants
-        internal const int MovieTitleMinLength = 4;
-        internal const int MovieTitleMaxLength = 20;
+        internal class Movie
+        {
+            internal const int TitleMinLength = 4;
+            internal const int TitleMaxLength = 20;
 
-        internal const int MovieDirectorNameMinLength = 10;
-        internal const int MovieDirectorNameMaxLength = 50;
+            internal const int DirectorNameMinLength = 10;
+            internal const int DirectorNameMaxLength = 50;
 
-        internal const int MovieYearOfReleaseMinValue = 1888;
-        internal const int MovieYearOfReleaseMaxValue = 2021;
+            internal const int YearOfReleaseMinValue = 1888;
+            internal const int YearOfReleaseMaxValue = 2021;
 
+            internal const double TicketPriceMinValue = 5.00;
+            internal const double TicketPriceMaxValue = 25.00;
+        }
+
+        internal class Game
+        {
+            internal const int NameMinLength = 3;
+            internal const int NameMaxLength = 50;
+
+            internal const double PriceMinValue = 40.00;
+            internal const double PriceMaxValue = 250.00;
+
+        }
+
+        internal class Music
+        {
+            internal const int ArtistNameMinLength = 3;
+            internal const int ArtistNameMaxLength = 30;
+
+            internal const int AlbumTitleMinLength = 3;
+            internal const int AlbumTitleMaxLength = 30;
+
+            internal const double AlbumPriceMinValue = 10.00;
+            internal const double AlbumPriceMaxValue = 150.00;
+
+            internal const int SongNameMinLength = 3;
+            internal const int SongNameMaxLength = 30;
+        }
     }
 }

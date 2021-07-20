@@ -59,7 +59,6 @@
                 .HasForeignKey(x => x.GenreId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             base.OnModelCreating(builder);
         }
     }

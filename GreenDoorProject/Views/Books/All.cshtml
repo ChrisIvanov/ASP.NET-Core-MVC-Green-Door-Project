@@ -4,22 +4,23 @@
     ViewData["Title"] = "All Books";
 }
 
-<body>
-            <h1 style="margin: 2%; text-align: center;">All Books</h1>
+<h1 style="margin: 2%; text-align: center;">@ViewData["Title"]</h1>
 
-            @foreach (var book in Model)
-            {
-                <div class="col-md-3">
-                    <div class="card">
-                        <img class="card-img-top" src="@book.ImagePath" />
-                        <div class="card-body text-center">
-                            <h5 class="card-title text-center">@book.BookTitle</h5>
-                            <h5 class="card-body text-center">@book.AuthorName</h5>
-                            <h5 class="card-footer text-center">@book.Price</h5>
-                            <a asp-controller="Books" asp-action="Buy" asp-route-id="@book.Id" class="btn btn-primary stretched-link">Buy book</a>
-                        </div>
-                    </div>
-                </div>
-            }
+<div class="row">
 
-</body>
+</div>
+
+@foreach (var book in Model)
+{
+    <div class="col-md-3">
+        <div class="card">
+            <img class="card-img-top" src="@book.ImagePath" />
+            <div class="card-body text-center">
+                <h5 class="card-title text-center">@book.BookTitle</h5>
+                <h5 class="card-body text-center">@book.AuthorName</h5>
+                <h5 class="card-footer text-center">@book.Price</h5>
+                <a asp-controller="Books" asp-action="Buy" asp-route-id="@book.Id" class="btn btn-primary stretched-link">Buy book</a>
+            </div>
+        </div>
+    </div>
+}

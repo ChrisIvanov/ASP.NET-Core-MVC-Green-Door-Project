@@ -4,18 +4,19 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants;
+    using static Data.DataConstants.Author;
+    using static Data.DataConstants.Book;
+    using static Data.DataConstants.Description;
 
     public class AddBookFormModel
     {
         [Required]
-        [MinLength(BookTitleMinLength)]
-        [MaxLength(BookTitleMaxLength)]
+        [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
         [Display(Name = "Title")]
         public string BookTitle { get; set; }
 
         [Required]
-        [Range(BookPagesMinLength, BookPagesMaxLength)]
+        [Range(PagesMinLength, PagesMaxLength)]
         [Display(Name = "Number of pages")]
         public int Pages { get; set; }
 
@@ -25,7 +26,6 @@
         [Required]
         [Display(Name = "Genre")]
         public int GenreId { get; set; }
-
         public IEnumerable<BookGenreViewModel> Genres { get; set; }
 
         [Required]
@@ -36,14 +36,12 @@
         public string Description { get; set; }
 
         [Required]
-        [MinLength(AuthorNameMinLength)]
-        [MaxLength(AuthorNameMaxLength)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         [Display(Name = "Author's First Name")]
         public string AuthorFirstName { get; set; }
 
         [Required]
-        [MinLength(AuthorNameMinLength)]
-        [MaxLength(AuthorNameMaxLength)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         [Display(Name = "Author's Last Name")]
         public string AuthorLastName { get; set; }
     }

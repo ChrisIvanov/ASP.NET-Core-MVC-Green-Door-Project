@@ -3,6 +3,7 @@
     using GreenDoorProject.Data;
     using GreenDoorProject.Data.Models;
     using GreenDoorProject.Models.Books;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
@@ -38,12 +39,14 @@
             return View(books);
         }
 
+        [Authorize]
         public IActionResult Add() => View(new AddBookFormModel
         {
             Genres = this.GetBookGenres()
         });
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddBookFormModel bookModel)
         {
             if (!this.data.Genres.Any(g => g.Id == bookModel.GenreId))
@@ -96,14 +99,11 @@
             return RedirectToAction("Index", "Home");
         }
 
-        private bool ExistingBookCheck(AddBookFormModel bookModel)
-            => this.data
-                .Books
-                .Any(b => b.BookTitle == bookModel.BookTitle);
-
+        [Authorize]
         public IActionResult AddAuthor() => View(new AddAuthorFormModel());
 
         [HttpPost]
+        [Authorize]
         public IActionResult AddAuthor(AddAuthorFormModel authorModel)
         {
             if (!this.ModelState.IsValid)
@@ -125,6 +125,11 @@
 
             return RedirectToAction("Books", "Add");
         }
+
+        private bool ExistingBookCheck(AddBookFormModel bookModel)
+            => this.data
+                .Books
+                .Any(b => b.BookTitle == bookModel.BookTitle);
 
         private bool ExistingAuthorCheck(AddBookFormModel bookModel)
             => this.data
