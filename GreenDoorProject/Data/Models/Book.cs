@@ -19,20 +19,24 @@
 
         public string ImagePath { get; set; }
 
-        public int GenreId { get; set; }
-        [Required]
-        public Genre Genre { get; set; }
-
         [Required]
         [Range(0.05, 500.0)]
         public decimal Price { get; set; }
 
         public string Description { get; set; }
 
+        public double Recomendations { get; set; } = 0.0;
+
+        [Required]
+        public int GenreId { get; set; }
+        public Genre Genre { get; set; }
+
         [Required]
         public string AuthorId { get; set; }
         public Author Author { get; set; }
 
-        public double Recomendations { get; set; } = 0.0;
+        [Required]
+        public string AdminId { get; init; }
+        public Admin Admin { get; init; }
     }
 }

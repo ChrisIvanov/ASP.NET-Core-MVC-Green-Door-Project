@@ -6,7 +6,7 @@
 
     using static Data.DataConstants.Author;
     using static Data.DataConstants.Book;
-    using static Data.DataConstants.Description;
+    using static Data.DataConstants.Info;
 
     public class AddBookFormModel
     {
@@ -32,7 +32,7 @@
         [Range(0.01, 500.0)]
         public decimal Price { get; set; }
 
-        [MaxLength(DefaultDescriptionMaxLength)]
+        [MaxLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
 
         [Required]

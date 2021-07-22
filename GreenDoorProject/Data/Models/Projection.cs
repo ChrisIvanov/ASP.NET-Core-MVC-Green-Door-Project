@@ -5,7 +5,7 @@
 
     public class Projection
     {
-        public int Id { get; init; }
+        public string Id { get; init; } = Guid.NewGuid().ToString();
 
         [Required]
         public string MoviePosterPath { get; set; }
@@ -16,13 +16,19 @@
         [Required]
         public DateTime TimeOfProjection { get; set; }
 
-        public int HallId { get; set; }
         [Required]
+        [Range(0, 50)]
+        public int AvailableSeats { get; set; } = 50;
+
+        [Required]
+        public int HallId { get; set; }
         public Hall Hall { get; set; }
 
         [Required]
-        public int AvailableSeats { get; set; } = 50;
+        public string AdminId { get; init; }
+        public Admin Admin { get; init; }
 
+        [Required]
         public string MovieId { get; set; }
         public Movie Movie { get; set; }
     }

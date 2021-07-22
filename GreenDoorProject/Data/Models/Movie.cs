@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants.Description;
+    using static Data.DataConstants.Info;
     using static Data.DataConstants.Movie;
 
     public class Movie
@@ -23,7 +23,7 @@
         [Range(YearOfReleaseMinValue, YearOfReleaseMaxValue)]
         public int YearOfRelease { get; set; }
 
-        [StringLength(DefaultDescriptionMaxLength)]
+        [StringLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
 
         public TimeSpan MovieDuration { get; set; }
@@ -31,6 +31,10 @@
         [Required]
         [Range(TicketPriceMaxValue, TicketPriceMinValue)]
         public decimal TicketPrice { get; set; }
+
+        [Required]
+        public string AdminId { get; init; }
+        public Admin Admin { get; init; }
 
         public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
 

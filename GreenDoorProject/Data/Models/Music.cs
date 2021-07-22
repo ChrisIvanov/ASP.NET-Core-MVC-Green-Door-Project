@@ -22,6 +22,10 @@
         [Range(AlbumPriceMinValue, AlbumPriceMaxValue)]
         public decimal Price { get; set; }
 
+        [Required]
+        public string AdminId { get; init; }
+        public Admin Admin { get; init; }
+
         public ICollection<Song> Songs { get; set; } = new List<Song>();
     }
 }

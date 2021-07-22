@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.Author;
+    using static Data.DataConstants.Info;
 
     public class Author
     {
@@ -23,7 +24,12 @@
 
         public int? YearOfDeath { get; set; }
 
+        [StringLength(DefaultClassInfoMaxLength)]
         public string Details { get; set; }
+
+        [Required]
+        public string AdminId { get; init; }
+        public Admin Admin { get; init; }
 
         public ICollection<Book> AuthorBooks { get; set; } = new List<Book>();
     }

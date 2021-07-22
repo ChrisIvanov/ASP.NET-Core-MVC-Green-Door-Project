@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.Game;
-    using static Data.DataConstants.Description;
+    using static Data.DataConstants.Info;
 
     public class Game
     {
@@ -15,13 +15,19 @@
         public string GameTitle { get; set; }
 
         [Required]
+        [StringLength(GameGanreNameMaxLength, MinimumLength = GameGanreNameMinLength)]
         public string Genre { get; set; }
 
         [Required]
         [Range(PriceMinValue, PriceMaxValue)]
         public decimal Price { get; set; }
 
-        [StringLength(DefaultDescriptionMaxLength)]
+        [StringLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
+        
+        [Required]
+        public string AdminId { get; set; }
+        public Admin Admin { get; init; }
+
     }
 }

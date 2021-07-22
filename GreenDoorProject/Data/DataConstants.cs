@@ -4,24 +4,19 @@ namespace GreenDoorProject.Data
 {
     public class DataConstants
     {
-        internal class Description
+        internal class Actor
         {
-            internal const int DefaultDescriptionMaxLength = 1000;
+            internal const int NameMinLength = 3;
+            internal const int NameMaxLength = 50;
+
+            internal const int YearOfBirthMinValue = 1900;
+            internal const int YearOfBirthMaxValue = 2020;
         }
 
-        internal class User
+        internal class Author
         {
-            internal const int FirstAndLastNameMinLength = 3;
-            internal const int FirstAndLastNameMaxLength = 50;
-
-            internal const int UsernameMinLength = 3;
-            internal const int UsernameMaxLength = 20;
-
-            internal const int PasswordMinLength = 6;
-            internal const int PasswordMaxLength = 20;
-
-            internal const string EmailRegexPattern =
-                @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+            internal const int NameMinLength = 3;
+            internal const int NameMaxLength = 50;
         }
 
         internal class Book
@@ -33,10 +28,33 @@ namespace GreenDoorProject.Data
             internal const int PagesMaxLength = 2500;
         }
 
-        internal class Author
+        internal class Info
+        {
+            internal const int DefaultClassInfoMaxLength = 1500;
+        }
+
+        internal class Game
         {
             internal const int NameMinLength = 3;
             internal const int NameMaxLength = 50;
+
+            internal const int GameGanreNameMinLength = 5;
+            internal const int GameGanreNameMaxLength = 40;
+
+            internal const double PriceMinValue = 40.00;
+            internal const double PriceMaxValue = 250.00;
+        }
+
+        internal class Ganre
+        {
+            internal const int GanreNameMinLength = 5;
+            internal const int GanreNameMaxLength = 50;
+        }
+
+        internal class Hall
+        {
+            internal const int HallNameMinLength = 5;
+            internal const int HallNameMaxLength = 20;
         }
 
         internal class Movie
@@ -54,16 +72,6 @@ namespace GreenDoorProject.Data
             internal const double TicketPriceMaxValue = 25.00;
         }
 
-        internal class Game
-        {
-            internal const int NameMinLength = 3;
-            internal const int NameMaxLength = 50;
-
-            internal const double PriceMinValue = 40.00;
-            internal const double PriceMaxValue = 250.00;
-
-        }
-
         internal class Music
         {
             internal const int ArtistNameMinLength = 3;
@@ -78,5 +86,20 @@ namespace GreenDoorProject.Data
             internal const int SongNameMinLength = 3;
             internal const int SongNameMaxLength = 30;
         }
+
+        //internal class User
+        //{
+        //    internal const int FirstAndLastNameMinLength = 3;
+        //    internal const int FirstAndLastNameMaxLength = 50;
+
+        //    internal const int UsernameMinLength = 3;
+        //    internal const int UsernameMaxLength = 20;
+
+        //    internal const int PasswordMinLength = 6;
+        //    internal const int PasswordMaxLength = 20;
+
+        //    internal const string EmailRegexPattern =
+        //        @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+        //}
     }
 }
