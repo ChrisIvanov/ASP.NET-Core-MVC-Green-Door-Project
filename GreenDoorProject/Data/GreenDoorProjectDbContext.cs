@@ -1,9 +1,10 @@
 ﻿namespace GreenDoorProject.Data
 {
     using GreenDoorProject.Data.Models;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    
+
     public class GreenDoorProjectDbContext : IdentityDbContext
     {
         public GreenDoorProjectDbContext
@@ -12,17 +13,18 @@
         {
         }
 
-        public DbSet<Hall> Halls { get; set; }
+        public DbSet<Actor> Actors { get; init; }
+        public DbSet<ActorMovie> ActorMovies { get; init; }
+        public DbSet<Admin> Admins { get; init; }
+        public DbSet<Author> Authors { get; init; }
         public DbSet<Book> Books { get; init; }
         public DbSet<Game> Games { get; init; }
-        public DbSet<Song> Songs { get; init; }
-        public DbSet<Music> Music { get; init; } 
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<Actor> Actors { get; init; }
+        public DbSet<Hall> Halls { get; set; }
         public DbSet<Movie> Movies { get; init; }
-        public DbSet<Author> Authors { get; init; }
-        public DbSet<ActorMovie> ActorMovies { get; init; }
+        public DbSet<MusicAlbum> MusicAlbums { get; init; }
         public DbSet<Projection> Projections { get; init; }
+        public DbSet<Song> Songs { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -53,11 +55,77 @@
                 .HasForeignKey(x => x.HallId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Projection>()
+                .HasOne(x => x.Movie)
+                .WithMany(y => y.Projections)
+                .HasForeignKey(x => x.MovieId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.Entity<Book>()
                 .HasOne(x => x.Genre)
                 .WithMany(y => y.Books)
                 .HasForeignKey(x => x.GenreId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Song>()
+                .HasOne(x => x.MusicAlbum)
+                .WithMany(y => y.Songs)
+                .HasForeignKey(x => x.MusicAlbumId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Admin>()
+                .HasOne<IdentityUser>()
+                .WithOne()
+                .HasForeignKey<Admin>(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Admin>()
+            //   .HasMany(a => a.Actors)
+            //   .WithOne()
+            //   .HasForeignKey(a => a.AdminId)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Admin>()
+            //   .HasMany(a => a.Authors)
+            //   .WithOne()
+            //   .HasForeignKey(a => a.AdminId)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Admin>()
+            //   .HasMany(a => a.Books)
+            //   .WithOne()
+            //   .HasForeignKey(a => a.AdminId)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Admin>()
+            //   .HasMany(a => a.Games)
+            //   .WithOne()
+            //   .HasForeignKey(a => a.AdminId)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Admin>()
+            //   .HasMany(a => a.Movies)
+            //   .WithOne()
+            //   .HasForeignKey(a => a.AdminId)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Admin>()
+            //   .HasMany(a => a.Music)
+            //   .WithOne()
+            //   .HasForeignKey(a => a.AdminId)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Admin>()
+            //   .HasMany(a => a.Projections)
+            //   .WithOne()
+            //   .HasForeignKey(a => a.AdminId)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Admin>()
+            //   .HasMany(a => a.Songs)
+            //   .WithOne()
+            //   .HasForeignKey(a => a.AdminId)
+            //   .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

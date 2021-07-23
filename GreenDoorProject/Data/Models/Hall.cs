@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants.Hall;
+    using static DataConstants.Hall;
 
     public class Hall
     {

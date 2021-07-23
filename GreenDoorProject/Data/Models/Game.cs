@@ -3,8 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants.Game;
-    using static Data.DataConstants.Info;
+    using static DataConstants.Game;
+    using static DataConstants.Info;
 
     public class Game
     {
@@ -28,6 +28,5 @@
         [Required]
         public string AdminId { get; set; }
         public Admin Admin { get; init; }
-
     }
 }

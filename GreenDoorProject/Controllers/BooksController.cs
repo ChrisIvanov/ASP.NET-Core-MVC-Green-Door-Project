@@ -1,7 +1,9 @@
 ﻿namespace GreenDoorProject.Controllers
 {
+    using System;
     using GreenDoorProject.Data;
     using GreenDoorProject.Data.Models;
+    using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Models.Books;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -17,16 +19,33 @@
             this.data = data;
         }
 
-        public IActionResult All()
+        public IActionResult All(string brand, string searchTerm)
         {
             if (!data.Books.Any())
             {
                 return Redirect("/Views/Shared/Error");
             }
 
-            var books = this.data
-                .Books
-                .Select(b => new AllBooksListingModel
+            var booksQuery = this.data.Books.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(brand))
+            {
+                booksQuery = booksQuery.Where(b =>
+                    b.Genre.Name == brand);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                booksQuery = booksQuery.Where(b => 
+                    b.BookTitle.ToLower().Contains(searchTerm.ToLower())
+                    || (b.Author.FirstName + " " + b.Author.LastName).Contains(searchTerm.ToLower())
+                    || b.Description.Contains(searchTerm.ToLower())
+                    || b.Genre.Name.Contains(searchTerm.ToLower()));
+            }
+
+            var books = booksQuery
+                .OrderBy(a => a.Id)
+                .Select(b => new BookListingViewModel
                 {
                     BookTitle = b.BookTitle,
                     AuthorName = new string($"{b.Author.FirstName} {b.Author.LastName}"),
@@ -36,14 +55,33 @@
                 })
                 .ToList();
 
-            return View(books);
+            var bookGenres = this.data
+                .Books
+                .Select(b => b.Genre.Name)
+                .Distinct()
+                .ToList();
+
+            return View(new AllBooksQueryModel
+            {
+                Genres = bookGenres,
+                Books = books,
+                SearchTerm = searchTerm
+            });
         }
 
         [Authorize]
-        public IActionResult Add() => View(new AddBookFormModel
+        public IActionResult Add()
         {
-            Genres = this.GetBookGenres()
-        });
+            if (!this.UserIsAdmin())
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            return View(new AddBookFormModel
+            {
+                Genres = this.GetBookGenres()
+            });
+        }
 
         [HttpPost]
         [Authorize]
@@ -100,7 +138,15 @@
         }
 
         [Authorize]
-        public IActionResult AddAuthor() => View(new AddAuthorFormModel());
+        public IActionResult AddAuthor()
+        {
+            if (!this.UserIsAdmin())
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            return View(new AddAuthorFormModel());
+        }
 
         [HttpPost]
         [Authorize]
@@ -136,6 +182,10 @@
                     .Authors
                     .Any(a => a.FirstName == bookModel.AuthorFirstName &&
                         a.LastName == bookModel.AuthorLastName);
+
+        private bool UserIsAdmin()
+            => this.data.Admins
+                .Any(a => a.UserId == this.User.GetId());
 
         private IEnumerable<BookGenreViewModel> GetBookGenres()
             => this.data

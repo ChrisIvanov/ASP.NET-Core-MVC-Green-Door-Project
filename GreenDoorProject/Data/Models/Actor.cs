@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants.Actor;
-    using static Data.DataConstants.Info;
+    using static DataConstants.Actor;
+    using static DataConstants.Info;
 
     public class Actor
     {

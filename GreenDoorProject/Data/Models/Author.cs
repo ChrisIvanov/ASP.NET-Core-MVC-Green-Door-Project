@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
-    using static Data.DataConstants.Author;
-    using static Data.DataConstants.Info;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using static DataConstants.Author;
+    using static DataConstants.Info;
 
     public class Author
     {

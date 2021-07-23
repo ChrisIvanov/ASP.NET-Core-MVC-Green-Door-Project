@@ -20,7 +20,9 @@
         [Display(Name = "Number of pages")]
         public int Pages { get; set; }
 
-        [Display(Name = "Image Path")]
+        [Url]
+        [Required]
+        [Display(Name = "Image URL")]
         public string ImagePath { get; set; }
 
         [Required]

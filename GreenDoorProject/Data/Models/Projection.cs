@@ -3,15 +3,11 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using static DataConstants.Projection;
+
     public class Projection
     {
         public string Id { get; init; } = Guid.NewGuid().ToString();
-
-        [Required]
-        public string MoviePosterPath { get; set; }
-
-        [Required]
-        public string MovieTitle { get; set; }
 
         [Required]
         public DateTime TimeOfProjection { get; set; }
@@ -25,11 +21,11 @@
         public Hall Hall { get; set; }
 
         [Required]
-        public string AdminId { get; init; }
-        public Admin Admin { get; init; }
-
-        [Required]
         public string MovieId { get; set; }
         public Movie Movie { get; set; }
+  
+        [Required]
+        public string AdminId { get; init; }
+        public Admin Admin { get; init; }
     }
 }

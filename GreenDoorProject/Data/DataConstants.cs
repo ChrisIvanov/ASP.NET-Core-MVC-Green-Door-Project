@@ -87,6 +87,18 @@ namespace GreenDoorProject.Data
             internal const int SongNameMaxLength = 30;
         }
 
+        internal class Projection
+        {
+            internal const int MovieTitleMinLength = 5;
+            internal const int MovieTitleMaxLength = 20;
+        }
+
+        internal class Song
+        {
+            internal const int SongNameMinLength = 5;
+            internal const int SongNameMaxLength = 20;
+        }
+
         //internal class User
         //{
         //    internal const int FirstAndLastNameMinLength = 3;

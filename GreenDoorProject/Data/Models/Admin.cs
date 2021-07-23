@@ -8,9 +8,9 @@
     {
         public string Id { get; init; } = Guid.NewGuid().ToString();
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
-        public IdentityUser User { get; set; }
+        public virtual IdentityUser User { get; set; }
 
         public IEnumerable<Actor> Actors { get; set; } = new List<Actor>();
 
@@ -22,11 +22,11 @@
 
         public IEnumerable<Movie> Movies { get; set; } = new List<Movie>();
 
-        public IEnumerable<Music> Music { get; set; } = new List<Music>();
+        public IEnumerable<MusicAlbum> MusicAlbums { get; set; } = new List<MusicAlbum>();
         
         public IEnumerable<Projection> Projections { get; set; } = new List<Projection>();
 
-        public IEnumerable<Song> Song { get; set; } = new List<Song>();
+        public IEnumerable<Song> Songs { get; set; } = new List<Song>();
 
     }
 }

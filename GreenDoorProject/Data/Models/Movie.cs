@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants.Info;
-    using static Data.DataConstants.Movie;
+    using static DataConstants.Info;
+    using static DataConstants.Movie;
 
     public class Movie
     {
@@ -38,6 +38,6 @@
 
         public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
 
-        public ICollection<Projection> Projections { get; init; } = new List<Projection>();
+        public ICollection<Projection> Projections { get; set; } = new List<Projection>();
     }
 }

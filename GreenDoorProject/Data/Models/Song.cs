@@ -3,19 +3,22 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using static DataConstants.Song;
+
     public class Song
     {
         public string Id { get; init; } = Guid.NewGuid().ToString();
 
         [Required]
+        [StringLength(SongNameMaxLength, MinimumLength = SongNameMinLength)]
         public string Name { get; set; }
 
         [Required]
         public TimeSpan SongDuration { get; set; }
 
         [Required]
-        public string AlbumId { get; set; }
-        public Music Album { get; set; }
+        public string MusicAlbumId { get; set; }
+        public MusicAlbum MusicAlbum { get; set; }
 
         [Required]
         public string AdminId { get; init; }

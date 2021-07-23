@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants.Book;
+    using static DataConstants.Book;
     
     public class Book
     {
