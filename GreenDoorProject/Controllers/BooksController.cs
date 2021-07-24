@@ -86,7 +86,7 @@
 
             query.Books = books;
             query.Genres = bookGenres;
-            query.TotalBooks = total
+            query.TotalBooks = totalBooks;
 
             return View(query);
         }
