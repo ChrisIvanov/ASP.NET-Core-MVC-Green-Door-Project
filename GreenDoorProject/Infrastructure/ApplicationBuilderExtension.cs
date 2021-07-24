@@ -21,9 +21,9 @@
 
             data.Database.Migrate();
 
-            //SeedGenres(data);
+            SeedGenres(data);
 
-            //SeedHalls(data);
+            SeedHalls(data);
 
             return app;
         }

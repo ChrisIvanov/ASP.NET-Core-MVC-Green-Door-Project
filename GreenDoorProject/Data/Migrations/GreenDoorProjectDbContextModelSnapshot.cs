@@ -78,16 +78,11 @@ namespace GreenDoorProject.Data.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Admins");
                 });
@@ -609,12 +604,6 @@ namespace GreenDoorProject.Data.Migrations
                         .WithOne()
                         .HasForeignKey("GreenDoorProject.Data.Models.Admin", "UserId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Author", b =>

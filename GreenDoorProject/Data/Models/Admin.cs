@@ -10,8 +10,6 @@
 
         public string UserId { get; set; }
 
-        public virtual IdentityUser User { get; set; }
-
         public IEnumerable<Actor> Actors { get; set; } = new List<Actor>();
 
         public IEnumerable<Author> Authors { get; set; } = new List<Author>();
