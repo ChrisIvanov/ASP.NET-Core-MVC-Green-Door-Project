@@ -96,7 +96,7 @@
         {
             if (!this.UserIsAdmin())
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(PatronController.BecomePatron), "Home");
             }
 
             return View(new AddBookFormModel
@@ -192,6 +192,13 @@
             this._data.SaveChanges();
 
             return RedirectToAction("Books", "Add");
+        }
+
+        public IActionResult Buy()
+        {
+
+
+            return RedirectToAction("Books", "Buy");
         }
 
         private bool ExistingBookCheck(AddBookFormModel bookModel)

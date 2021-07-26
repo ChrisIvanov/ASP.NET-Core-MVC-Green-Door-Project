@@ -15,7 +15,6 @@
 
         public DbSet<Actor> Actors { get; init; }
         public DbSet<ActorMovie> ActorMovies { get; init; }
-        public DbSet<Admin> Admins { get; init; }
         public DbSet<Author> Authors { get; init; }
         public DbSet<Book> Books { get; init; }
         public DbSet<Game> Games { get; init; }
@@ -23,6 +22,7 @@
         public DbSet<Hall> Halls { get; set; }
         public DbSet<Movie> Movies { get; init; }
         public DbSet<MusicAlbum> MusicAlbums { get; init; }
+        public DbSet<Patron> Patrons { get; init; }
         public DbSet<Projection> Projections { get; init; }
         public DbSet<Song> Songs { get; init; }
 
@@ -73,10 +73,10 @@
                 .HasForeignKey(x => x.MusicAlbumId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Admin>()
+            builder.Entity<Patron>()
                 .HasOne<IdentityUser>()
                 .WithOne()
-                .HasForeignKey<Admin>(a => a.UserId)
+                .HasForeignKey<Patron>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             //builder.Entity<Admin>()

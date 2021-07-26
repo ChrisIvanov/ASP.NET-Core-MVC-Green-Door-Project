@@ -6,6 +6,7 @@
     using GreenDoorProject.Data.Models;
     using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Models;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : Controller
@@ -19,7 +20,9 @@
 
         public IActionResult Index() => View();
 
-        public IActionResult BecomeAdmin()
+
+        [Authorize(Roles = "User, Member")]
+        public IActionResult BecomePatron()
         {
             var userId = this.User.GetId();
 
@@ -27,17 +30,16 @@
                .Where(u => u.Id == userId)
                .FirstOrDefault();
 
-            var admin = new Admin
+            var patron = new Patron
             {
                 UserId = userId
             };
 
-            this._data.Admins.Add(admin);
+            this._data.Patrons.Add(patron);
             this._data.SaveChanges();
 
             return RedirectToAction("Home", "Index");
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

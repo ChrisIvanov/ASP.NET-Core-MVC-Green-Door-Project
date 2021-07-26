@@ -24,13 +24,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="All">All Books</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="BecomeAdmin">Become Admin</a>
-                        </li>
-
-
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Patron" asp-action="BecomeAdmin">Donate</a>
+                            </li>
+                        }
                     </ul>
+                    @*<div class="dropdown">
+                        <button class="dropbtn">
+                            All Items
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="/Shop/AllBooks">Books</a>
+                            <a href="/Shop/AllMusic">Music</a>
+                            <a href="/Shop/AllGames">Games</a>
+                        </div>
+                    </div>*@
                     <partial name="_LoginPartial" />
                 </div>
             </div>

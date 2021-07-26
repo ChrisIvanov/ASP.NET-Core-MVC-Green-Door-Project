@@ -36,7 +36,7 @@
         public Author Author { get; set; }
 
         [Required]
-        public string AdminId { get; init; }
-        public Admin Admin { get; init; }
+        public string PatronId { get; init; }
+        public Patron Patron { get; init; }
     }
 }

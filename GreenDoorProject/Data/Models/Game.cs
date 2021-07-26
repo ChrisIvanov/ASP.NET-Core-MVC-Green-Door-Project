@@ -24,9 +24,9 @@
 
         [StringLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
-        
+
         [Required]
-        public string AdminId { get; set; }
-        public Admin Admin { get; init; }
+        public string PatronId { get; init; }
+        public Patron Patron { get; init; }
     }
 }

@@ -2,6 +2,7 @@ namespace GreenDoorProject
 {
     using GreenDoorProject.Data;
     using GreenDoorProject.Infrastructure;
+    using GreenDoorProject.Services.Patrons;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -37,6 +38,8 @@ namespace GreenDoorProject
 
             services
                 .AddControllersWithViews();
+
+            services.AddTransient<IPatronService, PatronService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
