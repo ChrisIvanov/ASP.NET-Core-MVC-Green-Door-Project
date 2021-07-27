@@ -1,24 +1,36 @@
 ﻿namespace GreenDoorProject.Controllers
 {
-    using System.Diagnostics;
     using System.Linq;
+    using System.Diagnostics;
     using GreenDoorProject.Data;
     using GreenDoorProject.Data.Models;
     using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Models;
+    using GreenDoorProject.Services.Statistics;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : Controller
     {
+        private readonly IStatisticsService statistics;
         private readonly GreenDoorProjectDbContext _data;
 
-        public HomeController(GreenDoorProjectDbContext data)
+        public HomeController(
+            IStatisticsService statistics,
+            GreenDoorProjectDbContext data)
         {
+            this.statistics = statistics;
             _data = data;
         }
 
-        public IActionResult Index() => View();
+        public IActionResult Index()
+        {
+            //TODO: Add a carousel with top quality merchandise
+
+            var statistics = this.statistics.Total();
+
+            return View(statistics);
+        }
 
 
         [Authorize(Roles = "User, Member")]

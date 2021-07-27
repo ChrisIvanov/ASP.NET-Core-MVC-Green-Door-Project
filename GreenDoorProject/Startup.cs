@@ -2,10 +2,12 @@ namespace GreenDoorProject
 {
     using GreenDoorProject.Data;
     using GreenDoorProject.Infrastructure;
+    using GreenDoorProject.Services.Books;
     using GreenDoorProject.Services.Patrons;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +41,13 @@ namespace GreenDoorProject
             services
                 .AddControllersWithViews();
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddTransient<IPatronService, PatronService>();
+            services.AddTransient<IBookService, BookService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

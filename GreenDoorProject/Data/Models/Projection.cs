@@ -23,9 +23,5 @@
         [Required]
         public string MovieId { get; set; }
         public Movie Movie { get; set; }
-
-        [Required]
-        public string PatronId { get; init; }
-        public Patron Patron { get; init; }
     }
 }

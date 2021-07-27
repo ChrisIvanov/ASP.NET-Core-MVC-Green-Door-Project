@@ -32,10 +32,6 @@
         [Range(TicketPriceMaxValue, TicketPriceMinValue)]
         public decimal TicketPrice { get; set; }
 
-        [Required]
-        public string PatronId { get; init; }
-        public Patron Patron { get; init; }
-
         public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
 
         public ICollection<Projection> Projections { get; set; } = new List<Projection>();

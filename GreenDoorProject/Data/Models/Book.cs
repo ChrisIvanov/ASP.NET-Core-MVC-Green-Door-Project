@@ -25,7 +25,8 @@
 
         public string Description { get; set; }
 
-        public double Recomendations { get; set; } = 0.0;
+        [Range(0, 5)]
+        public double Rating { get; set; }
 
         [Required]
         public int GenreId { get; set; }
@@ -34,9 +35,5 @@
         [Required]
         public string AuthorId { get; set; }
         public Author Author { get; set; }
-
-        [Required]
-        public string PatronId { get; init; }
-        public Patron Patron { get; init; }
     }
 }

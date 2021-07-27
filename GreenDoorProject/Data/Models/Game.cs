@@ -25,8 +25,7 @@
         [StringLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
 
-        [Required]
-        public string PatronId { get; init; }
-        public Patron Patron { get; init; }
+        [Range(0, 5)]
+        public double Rating { get; set; }
     }
 }

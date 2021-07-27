@@ -19,9 +19,5 @@
         [Required]
         public string MusicAlbumId { get; set; }
         public MusicAlbum MusicAlbum { get; set; }
-
-        [Required]
-        public string PatronId { get; init; }
-        public Patron Patron { get; init; }
     }
 }
