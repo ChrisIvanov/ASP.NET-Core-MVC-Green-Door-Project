@@ -29,8 +29,7 @@
         }
 
         private IEnumerable<CinemaHallViewModel> GetCinemaHalls()
-            => this.data
-            .Halls
+            => this.data.Halls
             .Select(h => new CinemaHallViewModel
             {
                 Id = h.Id,

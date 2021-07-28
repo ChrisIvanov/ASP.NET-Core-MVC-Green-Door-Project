@@ -9,14 +9,19 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
+    using GreenDoorProject.Services.Books;
 
     public class BooksController : Controller
     {
+        private readonly IBookService books;
         private readonly GreenDoorProjectDbContext _data;
 
-        public BooksController(GreenDoorProjectDbContext data)
+        public BooksController(
+            GreenDoorProjectDbContext data, 
+            IBookService books)
         {
             this._data = data;
+            this.books = books;
         }
 
         [HttpGet]
@@ -34,63 +39,25 @@
                 return View(errorModel);
             }
 
-            var booksQuery = this._data.Books.AsQueryable();
+            var queryResult = this.books.All(
+                query.Genre,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllBooksQueryModel.BooksPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.Genre))
-            {
-                booksQuery = booksQuery.Where(b =>
-                    b.Genre.Name == query.Genre);
-            }
+            var bookGenres = this.books.AllBookGenres();
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                booksQuery = booksQuery.Where(b => 
-                    b.BookTitle.ToLower().Contains(query.SearchTerm.ToLower())
-                    || (b.Author.FirstName + " " + b.Author.LastName).Contains(query.SearchTerm.ToLower())
-                    || b.Description.Contains(query.SearchTerm.ToLower())
-                    || b.Genre.Name.Contains(query.SearchTerm.ToLower()));
-            }
+            var totalBooks = query.TotalBooks;
 
-            var totalBooks = booksQuery.Count();
-
-            var books = booksQuery
-                .Skip((query.CurrentPage - 1) * AllBooksQueryModel.BooksPerPage)
-                .Take(AllBooksQueryModel.BooksPerPage)
-                .OrderBy(a => a.Id)
-                .Select(b => new BookListingViewModel
-                {
-                    BookTitle = b.BookTitle,
-                    AuthorName = new string($"{b.Author.FirstName} {b.Author.LastName}"),
-                    ImagePath = b.ImagePath,
-                    Genre = b.Genre,
-                    Price = b.Price
-                })
-                .ToList();
-
-            booksQuery = query.Sorting switch
-            {
-                BookSorting.BookTitleAscending => booksQuery.OrderBy(b => b.BookTitle),
-                BookSorting.BookTitleDescending => booksQuery.OrderByDescending(b => b.BookTitle),
-                BookSorting.AuthorName => booksQuery.OrderBy(b => b.Author.LastName ).ThenBy(b => b.Author.FirstName),
-                BookSorting.Recommendation => booksQuery.OrderByDescending(b => b.Recomendations),
-                BookSorting.PriceAscending => booksQuery.OrderBy(b => b.Price),
-                BookSorting.PriceDescending => booksQuery.OrderByDescending(b => b.Price),
-                _ => booksQuery.OrderByDescending(b => b.Id)
-            };
-
-            var bookGenres = this._data
-                .Books
-                .Select(b => b.Genre.Name)
-                .Distinct()
-                .ToList();
-
-            query.Books = books;
             query.Genres = bookGenres;
+            query.Books = queryResult.Books;
             query.TotalBooks = totalBooks;
 
             return View(query);
         }
 
+        [HttpPost]
         [Authorize]
         public IActionResult Add()
         {
@@ -171,7 +138,8 @@
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
+        [Roles]
         public IActionResult AddAuthor(AddAuthorFormModel authorModel)
         {
             if (!this.ModelState.IsValid)
@@ -213,8 +181,8 @@
                         a.LastName == bookModel.AuthorLastName);
 
         private bool UserIsAdmin()
-            => this._data.Admins
-                .Any(a => a.UserId == this.User.GetId());
+            => this._data.Users
+                .Any(a => a.Id == this.User.GetId());
 
         private IEnumerable<BookGenreViewModel> GetBookGenres()
             => this._data

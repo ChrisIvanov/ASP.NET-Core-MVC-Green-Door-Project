@@ -38,10 +38,6 @@ namespace GreenDoorProject.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PatronId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("YearOfBirth")
                         .HasColumnType("int");
 
@@ -49,8 +45,6 @@ namespace GreenDoorProject.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatronId");
 
                     b.ToTable("Actors");
                 });
@@ -89,10 +83,6 @@ namespace GreenDoorProject.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PatronId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("YearOfBirth")
                         .HasColumnType("int");
 
@@ -100,8 +90,6 @@ namespace GreenDoorProject.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatronId");
 
                     b.ToTable("Authors");
                 });
@@ -120,6 +108,10 @@ namespace GreenDoorProject.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -132,14 +124,10 @@ namespace GreenDoorProject.Data.Migrations
                     b.Property<int>("Pages")
                         .HasColumnType("int");
 
-                    b.Property<string>("PatronId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("Recomendations")
+                    b.Property<double>("Rating")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
@@ -147,8 +135,6 @@ namespace GreenDoorProject.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("GenreId");
-
-                    b.HasIndex("PatronId");
 
                     b.ToTable("Books");
                 });
@@ -172,16 +158,13 @@ namespace GreenDoorProject.Data.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<string>("PatronId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
 
-                    b.HasIndex("PatronId");
+                    b.HasKey("Id");
 
                     b.ToTable("Games");
                 });
@@ -220,6 +203,57 @@ namespace GreenDoorProject.Data.Migrations
                     b.ToTable("Halls");
                 });
 
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Member", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("MembershipId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MembershipId1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MembershipId1");
+
+                    b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Membership", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("MemberId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("MembershipEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("MembershipStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Memberships");
+                });
+
             modelBuilder.Entity("GreenDoorProject.Data.Models.Movie", b =>
                 {
                     b.Property<string>("Id")
@@ -242,10 +276,6 @@ namespace GreenDoorProject.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("PatronId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("TicketPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -253,8 +283,6 @@ namespace GreenDoorProject.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatronId");
 
                     b.ToTable("Movies");
                 });
@@ -274,16 +302,13 @@ namespace GreenDoorProject.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("PatronId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
 
-                    b.HasIndex("PatronId");
+                    b.HasKey("Id");
 
                     b.ToTable("MusicAlbums");
                 });
@@ -293,16 +318,24 @@ namespace GreenDoorProject.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<decimal>("Donations")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("MembershipId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("MembershipId");
 
-                    b.ToTable("Admins");
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Patrons");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Projection", b =>
@@ -320,10 +353,6 @@ namespace GreenDoorProject.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("PatronId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("TimeOfProjection")
                         .HasColumnType("datetime2");
 
@@ -332,8 +361,6 @@ namespace GreenDoorProject.Data.Migrations
                     b.HasIndex("HallId");
 
                     b.HasIndex("MovieId");
-
-                    b.HasIndex("PatronId");
 
                     b.ToTable("Projections");
                 });
@@ -352,18 +379,12 @@ namespace GreenDoorProject.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("PatronId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<TimeSpan>("SongDuration")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MusicAlbumId");
-
-                    b.HasIndex("PatronId");
 
                     b.ToTable("Songs");
                 });
@@ -568,17 +589,6 @@ namespace GreenDoorProject.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("GreenDoorProject.Data.Models.Actor", b =>
-                {
-                    b.HasOne("GreenDoorProject.Data.Models.Patron", "Patron")
-                        .WithMany("Actors")
-                        .HasForeignKey("PatronId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patron");
-                });
-
             modelBuilder.Entity("GreenDoorProject.Data.Models.ActorMovie", b =>
                 {
                     b.HasOne("GreenDoorProject.Data.Models.Actor", "Actor")
@@ -598,17 +608,6 @@ namespace GreenDoorProject.Data.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("GreenDoorProject.Data.Models.Author", b =>
-                {
-                    b.HasOne("GreenDoorProject.Data.Models.Patron", "Patron")
-                        .WithMany("Authors")
-                        .HasForeignKey("PatronId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patron");
-                });
-
             modelBuilder.Entity("GreenDoorProject.Data.Models.Book", b =>
                 {
                     b.HasOne("GreenDoorProject.Data.Models.Author", "Author")
@@ -623,58 +622,33 @@ namespace GreenDoorProject.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("GreenDoorProject.Data.Models.Patron", "Patron")
-                        .WithMany("Books")
-                        .HasForeignKey("PatronId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Author");
 
                     b.Navigation("Genre");
-
-                    b.Navigation("Patron");
                 });
 
-            modelBuilder.Entity("GreenDoorProject.Data.Models.Game", b =>
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Member", b =>
                 {
-                    b.HasOne("GreenDoorProject.Data.Models.Patron", "Patron")
-                        .WithMany("Games")
-                        .HasForeignKey("PatronId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("GreenDoorProject.Data.Models.Membership", "Membership")
+                        .WithMany()
+                        .HasForeignKey("MembershipId1");
 
-                    b.Navigation("Patron");
-                });
-
-            modelBuilder.Entity("GreenDoorProject.Data.Models.Movie", b =>
-                {
-                    b.HasOne("GreenDoorProject.Data.Models.Patron", "Patron")
-                        .WithMany("Movies")
-                        .HasForeignKey("PatronId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patron");
-                });
-
-            modelBuilder.Entity("GreenDoorProject.Data.Models.MusicAlbum", b =>
-                {
-                    b.HasOne("GreenDoorProject.Data.Models.Patron", "Patron")
-                        .WithMany("MusicAlbums")
-                        .HasForeignKey("PatronId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patron");
+                    b.Navigation("Membership");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Patron", b =>
                 {
+                    b.HasOne("GreenDoorProject.Data.Models.Membership", "Membership")
+                        .WithMany()
+                        .HasForeignKey("MembershipId");
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithOne()
                         .HasForeignKey("GreenDoorProject.Data.Models.Patron", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Membership");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Projection", b =>
@@ -691,17 +665,9 @@ namespace GreenDoorProject.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("GreenDoorProject.Data.Models.Patron", "Patron")
-                        .WithMany("Projections")
-                        .HasForeignKey("PatronId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Hall");
 
                     b.Navigation("Movie");
-
-                    b.Navigation("Patron");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Song", b =>
@@ -712,15 +678,7 @@ namespace GreenDoorProject.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("GreenDoorProject.Data.Models.Patron", "Patron")
-                        .WithMany("Songs")
-                        .HasForeignKey("PatronId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("MusicAlbum");
-
-                    b.Navigation("Patron");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -729,6 +687,15 @@ namespace GreenDoorProject.Data.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.HasOne("GreenDoorProject.Data.Models.Member", null)
+                        .WithOne()
+                        .HasForeignKey("Microsoft.AspNetCore.Identity.IdentityUser", "Id")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -803,25 +770,6 @@ namespace GreenDoorProject.Data.Migrations
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.MusicAlbum", b =>
                 {
-                    b.Navigation("Songs");
-                });
-
-            modelBuilder.Entity("GreenDoorProject.Data.Models.Patron", b =>
-                {
-                    b.Navigation("Actors");
-
-                    b.Navigation("Authors");
-
-                    b.Navigation("Books");
-
-                    b.Navigation("Games");
-
-                    b.Navigation("Movies");
-
-                    b.Navigation("MusicAlbums");
-
-                    b.Navigation("Projections");
-
                     b.Navigation("Songs");
                 });
 #pragma warning restore 612, 618

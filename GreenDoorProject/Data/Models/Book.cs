@@ -33,6 +33,9 @@
         public Genre Genre { get; set; }
 
         [Required]
+        public string Content { get; set; }
+
+        [Required]
         public string AuthorId { get; set; }
         public Author Author { get; set; }
     }

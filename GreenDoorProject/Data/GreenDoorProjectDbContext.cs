@@ -84,6 +84,7 @@
             builder.Entity<Member>()
                .HasOne<IdentityUser>()
                .WithOne()
+               .HasForeignKey<IdentityUser>(iu => iu.Id)
                .OnDelete(DeleteBehavior.Restrict);
 
             //builder.Entity<Admin>()

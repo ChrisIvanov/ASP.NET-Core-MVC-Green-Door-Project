@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\" />
     <Folder Include="Models\Games\" />
     <Folder Include="Models\Music\" />
     <Folder Include="Views\Games\" />
