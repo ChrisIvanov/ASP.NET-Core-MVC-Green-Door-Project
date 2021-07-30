@@ -28,6 +28,10 @@
 
         public TimeSpan MovieDuration { get; set; }
 
+        public string RatingId { get; set; }
+        [Range(0, 5)]
+        public Rating Rating { get; set; }
+
         [Required]
         [Range(TicketPriceMaxValue, TicketPriceMinValue)]
         public decimal TicketPrice { get; set; }

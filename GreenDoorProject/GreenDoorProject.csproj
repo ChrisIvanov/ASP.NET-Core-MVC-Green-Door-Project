@@ -17,11 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\" />
-    <Folder Include="Models\Games\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\" />
     <Folder Include="Models\Music\" />
     <Folder Include="Views\Games\" />
-    <Folder Include="Views\Cinema\" />
     <Folder Include="Views\Music\" />
   </ItemGroup>
 

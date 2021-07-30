@@ -3,7 +3,10 @@ namespace GreenDoorProject
     using GreenDoorProject.Data;
     using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Services.Books;
+    using GreenDoorProject.Services.Members;
     using GreenDoorProject.Services.Patrons;
+    using GreenDoorProject.Services.Ratings;
+    using GreenDoorProject.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -38,16 +41,17 @@ namespace GreenDoorProject
                 })
                 .AddEntityFrameworkStores<GreenDoorProjectDbContext>();
 
-            services
-                .AddControllersWithViews();
+            services.AddControllersWithViews(options
+                => options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>());
 
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
+            services.Configure<ApiBehaviorOptions>(options 
+                => options.SuppressModelStateInvalidFilter = true);
 
             services.AddTransient<IPatronService, PatronService>();
             services.AddTransient<IBookService, BookService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<IRatingService, RatingService>();
+            services.AddTransient<IMemberService, MemberService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -73,6 +77,7 @@ namespace GreenDoorProject
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
+                    endpoints.MapDefaultAreaRoute();
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });

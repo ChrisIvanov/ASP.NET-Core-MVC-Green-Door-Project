@@ -19,14 +19,11 @@
 
         public string ImagePath { get; set; }
 
-        [Required]
-        [Range(0.05, 500.0)]
-        public decimal Price { get; set; }
-
         public string Description { get; set; }
 
+        public string RatingId { get; set; }
         [Range(0, 5)]
-        public double Rating { get; set; }
+        public Rating Rating { get; set; }
 
         [Required]
         public int GenreId { get; set; }

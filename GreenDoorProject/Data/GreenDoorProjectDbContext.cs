@@ -17,7 +17,6 @@
         public DbSet<ActorMovie> ActorMovies { get; init; }
         public DbSet<Author> Authors { get; init; }
         public DbSet<Book> Books { get; init; }
-        public DbSet<Game> Games { get; init; }
         public DbSet<Genre> Genres { get; init; }
         public DbSet<Hall> Halls { get; init; }
         public DbSet<Member> Members { get; init; }
@@ -26,6 +25,7 @@
         public DbSet<MusicAlbum> MusicAlbums { get; init; }
         public DbSet<Patron> Patrons { get; init; }
         public DbSet<Projection> Projections { get; init; }
+        public DbSet<Rating> Ratings { get; init; }
         public DbSet<Song> Songs { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -86,6 +86,24 @@
                .WithOne()
                .HasForeignKey<IdentityUser>(iu => iu.Id)
                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Book>()
+                .HasOne<Rating>()
+                .WithOne()
+                .HasForeignKey<Rating>(r => r.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Movie>()
+                .HasOne<Rating>()
+                .WithOne()
+                .HasForeignKey<Rating>(r => r.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<MusicAlbum>()
+                .HasOne<Rating>()
+                .WithOne()
+                .HasForeignKey<Rating>(r => r.Id)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //builder.Entity<Admin>()
             //   .HasMany(a => a.Authors)

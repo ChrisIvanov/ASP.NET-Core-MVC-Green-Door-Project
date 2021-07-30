@@ -25,27 +25,7 @@
 
             SeedHalls(data);
 
-            SeedMemberships(data);
-
             return app;
-        }
-
-        private static void SeedMemberships(GreenDoorProjectDbContext data)
-        {
-            if (data.Memberships.Any())
-            {
-                return;
-            }
-
-            data.Memberships.AddRange(new[]
-            {
-                new Membership { Name = "One Month", Price = 9.99m },
-                new Membership { Name = "Three Month", Price = 26.99m },
-                new Membership { Name = "Six Month", Price = 49.99m },
-                new Membership { Name = "One Year", Price = 89.99m }
-            });
-
-            data.SaveChanges();
         }
 
         private static void SeedHalls(GreenDoorProjectDbContext data)

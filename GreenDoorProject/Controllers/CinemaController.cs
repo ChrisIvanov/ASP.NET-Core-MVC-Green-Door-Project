@@ -28,6 +28,8 @@
             return RedirectToAction("Index", "Home");
         }
 
+
+
         private IEnumerable<CinemaHallViewModel> GetCinemaHalls()
             => this.data.Halls
             .Select(h => new CinemaHallViewModel
