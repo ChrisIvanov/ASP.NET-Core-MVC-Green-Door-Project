@@ -57,6 +57,12 @@ namespace GreenDoorProject.Data
             internal const int HallNameMaxLength = 20;
         }
 
+        internal class Membership
+        {
+            internal const int MembershipNameMinLength = 3;
+            internal const int MembershipNameMaxLength = 15;
+        }
+
         internal class Movie
         {
             internal const int TitleMinLength = 4;

@@ -177,11 +177,14 @@ namespace GreenDoorProject.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("MembershipEnd")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MembershipId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MembershipId1")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("MembershipStart")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -189,7 +192,7 @@ namespace GreenDoorProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MembershipId1");
+                    b.HasIndex("MembershipId");
 
                     b.ToTable("Members");
                 });
@@ -201,19 +204,10 @@ namespace GreenDoorProject.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("MemberId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("MembershipEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("MembershipStart")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -297,7 +291,7 @@ namespace GreenDoorProject.Data.Migrations
                     b.Property<decimal>("Donations")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("MembershipId")
+                    b.Property<int>("Token")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -305,8 +299,6 @@ namespace GreenDoorProject.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MembershipId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -632,7 +624,9 @@ namespace GreenDoorProject.Data.Migrations
                 {
                     b.HasOne("GreenDoorProject.Data.Models.Membership", "Membership")
                         .WithMany()
-                        .HasForeignKey("MembershipId1");
+                        .HasForeignKey("MembershipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Membership");
                 });
@@ -657,17 +651,11 @@ namespace GreenDoorProject.Data.Migrations
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Patron", b =>
                 {
-                    b.HasOne("GreenDoorProject.Data.Models.Membership", "Membership")
-                        .WithMany()
-                        .HasForeignKey("MembershipId");
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithOne()
                         .HasForeignKey("GreenDoorProject.Data.Models.Patron", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Membership");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Projection", b =>

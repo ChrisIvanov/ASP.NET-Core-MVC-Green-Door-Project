@@ -25,7 +25,27 @@
 
             SeedHalls(data);
 
+            SeedMemberships(data);
+
             return app;
+        }
+
+        private static void SeedMemberships(GreenDoorProjectDbContext data)
+        {
+            if (data.Memberships.Any())
+            {
+                return;
+            }
+
+            data.Memberships.AddRange(new[]
+            {
+                new Membership { Name = "One Month", Price = 9.99m },
+                new Membership { Name = "Three Months", Price = 26.99m },
+                new Membership { Name = "Six Months", Price = 50.99m },
+                new Membership { Name = "Annual", Price = 89.99m }
+            });
+
+            data.SaveChanges();
         }
 
         private static void SeedHalls(GreenDoorProjectDbContext data)
@@ -39,7 +59,7 @@
             {
                 new Hall { Name = "Aurora" },
                 new Hall { Name = "Imagina" },
-                new Hall { Name = "FiveCircles" }
+                new Hall { Name = "Five Circles" }
             });
 
             data.SaveChanges();

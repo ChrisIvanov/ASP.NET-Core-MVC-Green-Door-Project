@@ -1,14 +1,17 @@
 ﻿namespace GreenDoorProject.Controllers
 {
-    using GreenDoorProject.Data;
-    using GreenDoorProject.Models.Books;
-    using Microsoft.AspNetCore.Mvc;
     using System.Linq;
+    using GreenDoorProject.Data;
+    using GreenDoorProject.Infrastructure;
+    using GreenDoorProject.Models.Books;
     using GreenDoorProject.Services.Books;
+    using GreenDoorProject.Services.Patrons;
+    using Microsoft.AspNetCore.Mvc;
 
     public class BooksController : Controller
     {
         private readonly IBookService books;
+        private readonly IPatronService patrons;
         private readonly GreenDoorProjectDbContext data;
 
         public BooksController(
@@ -59,7 +62,7 @@
             return View(book);
         }
 
-        public IActionResult Read(string bookId)
+        public IActionResult ReadAsMember(string bookId)
         {
             var books = this.data.Books.AsQueryable();
 
@@ -76,11 +79,23 @@
             return View(book);
         }
 
-        //[HttpPut]
-        //[Authorize]
-        //public IActionResult Vote()
-        //{
-            
-        //}
+        public IActionResult ReadAsPatron(string bookId)
+        {
+            this.patrons.UseToken(User.GetId());
+
+            var books = this.data.Books.AsQueryable();
+
+            var book = books
+                .Where(b => b.Id == bookId)
+                .Select(b => new BookContentsViewModel
+                {
+                    Title = b.BookTitle,
+                    Author = b.Author.FirstName + " " + b.Author.LastName,
+                    Contents = b.Content
+                })
+                .FirstOrDefault();
+
+            return View(book);
+        }
     }
 }
