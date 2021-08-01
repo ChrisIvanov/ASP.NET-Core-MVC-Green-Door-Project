@@ -6,6 +6,7 @@
     using GreenDoorProject.Models.Books;
     using GreenDoorProject.Services.Books;
     using GreenDoorProject.Services.Patrons;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class BooksController : Controller
@@ -15,7 +16,7 @@
         private readonly GreenDoorProjectDbContext data;
 
         public BooksController(
-            GreenDoorProjectDbContext data, 
+            GreenDoorProjectDbContext data,
             IBookService books)
         {
             this.data = data;
@@ -23,7 +24,8 @@
         }
 
         [HttpGet]
-        public IActionResult All([FromQuery]AllBooksQueryModel query)
+        [Authorize(Roles = "User, Member, Admin")]
+        public IActionResult All([FromQuery] AllBooksQueryModel query)
         {
             if (!data.Books.Any())
             {
@@ -55,6 +57,8 @@
             return View(query);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "User, Member, Admin")]
         public IActionResult Details(string bookId)
         {
             var book = this.books.Details(bookId);
@@ -62,6 +66,8 @@
             return View(book);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Member, Admin")]
         public IActionResult ReadAsMember(string bookId)
         {
             var books = this.data.Books.AsQueryable();
@@ -69,7 +75,7 @@
             var book = books
                 .Where(b => b.Id == bookId)
                 .Select(b => new BookContentsViewModel
-                {   
+                {
                     Title = b.BookTitle,
                     Author = b.Author.FirstName + " " + b.Author.LastName,
                     Contents = b.Content
@@ -79,8 +85,17 @@
             return View(book);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "User, Admin")]
         public IActionResult ReadAsPatron(string bookId)
         {
+            var userId = User.GetId();
+
+            if (this.patrons.GetTokens(userId) < 1)
+            {
+                return RedirectToAction("Home", "Index");
+            }
+
             this.patrons.UseToken(User.GetId());
 
             var books = this.data.Books.AsQueryable();

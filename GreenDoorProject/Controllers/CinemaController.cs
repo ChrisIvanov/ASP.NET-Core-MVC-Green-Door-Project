@@ -15,21 +15,6 @@
             this.data = data;
         }
 
-        public IActionResult Add() => View();
-
-
-        public IActionResult Add(AddMovieViewModel movie)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(movie);
-            }
-
-            return RedirectToAction("Index", "Home");
-        }
-
-
-
         private IEnumerable<CinemaHallViewModel> GetCinemaHalls()
             => this.data.Halls
             .Select(h => new CinemaHallViewModel
