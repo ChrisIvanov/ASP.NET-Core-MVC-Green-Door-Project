@@ -231,6 +231,9 @@ namespace GreenDoorProject.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<TimeSpan>("MovieDuration")
                         .HasColumnType("time");
 
@@ -610,7 +613,7 @@ namespace GreenDoorProject.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("GreenDoorProject.Data.Models.Rating", "Rating")
-                        .WithMany()
+                        .WithMany("Books")
                         .HasForeignKey("RatingId");
 
                     b.Navigation("Author");
@@ -634,7 +637,7 @@ namespace GreenDoorProject.Data.Migrations
             modelBuilder.Entity("GreenDoorProject.Data.Models.Movie", b =>
                 {
                     b.HasOne("GreenDoorProject.Data.Models.Rating", "Rating")
-                        .WithMany()
+                        .WithMany("Movies")
                         .HasForeignKey("RatingId");
 
                     b.Navigation("Rating");
@@ -643,7 +646,7 @@ namespace GreenDoorProject.Data.Migrations
             modelBuilder.Entity("GreenDoorProject.Data.Models.MusicAlbum", b =>
                 {
                     b.HasOne("GreenDoorProject.Data.Models.Rating", "Rating")
-                        .WithMany()
+                        .WithMany("MusicAlbums")
                         .HasForeignKey("RatingId");
 
                     b.Navigation("Rating");
@@ -799,6 +802,15 @@ namespace GreenDoorProject.Data.Migrations
             modelBuilder.Entity("GreenDoorProject.Data.Models.MusicAlbum", b =>
                 {
                     b.Navigation("Songs");
+                });
+
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Rating", b =>
+                {
+                    b.Navigation("Books");
+
+                    b.Navigation("Movies");
+
+                    b.Navigation("MusicAlbums");
                 });
 #pragma warning restore 612, 618
         }

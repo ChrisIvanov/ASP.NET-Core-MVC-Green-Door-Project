@@ -26,6 +26,8 @@
         [StringLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
 
+        public string ImagePath { get; set; }
+
         public TimeSpan MovieDuration { get; set; }
 
         public string RatingId { get; set; }
