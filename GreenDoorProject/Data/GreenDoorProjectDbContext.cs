@@ -84,7 +84,7 @@
             builder.Entity<Member>()
                .HasOne<IdentityUser>()
                .WithOne()
-               .HasForeignKey<IdentityUser>(iu => iu.Id)
+               .HasForeignKey<Member>(m => m.Id)
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Book>()

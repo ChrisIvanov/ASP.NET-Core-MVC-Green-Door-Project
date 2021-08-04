@@ -39,6 +39,7 @@ namespace GreenDoorProject
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<GreenDoorProjectDbContext>();
 
             services.AddControllersWithViews(options

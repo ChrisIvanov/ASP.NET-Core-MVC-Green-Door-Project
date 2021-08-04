@@ -14,18 +14,18 @@
         if (userIsPatron)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="User" asp-controller="Patron" asp-page="Donate">My Donations</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Patron" asp-action="MyDonations">My Donations</a>
             </li>
         }
         else
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Patron" asp-page="BecomePatron">Become Patron</a>
+                <a class="nav-link text-dark" asp-controller="Patron" asp-action="BecomePatron">Become Patron</a>
             </li>
         }
 
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link text-dark" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

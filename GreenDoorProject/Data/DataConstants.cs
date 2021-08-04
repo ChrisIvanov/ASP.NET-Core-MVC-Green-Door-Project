@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GreenDoorProject.Data
+﻿namespace GreenDoorProject.Data
 {
     public class DataConstants
     {
@@ -105,19 +103,19 @@ namespace GreenDoorProject.Data
             internal const int SongNameMaxLength = 20;
         }
 
-        //internal class User
-        //{
-        //    internal const int FirstAndLastNameMinLength = 3;
-        //    internal const int FirstAndLastNameMaxLength = 50;
+        internal class User
+        {
+            internal const int FullNameMinLength = 3;
+            internal const int FullNameMaxLength = 50;
 
-        //    internal const int UsernameMinLength = 3;
-        //    internal const int UsernameMaxLength = 20;
+            internal const int UsernameMinLength = 3;
+            internal const int UsernameMaxLength = 20;
 
-        //    internal const int PasswordMinLength = 6;
-        //    internal const int PasswordMaxLength = 20;
+            internal const int PasswordMinLength = 6;
+            internal const int PasswordMaxLength = 20;
 
-        //    internal const string EmailRegexPattern =
-        //        @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
-        //}
+            internal const string EmailRegexPattern =
+                @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+        }
     }
 }
