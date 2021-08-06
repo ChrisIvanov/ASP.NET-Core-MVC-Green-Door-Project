@@ -8,6 +8,7 @@
     using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Models.Books;
     using GreenDoorProject.Services.Books;
+    using GreenDoorProject.Services.Books.Models;
     using GreenDoorProject.Services.Patrons;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
