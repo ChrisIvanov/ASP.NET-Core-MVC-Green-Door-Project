@@ -27,6 +27,7 @@
         public DbSet<Projection> Projections { get; init; }
         public DbSet<Rating> Ratings { get; init; }
         public DbSet<Song> Songs { get; init; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -48,11 +48,11 @@ namespace GreenDoorProject
             services.Configure<ApiBehaviorOptions>(options 
                 => options.SuppressModelStateInvalidFilter = true);
 
-            services.AddTransient<IPatronService, PatronService>();
             services.AddTransient<IBookService, BookService>();
-            services.AddTransient<IStatisticsService, StatisticsService>();
-            services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<IMemberService, MemberService>();
+            services.AddTransient<IPatronService, PatronService>();
+            services.AddTransient<IRatingService, RatingService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -8,7 +8,7 @@
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <h2 class="heading-margin text-center">ViewBag.Title</h2>
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label asp-for="BookTitle"></label>
                 <input asp-for="BookTitle" class="form-control" placeholder="Под Игото, Lord Of The Rings" />
@@ -48,6 +48,12 @@
                 <label asp-for="Description"></label>
                 <textarea asp-for="Description" rows="4" class="form-control" placeholder="Add a description for the book"></textarea>
             </div>
+            <div class="form-group">
+                <label asp-for="Content"></label>
+                <input type="file" name="file">
+                <button type="submit" value="Upload" />
+            </div>
+            
             <input class="btn btn-primary" type="submit" value="Save" />
         </form>
     </div>

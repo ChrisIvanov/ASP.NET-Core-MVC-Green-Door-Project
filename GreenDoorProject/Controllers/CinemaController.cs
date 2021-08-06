@@ -63,12 +63,33 @@
             return RedirectToAction("Cinema", "All");
         }
 
-        private bool ExistingMovieCheck(AddMovieFormModel movieModel)
-            => this.data.Movies
-                .Any(m => m.MovieTitle == movieModel.MovieTitle);
+        [Authorize]
+        public IActionResult AddActor() 
+            => View(new AddActorViewModel());
 
-        private IEnumerable<Hall> GetHalls()
-            => this.data.Halls.ToList();
+        [HttpPost]
+        [Authorize]
+        public IActionResult AddActor(AddActorViewModel actorModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(actorModel);
+            }
+
+            var actor = new Actor
+            {
+                FirstName = actorModel.FirstName,
+                LastName = actorModel.LastName,
+                YearOfBirth = actorModel.YearOfBirth,
+                YearOfDeath = actorModel.YearOfDeath,
+                Details = actorModel.Details
+            };
+
+            this.data.Actors.Add(actor);
+            this.data.SaveChanges();
+
+            return RedirectToAction();
+        }
 
         [HttpGet]
         [Authorize]
@@ -134,9 +155,7 @@
                 numberOfSeats -= model.NumberOfTickets;
             }
 
-
             return RedirectToAction("Home", "Index");
-
         }
 
         private MovieViewModel GetMovie(string movieId)
@@ -171,5 +190,12 @@
                 Name = h.Name
             })
             .ToList();
+
+        private bool ExistingMovieCheck(AddMovieFormModel movieModel)
+            => this.data.Movies
+                .Any(m => m.MovieTitle == movieModel.MovieTitle);
+
+        private IEnumerable<Hall> GetHalls()
+            => this.data.Halls.ToList();
     }
 }

@@ -20,6 +20,16 @@
         [Display(Name = "Number of pages")]
         public int Pages { get; set; }
 
+        [Required]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
+        [Display(Name = "Author's First Name")]
+        public string AuthorFirstName { get; set; }
+
+        [Required]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
+        [Display(Name = "Author's Last Name")]
+        public string AuthorLastName { get; set; }
+
         [Url]
         [Required]
         [Display(Name = "Image URL")]
@@ -30,21 +40,11 @@
         public int GenreId { get; set; }
         public IEnumerable<BookGenreViewModel> Genres { get; set; }
 
-        [Required]
-        [Range(0.01, 500.0)]
-        public decimal Price { get; set; }
-
         [MaxLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
-        [Display(Name = "Author's First Name")]
-        public string AuthorFirstName { get; set; }
+        public byte Content { get; set; }
 
-        [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
-        [Display(Name = "Author's Last Name")]
-        public string AuthorLastName { get; set; }
     }
 }

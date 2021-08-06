@@ -1,6 +1,7 @@
 ﻿namespace GreenDoorProject.Controllers
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using GreenDoorProject.Data;
     using GreenDoorProject.Data.Models;
@@ -9,6 +10,7 @@
     using GreenDoorProject.Services.Books;
     using GreenDoorProject.Services.Patrons;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     using static Data.DataConstants.Book;
@@ -52,7 +54,7 @@
 
             var bookGenres = this.books.AllBookGenres();
 
-            var totalBooks = query.TotalBooks;
+            var totalBooks = queryResult.TotalBooks;
 
             query.Genres = bookGenres;
             query.Books = queryResult.Books;
@@ -73,8 +75,12 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddBookFormModel bookModel)
+        public IActionResult Add(AddBookFormModel bookModel, IFormFile file)
         {
+            var fileInMemory = new MemoryStream();
+            file.CopyTo(fileInMemory);
+            var fileInBytes = fileInMemory.ToArray();
+
             if (!this.data.Genres.Any(g => g.Id == bookModel.GenreId))
             {
                 this.ModelState.AddModelError(nameof(bookModel.GenreId), "Genre does not exist.");
@@ -102,23 +108,25 @@
                         "The book already exists.");
             }
 
-            var author = this.data
-                .Authors
-                .Where(a => a.FirstName == bookModel.AuthorFirstName &&
-                        a.LastName == bookModel.AuthorLastName)
-                .FirstOrDefault();
+            var authorId = books.GetAuthorId(
+                bookModel.AuthorFirstName, 
+                bookModel.AuthorLastName);
+
+            var author = books.GetAuthor(authorId);
 
             var book = new Book
             {
                 BookTitle = bookModel.BookTitle,
-                Author = author,
                 GenreId = bookModel.GenreId,
                 ImagePath = bookModel.ImagePath,
                 Pages = bookModel.Pages,
-                Description = bookModel.Description
+                Description = bookModel.Description,
+                Content = fileInBytes,
+                AuthorId = authorId
             };
 
             this.data.Books.Add(book);
+            author.AuthorBooks.Add(book);
             this.data.SaveChanges();
 
             return RedirectToAction("Index", "Home");
@@ -156,25 +164,16 @@
             this.data.Authors.Add(author);
             this.data.SaveChanges();
 
-            return RedirectToAction("Books", "Add");
+            return RedirectToAction("Add", "Books");
         }
-
-        private IEnumerable<BookGenreViewModel> GetBookGenres()
-            => this.data.Genres
-                .Select(b => new BookGenreViewModel
-                {
-                    Id = b.Id,
-                    Name = b.Name
-                })
-                .ToList();
 
         [HttpGet]
         [Authorize]
-        public IActionResult Details(string bookId)
+        public IActionResult Details(BookServiceModel book)
         {
-            var book = this.books.Details(bookId);
+            var bookDetails = this.books.Details(book.Id);
 
-            return View(book);
+            return View(bookDetails);
         }
 
         [HttpGet]
@@ -195,6 +194,14 @@
 
             return View(book);
         }
+        private IEnumerable<BookGenreViewModel> GetBookGenres()
+            => this.data.Genres
+                .Select(b => new BookGenreViewModel
+                {
+                    Id = b.Id,
+                    Name = b.Name
+                })
+                .ToList();
 
         [HttpGet]
         [Authorize]

@@ -30,7 +30,7 @@
         public Genre Genre { get; set; }
 
         [Required]
-        public string Content { get; set; }
+        public byte[] Content { get; set; }
 
         [Required]
         public string AuthorId { get; set; }

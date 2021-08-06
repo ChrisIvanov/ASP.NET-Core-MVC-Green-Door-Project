@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+
     using static DataConstants.Author;
     using static DataConstants.Info;
 
