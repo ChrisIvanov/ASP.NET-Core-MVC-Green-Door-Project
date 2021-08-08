@@ -18,10 +18,10 @@
         }
 
         public IActionResult Add()
-            => View(new AddMovieFormModel());
+            => View(new MovieFormModel());
 
         [HttpPost]
-        public IActionResult Add(AddMovieFormModel movieModel)
+        public IActionResult Add(MovieFormModel movieModel)
         {
             if (!ModelState.IsValid)
             {
@@ -57,7 +57,7 @@
             return RedirectToAction("Cinema", "All");
         }
 
-        private bool ExistingMovieCheck(AddMovieFormModel movieModel)
+        private bool ExistingMovieCheck(MovieFormModel movieModel)
             => this.data.Movies
                 .Any(m => m.MovieTitle == movieModel.MovieTitle);
 

@@ -8,7 +8,7 @@
     using static Data.DataConstants.Info;
     using static Data.DataConstants.Movie;
     
-    public class AddMovieFormModel
+    public class MovieFormModel
     {
         [Required]
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
@@ -17,6 +17,9 @@
         [Required]
         [StringLength(DirectorNameMaxLength, MinimumLength = DirectorNameMinLength)]
         public string Director { get; set; }
+
+        [Url]
+        public string ImagePath { get; set; }
 
         [Required]
         [Range(YearOfReleaseMinValue, YearOfReleaseMaxValue)]
@@ -32,7 +35,7 @@
         public Rating Rating { get; set; }
 
         [Required]
-        [Range(TicketPriceMaxValue, TicketPriceMinValue)]
+        [Range(TicketPriceMinValue, TicketPriceMaxValue)]
         public decimal TicketPrice { get; set; }
 
         public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();

@@ -3,7 +3,7 @@
     using GreenDoorProject.Models.Cinema;
     using System.Collections.Generic;
 
-    public interface IMoviesService
+    public interface IMovieService
     {
         MovieQueryServiceModel All(
             string searchTerm,

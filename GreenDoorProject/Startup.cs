@@ -4,6 +4,7 @@ namespace GreenDoorProject
     using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Services.Books;
     using GreenDoorProject.Services.Members;
+    using GreenDoorProject.Services.Movies;
     using GreenDoorProject.Services.Patrons;
     using GreenDoorProject.Services.Ratings;
     using GreenDoorProject.Services.Statistics;
@@ -49,6 +50,7 @@ namespace GreenDoorProject
                 => options.SuppressModelStateInvalidFilter = true);
 
             services.AddTransient<IBookService, BookService>();
+            services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IPatronService, PatronService>();
             services.AddTransient<IRatingService, RatingService>();

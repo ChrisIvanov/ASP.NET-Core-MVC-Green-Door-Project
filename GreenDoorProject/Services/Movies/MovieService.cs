@@ -5,7 +5,7 @@
     using GreenDoorProject.Data;
     using GreenDoorProject.Models.Cinema;
 
-    public class MovieService : IMoviesService
+    public class MovieService : IMovieService
     {
         private readonly GreenDoorProjectDbContext data;
 
@@ -33,7 +33,7 @@
             var totalBooks = movieQuery.Count();
 
             var movies = movieQuery
-                .Skip((currentPage - 1) * moviesPerPage)
+                .Skip(((currentPage < 1 ? 1 : currentPage) - 1) * moviesPerPage)
                 .Take(moviesPerPage)
                 .OrderBy(a => a.Id)
                 .Select(m => new MovieServiceModel

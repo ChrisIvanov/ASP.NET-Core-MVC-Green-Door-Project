@@ -9,25 +9,29 @@
     using Microsoft.AspNetCore.Authorization;
     using GreenDoorProject.Services.Movies;
     using GreenDoorProject.Data.Models;
+    using GreenDoorProject.Infrastructure;
 
     public class CinemaController : Controller
     {
         private readonly GreenDoorProjectDbContext data;
-        private readonly IMoviesService movies;
+        private readonly IMovieService movies;
 
-        public CinemaController(GreenDoorProjectDbContext data)
+        public CinemaController(
+            GreenDoorProjectDbContext data, 
+            IMovieService movies)
         {
             this.data = data;
+            this.movies = movies;
         }
 
         [HttpGet]
         [Authorize]
         public IActionResult Add()
-            => View(new AddMovieFormModel());
+            => View(new MovieFormModel());
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddMovieFormModel movieModel)
+        public IActionResult Add(MovieFormModel movieModel)
         {
             if (!ModelState.IsValid)
             {
@@ -130,6 +134,28 @@
             return View(movie);
         }
 
+        [Authorize]
+        public IActionResult Edit(string id)
+        {
+            var movie = this.data.Movies
+                .Where(m => m.Id == id)
+                .FirstOrDefault();
+
+            var movieForm = new MovieFormModel
+            {
+                MovieTitle = movie.MovieTitle,
+                Director = movie.Director,
+                ImagePath = movie.ImagePath,
+                RatingId = movie.RatingId,
+                YearOfRelease = movie.YearOfRelease,
+                TicketPrice = movie.TicketPrice,
+                MovieDuration = movie.MovieDuration.ToString(),
+                Description = movie.Description
+            };
+
+            return View(movieForm);
+        }
+
         [AllowAnonymous]
         public IActionResult Buy(string movieId)
         {
@@ -191,7 +217,7 @@
             })
             .ToList();
 
-        private bool ExistingMovieCheck(AddMovieFormModel movieModel)
+        private bool ExistingMovieCheck(MovieFormModel movieModel)
             => this.data.Movies
                 .Any(m => m.MovieTitle == movieModel.MovieTitle);
 
