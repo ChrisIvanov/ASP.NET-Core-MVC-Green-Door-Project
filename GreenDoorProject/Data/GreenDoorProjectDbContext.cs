@@ -89,28 +89,22 @@
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Book>()
-                .HasOne<Rating>()
-                .WithOne()
-                .HasForeignKey<Rating>(r => r.Id)
+                .HasOne<Rating>(b => b.Rating)
+                .WithOne(r => r.Book)
+                .HasForeignKey<Book>(r => r.RatingId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Movie>()
-                .HasOne<Rating>()
-                .WithOne()
-                .HasForeignKey<Rating>(r => r.Id)
+                .HasOne<Rating>(m => m.Rating)
+                .WithOne(r => r.Movie)
+                .HasForeignKey<Movie>(r => r.RatingId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<MusicAlbum>()
-                .HasOne<Rating>()
-                .WithOne()
-                .HasForeignKey<Rating>(r => r.Id)
+                .HasOne<Rating>(a => a.Rating)
+                .WithOne(r => r.MusicAlbum)
+                .HasForeignKey<MusicAlbum>(r => r.RatingId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<Admin>()
-            //   .HasMany(a => a.Authors)
-            //   .WithOne()
-            //   .HasForeignKey(a => a.AdminId)
-            //   .OnDelete(DeleteBehavior.Restrict);
 
             //builder.Entity<Admin>()
             //   .HasMany(a => a.Books)

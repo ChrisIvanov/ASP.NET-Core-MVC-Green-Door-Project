@@ -60,7 +60,7 @@
             this.data.Movies.Add(movie);
             this.data.SaveChanges();
 
-            return RedirectToAction("Cinema", "All");
+            return RedirectToAction("Add", "Cinema");
         }
 
         [Authorize]
@@ -88,7 +88,7 @@
             this.data.Actors.Add(actor);
             this.data.SaveChanges();
 
-            return RedirectToAction();
+            return RedirectToAction("AddActor", "Cinema");
         }
 
         [HttpGet]

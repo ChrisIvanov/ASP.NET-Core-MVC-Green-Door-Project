@@ -10,6 +10,7 @@
     using GreenDoorProject.Services.Books;
     using GreenDoorProject.Services.Books.Models;
     using GreenDoorProject.Services.Patrons;
+    using GreenDoorProject.Services.Ratings;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -20,14 +21,17 @@
     {
         private readonly IBookService books;
         private readonly IPatronService patrons;
+        private readonly IRatingService ratings;
         private readonly GreenDoorProjectDbContext data;
 
         public BooksController(
             GreenDoorProjectDbContext data,
-            IBookService books)
+            IBookService books,
+            IRatingService ratings)
         {
             this.data = data;
             this.books = books;
+            this.ratings = ratings;
         }
 
         [HttpGet]
@@ -110,7 +114,7 @@
             }
 
             var authorId = books.GetAuthorId(
-                bookModel.AuthorFirstName, 
+                bookModel.AuthorFirstName,
                 bookModel.AuthorLastName);
 
             var author = books.GetAuthor(authorId);
@@ -128,6 +132,7 @@
 
             this.data.Books.Add(book);
             author.AuthorBooks.Add(book);
+
             this.data.SaveChanges();
 
             return RedirectToAction("Index", "Home");
@@ -175,6 +180,47 @@
             var bookDetails = this.books.Details(book.Id);
 
             return View(bookDetails);
+        }
+
+        [HttpPut]
+        [Authorize]
+        public IActionResult Vote(BookServiceModel model)
+        {
+            var newRating = ratings.OverallRating(model.Rating.CurrentRating, model.Rating.CurrentVotesCount, model.Rating.UserRating);
+
+            var ratingExists = this.data.Ratings
+                .Any(b => b.BookId == model.Id);
+
+            if (!ratingExists)
+            {
+                var rating = new Rating
+                {
+                    BookId = model.Id,
+                    CurrentRating = newRating.CurrentRating,
+                    CurrentVotesCount = newRating.CurrentVotesCount,
+                    UserRating = newRating.UserRating,
+                    UserHasVoted = true
+                };
+
+                this.data.SaveChanges();
+
+            }
+            else
+            {
+                var changeRatingValues = this.data.Ratings
+                    .Where(b => b.BookId == model.Id)
+                    .Select(b => new RatingServiceModel
+                    {
+                        CurrentRating = b.CurrentRating,
+                        CurrentVotesCount = b.CurrentVotesCount,
+                        UserRating = b.UserRating
+                    })
+                    .FirstOrDefault();
+
+                this.data.SaveChanges();
+            }
+
+            return RedirectToAction("Details", "Books");
         }
 
         [HttpGet]

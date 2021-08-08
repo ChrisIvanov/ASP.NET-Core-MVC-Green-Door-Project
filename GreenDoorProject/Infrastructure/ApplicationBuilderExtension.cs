@@ -14,8 +14,6 @@
 
     public static class ApplicationBuilderExtension
     {
-        private static IServiceProvider services;
-
         public static IApplicationBuilder PrepareDatabase(
             this IApplicationBuilder app)
         {
@@ -31,7 +29,7 @@
 
             SeedMemberships(services);
 
-            SeedAdministrator(services);
+            //SeedAdministrator(services);
 
             return app;
         }
