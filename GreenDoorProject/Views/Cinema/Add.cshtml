@@ -1,0 +1,48 @@
+﻿@model AddMovieFormModel
+
+@{
+    ViewBag.Title = "Add Movie";
+}
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">ViewBag.Title</h2>
+
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="MovieTitle"></label>
+                <input asp-for="MovieTitle" class="form-control" placeholder="Pulp Fiction, The Matrix, etc..." />
+                <span asp-validation-for="MovieTitle" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Director"></label>
+                <input asp-for="Director" class="form-control" placeholder="George Lucas, M. Night Shyamalan, etc..." />
+                <span asp-validation-for="Director" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="YearOfRelease"></label>
+                <input asp-for="YearOfRelease" class="form-control" placeholder="2020" />
+                <span asp-validation-for="YearOfRelease" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TicketPrice"></label>
+                <input asp-for="TicketPrice" class="form-control" placeholder="25.00 BGN" />
+                <span asp-validation-for="TicketPrice" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MovieDuration"></label>
+                <input asp-for="MovieDuration" class="form-control" placeholder="hh:MM" />
+                <span asp-validation-for="MovieDuration" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" rows="4" class="form-control" placeholder="Add a description..."></textarea>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Save" />
+        </form>
+    </div>
+</div>
+
+@*@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}*@

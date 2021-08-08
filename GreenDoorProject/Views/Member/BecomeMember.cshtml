@@ -1,0 +1,47 @@
+﻿@using GreenDoorProject.Models.Member
+@using GreenDoorProject.Services.Members
+@using Microsoft.AspNetCore.Identity
+
+@inject MembershipTypesViewModel MembershipType
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IMemberService Member
+
+@model AddMemberFormModel
+@{
+    var userId = User.GetId();
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        if (Member.IsMember(userId))
+        {
+            <p class="text-center">You are already a member!</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Return to Home page</a>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+                    <h2 class="heading-margin text-center">Choose your desired membership type:</h2>
+                    <form method="post">
+                        <div class="form-group">
+                            <label asp-for="MembershipType"></label>
+                            <select asp-for="MembershipType" class="form-control">
+                                @foreach (var type in Model.MembershipTypes)
+                                {
+                                    <option value="@type.Id">@type.Name - @type.Price</option>
+                                }
+                            </select>
+                            <span asp-validation-for="MembershipType" class="small text-danger"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<BookServiceModel>
+
+<div class="jumbotron">
+    <div class="row">
+        @foreach (var book in Model)
+        {
+            <div class="col-md-3">
+                <div class="card border border-info">
+                    <img class="card-img-top" src="@book.ImagePath" alt="@book.BookTitle by @book.AuthorName" width="250" height="300" />
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-center">@book.BookTitle</h5>
+                        <h5 class="card-body text-center">@book.AuthorName</h5>
+                        <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
