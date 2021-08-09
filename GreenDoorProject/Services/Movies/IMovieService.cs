@@ -13,6 +13,6 @@
 
         public MovieDetailsServiceModel Details(string id);
 
-        public IEnumerable<string> SelectMovieActors(string movieId);
+        public IEnumerable<string> GetMovieActors(string movieId);
     }
 }

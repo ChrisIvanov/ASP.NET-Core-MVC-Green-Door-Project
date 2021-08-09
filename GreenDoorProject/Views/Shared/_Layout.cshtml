@@ -16,13 +16,40 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                @*<div class="row">
+                    <div class="col-sm-6 col-lg-4">
+                        <ul class="nav nav-pills nav-stacked">
+                            
+                        </ul>
+                    </div>
+                </div>*@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cinema" asp-action="Add">Add Movie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cinema" asp-action="All">All Movies</a>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">Menu</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Cinema" asp-action="Add">Add Movie</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Cinema" asp-action="All">All Movies</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Cinema" asp-action="AddActor">Add Actor</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Cinema" asp-action="AddActorToMovie">Add Actor to Movie</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Books" asp-action="Add">Add Book</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Books" asp-action="All">All Books</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Books" asp-action="AddAuthor">Add Author</a>
+                                </li>
+                            </ul>
                         </li>
                         @{if (User.Identity.IsAuthenticated)
                             {

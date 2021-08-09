@@ -69,6 +69,26 @@
 
         public MovieDetailsServiceModel Details(string id)
         {
+            var getActorsIds = GetMovieActors(id);
+
+            var actors = this.data.Actors.AsQueryable();
+
+            var actorsList = new List<ActorViewModel>();
+
+            foreach (var actorId in getActorsIds)
+            {
+                var actor = actors.Where(a => a.Id == actorId)
+                    .Select(a => new ActorViewModel
+                    {
+                        
+                    })
+                    .FirstOrDefault();
+
+                actorsList.Add(actor);
+            }
+
+
+
             var movieDetails = this.data.Movies
                   .Where(m => m.Id == id)
                   .Select(m => new MovieDetailsServiceModel
@@ -82,18 +102,18 @@
                       TicketPrice = m.TicketPrice,
                       YearOfRelease = m.YearOfRelease,
                       MovieDuration = m.MovieDuration.ToString(),
-                      Actors = SelectMovieActors(m.Id)
+                      Actors = getActors
                   })
                 .FirstOrDefault();
 
             return movieDetails;
         }
 
-        public IEnumerable<string> SelectMovieActors(string movieId)
+        public IEnumerable<string> GetMovieActors(string movieId)
             => this.data
                 .ActorMovies
                 .Where(a => a.MovieId == movieId)
-                .Select(a => a.Actor.FirstName + " " + a.Actor.LastName)
+                .Select(a => a.ActorId)
                 .ToList();
     }
 }

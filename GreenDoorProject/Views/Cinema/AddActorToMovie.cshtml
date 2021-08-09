@@ -1,0 +1,40 @@
+﻿@model AddActorToMovieFormModel
+@{
+    ViewBag.Title = "Add Actor To Movie";
+}
+
+<div class="container">
+    <div class="jumbotron">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <h2 class="heading-margin text-center">ViewBag.Title</h2>
+
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="ActorId"></label>
+                    <select asp-for="ActorId" class="form-control">
+                        @foreach (var actor in Model.Actors)
+                        {
+                            var actorName = actor.FirstName + " " + actor.LastName;
+
+                            <option value="@actor.Id">@actorName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MovieId"></label>
+                    <select asp-for="MovieId" class="form-control">
+                        @foreach (var movie in Model.Movies)
+                        {
+                            <option value="@movie.Id">@movie.MovieTitle</option>
+                        }
+                    </select>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

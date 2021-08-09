@@ -6,20 +6,24 @@ namespace GreenDoorProject.Models.Cinema
     using static Data.DataConstants.Actor;
     using static Data.DataConstants.Info;
 
-    public class AddActorViewModel
+    public class AddActorFormModel
     {
         [Required]
+        [Display(Name = "First Name")]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Last Name")]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string LastName { get; set; }
 
         [Required]
+        [Display(Name = "Year Of Birth")]
         [Range(YearOfBirthMinValue, YearOfBirthMaxValue)]
         public short YearOfBirth { get; set; }
 
+        [Display(Name = "Year Of Death")]
         public short? YearOfDeath { get; set; }
 
         [StringLength(DefaultClassInfoMaxLength)]

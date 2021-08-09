@@ -4,36 +4,38 @@
     ViewData["Title"] = "Add Author";
 }
 
-<div class="row">
-    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <h2 class="heading-margin text-center">Add Author</h2>
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="FirstName"></label>
-                <input asp-for="FirstName" class="form-control" placeholder="Add First name..." />
-                <span asp-validation-for="FirstName" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName"></label>
-                <input asp-for="LastName" class="form-control" placeholder="Add Last name..." />
-                <span asp-validation-for="LastName" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="YearOfBirth"></label>
-                <input asp-for="YearOfBirth" class="form-control" placeholder="e.g. 1955" />
-                <span asp-validation-for="YearOfBirth" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="YearOfDeath"></label>
-                <input asp-for="YearOfDeath" class="form-control" placeholder="Don't fill if the author is still alive." />
-                <span asp-validation-for="YearOfDeath" class="small text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Details"></label>
-                <textarea asp-for="Details" rows="4" class="form-control" placeholder="Add details about the author..."></textarea>
-            </div>
-            <input class="btn btn-primary" type="submit" value="Save" />
-        </form>
+<div class="container">
+    <div class="jumbotron">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <h2 class="heading-margin text-center">Add Author</h2>
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Add First name..." />
+                    <span asp-validation-for="FirstName" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" placeholder="Add Last name..." />
+                    <span asp-validation-for="LastName" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="YearOfBirth"></label>
+                    <input asp-for="YearOfBirth" class="form-control" placeholder="e.g. 1955" />
+                    <span asp-validation-for="YearOfBirth" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="YearOfDeath"></label>
+                    <input asp-for="YearOfDeath" class="form-control" placeholder="Don't fill if the author is still alive." />
+                    <span asp-validation-for="YearOfDeath" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Details"></label>
+                    <textarea asp-for="Details" rows="4" class="form-control" placeholder="Add details about the author..."></textarea>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Save" />
+            </form>
+        </div>
     </div>
 </div>
 

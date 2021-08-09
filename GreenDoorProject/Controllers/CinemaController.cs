@@ -17,7 +17,7 @@
         private readonly IMovieService movies;
 
         public CinemaController(
-            GreenDoorProjectDbContext data, 
+            GreenDoorProjectDbContext data,
             IMovieService movies)
         {
             this.data = data;
@@ -68,12 +68,12 @@
         }
 
         [Authorize]
-        public IActionResult AddActor() 
-            => View(new AddActorViewModel());
+        public IActionResult AddActor()
+            => View(new AddActorFormModel());
 
         [HttpPost]
         [Authorize]
-        public IActionResult AddActor(AddActorViewModel actorModel)
+        public IActionResult AddActor(AddActorFormModel actorModel)
         {
             if (!ModelState.IsValid)
             {
@@ -95,7 +95,50 @@
             return RedirectToAction("AddActor", "Cinema");
         }
 
-        [HttpGet]
+        [Authorize]
+        public IActionResult AddActorToMovie()
+        {
+            var actors = this.data.Actors
+                .Select(a => new ActorViewModel
+                {
+                    Id = a.Id,
+                    FirstName = a.FirstName,
+                    LastName = a.LastName
+                })
+                .ToList();
+
+            var movies = this.data.Movies
+                .Select(m => new MovieViewModel
+                {
+                    Id = m.Id,
+                    MovieTitle = m.MovieTitle
+                })
+                .ToList();
+
+            return View(new AddActorToMovieFormModel
+            {
+                Actors = actors,
+                Movies = movies
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult AddActorToMovie(AddActorToMovieFormModel model)
+        {
+            var actorMovie = new ActorMovie
+            {
+                ActorId = model.ActorId,
+                MovieId = model.MovieId
+            };
+
+            this.data.ActorMovies.Add(actorMovie);
+            this.data.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+            [HttpGet]
         [Authorize]
         public IActionResult All([FromQuery] AllMoviesQueryModel query)
         {
