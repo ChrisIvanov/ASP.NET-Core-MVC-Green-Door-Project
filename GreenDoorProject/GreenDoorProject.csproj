@@ -32,7 +32,6 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Models\Music\" />
     <Folder Include="Models\Rating\" />
-    <Folder Include="Views\Games\" />
     <Folder Include="Views\Music\" />
   </ItemGroup>
 

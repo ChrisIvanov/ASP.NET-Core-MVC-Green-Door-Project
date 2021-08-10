@@ -73,21 +73,8 @@ else
                 </div>
             </div>
 
-            <div class="row">
-                @foreach (var movie in Model.Movies)
-                {
-                    <div class="col-md-3">
-                        <div class="card border border-info">
-                            <img class="card-img-top" src="@movie.ImagePath" />
-                            <div class="card-body text-center">
-                                <h5 class="card-title text-center">@movie.MovieTitle</h5>
-                                <h5 class="card-body text-center">@movie.Director</h5>
-                                <a asp-controller="Cinema" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary stretched-link">Details</a>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
+            <partial name="_MoviesPartial" model="@Model.Movies" />
+
         </div>
     </div>
 }

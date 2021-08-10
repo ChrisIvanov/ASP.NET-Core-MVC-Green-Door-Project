@@ -13,6 +13,15 @@
 
         public MovieDetailsServiceModel Details(string id);
 
-        public IEnumerable<string> GetMovieActors(string movieId);
+        public bool Edit(string id,
+                string movieTitle,
+                string director,
+                string imagePath,
+                int yearOfRelease,
+                decimal ticketPrice,
+                string movieDuration,
+                string description);
+
+        public IEnumerable<ActorViewModel> GetMovieActors(string movieId);
     }
 }

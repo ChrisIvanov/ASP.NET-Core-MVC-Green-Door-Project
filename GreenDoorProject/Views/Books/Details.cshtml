@@ -52,6 +52,8 @@
                                     {
                                         <span class="fa fa-star @(i <= rating ? "checked" : @String.Empty)"></span>
                                     }
+
+                                    <p>@Model.Rating.CurrentRating from @Model.Rating.CurrentVotesCount</p>
                                 }
                             </h5>
                         </div>
@@ -66,10 +68,8 @@
                                     <option value="@i">@i</option>
                                 }
                             </select>
-                            <span asp-validation-for="Rating.UserRating" class="small text-danger"></span>
-                            <input type="submit" class="btn btn-primary" asp-controller="Books" asp-action="Vote" asp-route-model="@Model.Id" value="Vote" />
+                            <input onclick="@Rating.RateBook(Model)" class="btn btn-primary" type="submit" value="Vote"/>
                         </form>
-
                     </div>
                 </div>
                 <div class="row">
@@ -143,6 +143,7 @@
             </div>
         </div>
     </div>
+
     <!--UseTokenModal-->
     <div class="modal fade" id="UseTokenModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

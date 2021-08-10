@@ -8,5 +8,7 @@
             double currentRating,
             int votesCount,
             int rating);
+
+        RatingServiceModel RateBook(BookServiceModel model);
     }
 }

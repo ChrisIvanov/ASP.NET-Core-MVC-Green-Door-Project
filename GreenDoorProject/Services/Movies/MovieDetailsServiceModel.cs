@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using GreenDoorProject.Data.Models;
+    using GreenDoorProject.Models.Cinema;
 
     public class MovieDetailsServiceModel
     {
@@ -24,7 +25,7 @@
 
         public decimal TicketPrice { get; set; }
 
-        public IEnumerable<string> Actors { get; set; }
+        public IEnumerable<ActorViewModel> Actors { get; set; }
 
     }
 }

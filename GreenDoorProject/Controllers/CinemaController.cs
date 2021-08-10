@@ -69,11 +69,11 @@
 
         [Authorize]
         public IActionResult AddActor()
-            => View(new AddActorFormModel());
+            => View(new ActorFormModel());
 
         [HttpPost]
         [Authorize]
-        public IActionResult AddActor(AddActorFormModel actorModel)
+        public IActionResult AddActor(ActorFormModel actorModel)
         {
             if (!ModelState.IsValid)
             {
@@ -138,7 +138,7 @@
             return RedirectToAction("Index", "Home");
         }
 
-            [HttpGet]
+        [HttpGet]
         [Authorize]
         public IActionResult All([FromQuery] AllMoviesQueryModel query)
         {
@@ -178,29 +178,56 @@
         }
 
         [Authorize]
-        public IActionResult Edit(string id)
+        public IActionResult Edit(MovieFormModel model)
+        {
+            //if (!User.IsAdmin())
+            //{
+            //    return RedirectToAction("All", "Cinema");
+            //}
+
+            var movie = this.movies.Details("da1");
+
+            return View(new MovieFormModel
+            {
+                MovieTitle = movie.MovieTitle,
+                Director = movie.Director,
+                ImagePath = movie.ImagePath,
+                YearOfRelease = movie.YearOfRelease,
+                MovieDuration = movie.MovieDuration,
+                TicketPrice = movie.TicketPrice,
+                Description = movie.Description,
+            });
+        }
+
+
+        [HttpPut]
+        [Authorize]
+        public IActionResult Edit(MovieFormModel model, string id)
         {
             var movie = this.data.Movies
                 .Where(m => m.Id == id)
                 .FirstOrDefault();
 
-            var movieForm = new MovieFormModel
-            {
-                MovieTitle = movie.MovieTitle,
-                Director = movie.Director,
-                ImagePath = movie.ImagePath,
-                RatingId = movie.RatingId,
-                YearOfRelease = movie.YearOfRelease,
-                TicketPrice = movie.TicketPrice,
-                MovieDuration = movie.MovieDuration.ToString(),
-                Description = movie.Description
-            };
+            var edited = this.movies.Edit(
+                id,
+                model.MovieTitle,
+                model.Director,
+                model.ImagePath,
+                model.YearOfRelease,
+                model.TicketPrice,
+                model.MovieDuration,
+                model.Description);
 
-            return View(movieForm);
+            if (!edited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("All", "Cinema");
         }
 
         [AllowAnonymous]
-        public IActionResult Buy(string movieId)
+        public IActionResult PayPerView(string movieId)
         {
             var movie = GetMovie(movieId);
 
@@ -211,7 +238,7 @@
         }
 
         [HttpPut]
-        public IActionResult Buy(BuyTicketsFormModel model)
+        public IActionResult PayPerView(BuyTicketsFormModel model)
         {
             var movie = GetMovie(model.Id);
 
@@ -224,7 +251,7 @@
                 numberOfSeats -= model.NumberOfTickets;
             }
 
-            return RedirectToAction("Home", "Index");
+            return RedirectToAction("Index", "Home");
         }
 
         private MovieViewModel GetMovie(string movieId)
@@ -260,11 +287,12 @@
             })
             .ToList();
 
+        private IEnumerable<Hall> GetHalls()
+            => this.data.Halls.ToList();
+
         private bool ExistingMovieCheck(MovieFormModel movieModel)
             => this.data.Movies
                 .Any(m => m.MovieTitle == movieModel.MovieTitle);
 
-        private IEnumerable<Hall> GetHalls()
-            => this.data.Halls.ToList();
     }
 }

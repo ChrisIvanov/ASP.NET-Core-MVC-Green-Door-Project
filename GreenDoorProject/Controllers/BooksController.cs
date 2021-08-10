@@ -186,39 +186,7 @@
         [Authorize]
         public IActionResult Vote(BookServiceModel model)
         {
-            var newRating = ratings.OverallRating(model.Rating.CurrentRating, model.Rating.CurrentVotesCount, model.Rating.UserRating);
-
-            var ratingExists = this.data.Ratings
-                .Any(b => b.BookId == model.Id);
-
-            if (!ratingExists)
-            {
-                var rating = new Rating
-                {
-                    BookId = model.Id,
-                    CurrentRating = newRating.CurrentRating,
-                    CurrentVotesCount = newRating.CurrentVotesCount,
-                    UserRating = newRating.UserRating,
-                    UserHasVoted = true
-                };
-
-                this.data.SaveChanges();
-
-            }
-            else
-            {
-                var changeRatingValues = this.data.Ratings
-                    .Where(b => b.BookId == model.Id)
-                    .Select(b => new RatingServiceModel
-                    {
-                        CurrentRating = b.CurrentRating,
-                        CurrentVotesCount = b.CurrentVotesCount,
-                        UserRating = b.UserRating
-                    })
-                    .FirstOrDefault();
-
-                this.data.SaveChanges();
-            }
+            
 
             return RedirectToAction("Details", "Books");
         }

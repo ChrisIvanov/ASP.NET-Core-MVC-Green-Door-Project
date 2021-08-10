@@ -6,7 +6,7 @@ namespace GreenDoorProject.Models.Cinema
     using static Data.DataConstants.Actor;
     using static Data.DataConstants.Info;
 
-    public class AddActorFormModel
+    public class ActorFormModel
     {
         [Required]
         [Display(Name = "First Name")]

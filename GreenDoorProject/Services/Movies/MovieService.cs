@@ -1,5 +1,6 @@
 ﻿namespace GreenDoorProject.Services.Movies
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using GreenDoorProject.Data;
@@ -69,25 +70,7 @@
 
         public MovieDetailsServiceModel Details(string id)
         {
-            var getActorsIds = GetMovieActors(id);
-
-            var actors = this.data.Actors.AsQueryable();
-
-            var actorsList = new List<ActorViewModel>();
-
-            foreach (var actorId in getActorsIds)
-            {
-                var actor = actors.Where(a => a.Id == actorId)
-                    .Select(a => new ActorViewModel
-                    {
-                        
-                    })
-                    .FirstOrDefault();
-
-                actorsList.Add(actor);
-            }
-
-
+            var getActors = GetMovieActors(id);
 
             var movieDetails = this.data.Movies
                   .Where(m => m.Id == id)
@@ -102,18 +85,58 @@
                       TicketPrice = m.TicketPrice,
                       YearOfRelease = m.YearOfRelease,
                       MovieDuration = m.MovieDuration.ToString(),
-                      Actors = getActors
+                      Actors = getActors.ToList()
                   })
                 .FirstOrDefault();
 
             return movieDetails;
         }
 
-        public IEnumerable<string> GetMovieActors(string movieId)
-            => this.data
-                .ActorMovies
+        public bool Edit(
+            string id,
+            string movieTitle,
+            string director,
+            string imagePath,
+            int yearOfRelease,
+            decimal ticketPrice,
+            string movieDuration,
+            string description)
+        {
+            var movieData = this.data.Movies.Find(id);
+
+            if (movieData == null)
+            {
+                return false;
+            }
+
+            var movieDurationHours = int.Parse(movieDuration.Substring(0, movieDuration.IndexOf(":")));
+            var movieDurationMinutes = int.Parse(movieDuration.Substring(movieDuration.IndexOf(":") + 1, 2));
+
+            movieData.MovieTitle = movieTitle;
+            movieData.Director = director;
+            movieData.ImagePath = imagePath;
+            movieData.YearOfRelease = yearOfRelease;
+            movieData.TicketPrice = ticketPrice;
+            movieData.MovieDuration = new TimeSpan(movieDurationHours, movieDurationMinutes,0);
+            movieData.Description = description;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public IEnumerable<ActorViewModel> GetMovieActors(string movieId)
+            => this.data.ActorMovies
                 .Where(a => a.MovieId == movieId)
-                .Select(a => a.ActorId)
+                .Select(a => new ActorViewModel
+                {
+                    Id = a.ActorId,
+                    FirstName = a.Actor.FirstName,
+                    LastName = a.Actor.LastName,
+                    YearOfBirth = a.Actor.YearOfBirth,
+                    YearOfDeath = a.Actor.YearOfDeath,
+                    Details = a.Actor.Details
+                })
                 .ToList();
     }
 }
