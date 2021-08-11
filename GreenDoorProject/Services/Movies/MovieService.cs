@@ -39,9 +39,15 @@
                 .OrderBy(a => a.Id)
                 .Select(m => new MovieServiceModel
                 {
+                    Id = m.Id,
                     MovieTitle = m.MovieTitle,
                     Director = m.Director,
-                    ImagePath = m.ImagePath
+                    ImagePath = m.ImagePath,
+                    MovieDuration = m.MovieDuration,
+                    YearOfRelease = m.YearOfRelease,
+                    TicketPrice = m.TicketPrice,
+                    Rating = m.Rating,
+                    Description = m.Description
                 })
                 .ToList();
 
@@ -51,10 +57,8 @@
                 MovieSorting.MovieTitleDescending => movieQuery.OrderByDescending(m => m.MovieTitle),
                 MovieSorting.DirectorNameAscending => movieQuery.OrderBy(m => m.Director),
                 MovieSorting.DirectorNameDescending => movieQuery.OrderByDescending(m => m.Director),
-                MovieSorting.RatingAscending => movieQuery.OrderByDescending(m => m.Rating.CurrentRating),
+                MovieSorting.RatingAscending => movieQuery.OrderBy(m => m.Rating.CurrentRating),
                 MovieSorting.RatingDescending => movieQuery.OrderByDescending(m => m.Rating.CurrentRating),
-                MovieSorting.ProjectionDateAscending => movieQuery.OrderBy(m => m.Projections.Select(m => m.TimeOfProjection)),
-                MovieSorting.ProjectionDateDescending => movieQuery.OrderByDescending(m => m.Projections.Select(m => m.TimeOfProjection)),
                 _ => movieQuery.OrderByDescending(b => b.Id)
             };
 
@@ -68,23 +72,23 @@
             };
         }
 
-        public MovieDetailsServiceModel Details(string id)
+        public MovieServiceModel Details(string id)
         {
             var getActors = GetMovieActors(id);
 
             var movieDetails = this.data.Movies
                   .Where(m => m.Id == id)
-                  .Select(m => new MovieDetailsServiceModel
+                  .Select(m => new MovieServiceModel
                   {
                       Id = m.Id,
                       MovieTitle = m.MovieTitle,
                       Director = m.Director,
-                      ImagePath = m.ImagePath,
-                      Rating = m.Rating.CurrentRating,
+                      ImagePath = m.ImagePath == null ? string.Empty : m.ImagePath,
+                      Rating = m.Rating,
                       Description = m.Description,
                       TicketPrice = m.TicketPrice,
                       YearOfRelease = m.YearOfRelease,
-                      MovieDuration = m.MovieDuration.ToString(),
+                      MovieDuration = m.MovieDuration,
                       Actors = getActors.ToList()
                   })
                 .FirstOrDefault();

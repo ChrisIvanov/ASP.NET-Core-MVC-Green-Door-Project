@@ -1,7 +1,8 @@
 ﻿namespace GreenDoorProject.Services.Ratings
 {
     using GreenDoorProject.Services.Books.Models;
-    
+    using GreenDoorProject.Services.Movies;
+
     public interface IRatingService
     {
         RatingServiceModel OverallRating(
@@ -10,5 +11,7 @@
             int rating);
 
         RatingServiceModel RateBook(BookServiceModel model);
+
+        RatingServiceModel RateMovie(MovieServiceModel model);
     }
 }

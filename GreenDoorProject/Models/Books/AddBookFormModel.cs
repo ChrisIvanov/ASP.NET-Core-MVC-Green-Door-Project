@@ -35,6 +35,10 @@
         [Display(Name = "Image URL")]
         public string ImagePath { get; set; }
 
+        public string RatingId { get; set; }
+        [Range(0, 5)]
+        public Rating Rating { get; set; }
+
         [Required]
         [Display(Name = "Genre")]
         public int GenreId { get; set; }

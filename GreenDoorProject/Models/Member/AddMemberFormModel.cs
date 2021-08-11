@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using static GreenDoorProject.Data.DataConstants;
-
-namespace GreenDoorProject.Models.Member
+﻿namespace GreenDoorProject.Models.Member
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class AddMemberFormModel
     {
         public string MembershipType { get; set; }

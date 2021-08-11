@@ -1,20 +1,19 @@
 ﻿@model IEnumerable<MovieServiceModel>
 
-<div class="row">
-    @foreach (var movie in Model)
-    {
-        <div class="col-md-4">
-            <div class="card border border-info">
-                <img class="card-img-top" src="@movie.ImagePath" />
-                <div class="card-body text-center">
-                    <h5 class="card-title text-center">@movie.MovieTitle</h5>
-                    <h5 class="card-body text-center">@movie.Director</h5>
-                    <a asp-controller="Cinema" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary">Details</a>
-                    <a asp-controller="Cinema" asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-danger">Edit</a>
-                    <a asp-controller="Cinema" asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-warning">Delete</a>
+
+    <div class="row">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-4">
+                <div class="card border border-info">
+                    <img class="card-img-top" src="@movie.ImagePath" alt="@movie.MovieTitle poster" width="400" height="400" />
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-center">@movie.MovieTitle (@movie.YearOfRelease)</h5>
+                        <a asp-controller="Cinema" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary">Details</a>
+                        <a asp-controller="Cinema" asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-danger">Edit</a>
+                        <a asp-controller="Cinema" asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-warning">Delete</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
-
+        }
+    </div>

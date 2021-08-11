@@ -3,8 +3,6 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using static DataConstants.Projection;
-
     public class Projection
     {
         public string Id { get; init; } = Guid.NewGuid().ToString();

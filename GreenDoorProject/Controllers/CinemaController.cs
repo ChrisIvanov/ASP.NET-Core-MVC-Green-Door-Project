@@ -27,7 +27,10 @@
         [HttpGet]
         [Authorize]
         public IActionResult Add()
-            => View(new MovieFormModel());
+            => View(new MovieFormModel
+            {
+                Rating = new Rating()
+            });
 
         [HttpPost]
         [Authorize]
@@ -56,6 +59,7 @@
                 MovieTitle = movieModel.MovieTitle,
                 Director = movieModel.Director,
                 YearOfRelease = movieModel.YearOfRelease,
+                ImagePath = movieModel.ImagePath,
                 TicketPrice = movieModel.TicketPrice,
                 MovieDuration = new TimeSpan(movieDuration[0], movieDuration[1], 0),
                 Description = movieModel.Description
@@ -64,7 +68,7 @@
             this.data.Movies.Add(movie);
             this.data.SaveChanges();
 
-            return RedirectToAction("Add", "Cinema");
+            return RedirectToAction("All", "Cinema");
         }
 
         [Authorize]
@@ -170,22 +174,40 @@
 
         [HttpGet]
         [Authorize]
-        public IActionResult Details(string movieId)
+        public IActionResult Details([FromRoute]string id)
         {
-            var movie = this.movies.Details(movieId);
+            var movie = this.movies.Details(id);
 
             return View(movie);
         }
 
         [Authorize]
-        public IActionResult Edit(MovieFormModel model)
+        public IActionResult Delete([FromRoute] string id)
+        {
+            return View(new MovieServiceModel());
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public IActionResult Delete(MovieServiceModel model)
+        {
+            var movie = GetMovie(model.Id);
+
+            this.data.Remove(movie);
+            this.data.SaveChanges();
+
+            return RedirectToAction("All", "Cinema");
+        }
+
+        [Authorize]
+        public IActionResult Edit(string id)
         {
             //if (!User.IsAdmin())
             //{
             //    return RedirectToAction("All", "Cinema");
             //}
 
-            var movie = this.movies.Details("da1");
+            var movie = this.movies.Details(id);
 
             return View(new MovieFormModel
             {
@@ -193,14 +215,14 @@
                 Director = movie.Director,
                 ImagePath = movie.ImagePath,
                 YearOfRelease = movie.YearOfRelease,
-                MovieDuration = movie.MovieDuration,
+                MovieDuration = movie.MovieDuration.ToString(),
                 TicketPrice = movie.TicketPrice,
-                Description = movie.Description,
+                Description = movie.Description
             });
         }
 
 
-        [HttpPut]
+        [HttpPost]
         [Authorize]
         public IActionResult Edit(MovieFormModel model, string id)
         {

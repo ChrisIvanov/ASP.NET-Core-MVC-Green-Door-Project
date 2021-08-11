@@ -7,8 +7,6 @@
         DirectorNameAscending = 2,
         DirectorNameDescending = 3,
         RatingAscending = 4,
-        RatingDescending = 5,
-        ProjectionDateAscending = 6,
-        ProjectionDateDescending = 7
+        RatingDescending = 5
     }
 }

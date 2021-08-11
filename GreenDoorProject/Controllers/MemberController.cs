@@ -2,9 +2,11 @@
 {
     using GreenDoorProject.Data;
     using GreenDoorProject.Data.Models;
+    using GreenDoorProject.Models.Member;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     public class MemberController : Controller
@@ -15,13 +17,12 @@
             => this.data = data;
 
         [Authorize]
-        public IActionResult BecomeMember(string userId)
+        public IActionResult BecomeMember()
         {
-            var user = this.data.Users
-                .Where(u => u.Id == userId)
-                .FirstOrDefault();
-
-            return View(user);
+            return View(new AddMemberFormModel
+            {
+                MembershipTypes = this.GetMembershipTypes()
+            });
         }
 
         [HttpPost]
@@ -72,5 +73,15 @@
 
             return View();
         }
+
+        private IEnumerable<MembershipTypesViewModel> GetMembershipTypes()
+            => this.data.Memberships
+                .Select(m => new MembershipTypesViewModel
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    Price = m.Price
+                })
+                .ToList();
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace GreenDoorProject.Data.Models
+{
+    using Microsoft.AspNetCore.Identity;
+    using System;
+    using System.Collections.Generic;
 
-namespace GreenDoorProject.Data.Models
-{    
     public class Rating
     {
         public string Id { get; init; } = Guid.NewGuid().ToString();
@@ -13,8 +14,6 @@ namespace GreenDoorProject.Data.Models
 
         public int UserRating { get; set; }
 
-        public bool UserHasVoted { get; set; }
-
         public string BookId { get; set; }
         public Book Book { get; set; }
 
@@ -23,5 +22,7 @@ namespace GreenDoorProject.Data.Models
 
         public string MusicAlbumId { get; set; }
         public MusicAlbum MusicAlbum { get; set; }
+
+        public IEnumerable<IdentityUser> Votes { get; set; } = new List<IdentityUser>();
     }
 }

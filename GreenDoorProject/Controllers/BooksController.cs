@@ -74,7 +74,8 @@
         {
             return View(new AddBookFormModel
             {
-                Genres = this.GetBookGenres()
+                Genres = this.GetBookGenres(),
+                Rating = new Rating()
             });
         }
 

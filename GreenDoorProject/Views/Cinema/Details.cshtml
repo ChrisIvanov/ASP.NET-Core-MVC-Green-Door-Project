@@ -1,66 +1,122 @@
-﻿@using GreenDoorProject.Services.Members
-@using GreenDoorProject.Services.Patrons
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject IMemberService Members
 @inject IPatronService Patron
+@inject IRatingService Rating  
 
-@model MovieDetailsServiceModel
+@model MovieServiceModel
 
-@{
-    var userId = User.GetId();
+<html>
+<head>
+    <style type="text/css">
+        .checked {
+            color: orange;
+        }
+    </style>
+</head>
+<body>
+    @{
+        var hasRating = Model.Rating != null;
 
-    if (SignInManager.IsSignedIn(User))
-    {
-        <div class="row">
-            <div class="col col-lg-6">
-                <img src="@Model.ImagePath" alt="Movie poster" />
-            </div>
-            <div class="col col-lg-6">
-                <div class="row">Title: @Model.MovieTitle</div>
-                <div class="row">Director: @Model.Director</div>
-                <div class="row">Year Of Release: @Model.YearOfRelease</div>
-                <div class="row">
-                    Actors: @String.Join(',', Model.Actors.Take(3))
-                    <a asp-controller="Cinema" asp-action="AllActors" asp-route-id="@Model.Actors"></a>
+        var userId = User.GetId();
+        <div class="container">
+            <div class="jumbotron">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div class="row">
+                        <div class="col col-lg-6">
+                            <img src="@Model.ImagePath" alt="@Model.MovieTitle poster" width="400" height="400" />
+                        </div>
+                        <div class="col col-lg-6">
+                            <div class="row"><h5>Title: @Model.MovieTitle</h5></div>
+                            <div class="row"><h5>Director: @Model.Director</h5></div>
+                            <div class="row"><h5>Year Of Release: @Model.YearOfRelease</h5></div>
+                            <div class="row">
+                                <h5>Actors: @String.Join(',', Model.Actors.Take(3))</h5>
+                                <a asp-controller="Cinema" asp-action="AllActors" asp-route-id="@Model.Actors"></a>
+                            </div>
+                            <div class="row">
+                                <h5>
+                                    Rating:
+                                    @if (!hasRating)
+                                    {
+                                        <a>Not rated yet. Be the first one to rate this product.</a>
+                                    }
+                                    else
+                                    {
+                                        var rating = Math.Round(Model.Rating.CurrentRating);
+
+                                        for (int i = 1; i <= 5; i++)
+                                        {
+                                            <span class="fa fa-star @(i <= rating ? "checked" : @String.Empty)"></span>
+                                        }
+
+                                        <a>@Model.Rating.CurrentRating from @Model.Rating.CurrentVotesCount</a>
+                                    }
+                                </h5>
+                            </div>
+                            @{
+                                if (!Model.Rating.Votes.Any(u => u.Id == User.GetId()))
+                                {
+                                    <form method="post">
+                                        <h5>
+                                            Rate:
+                                        </h5>
+                                        <label asp-for="@Model.Rating.UserRating"></label>
+                                        <select asp-for="@Model.Rating.UserRating" class="form-control col-md-2">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        </select>
+                                        <input onclick="@Rating.RateMovie(Model)" class="btn btn-primary" value="Vote" />
+                                    </form>
+                                }
+                                else
+                                {
+                                    <p>You have rated this book.</p>
+                                }
+                            }
+                    </div>
                 </div>
-                <div class="row">Rating: @Model.Rating</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-lg-12">
-                <h4>Description:</h4>
-                <h6>@Model.Description</h6>
-            </div>
-        </div>
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <h4>Description:</h4>
+                        <h6>@Model.Description</h6> <br />
+                    </div>
+                </div>
 
-        <div class="row">
-            <div class="col col-md-3 text-center">
-                <button type="button"
-                        class="btn btn-primary"
-                        data-toggle="modal"
-                        data-target="#UseTokenModal">
-                    Buy tickets
-                </button>
+                <div class="row">
+                    <div class="col col-md-12 text-center">
+                        <button type="button"
+                                class="btn btn-primary"
+                                data-toggle="modal"
+                                data-target="#UseTokenModal">
+                            Watch online
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="display-1">Oops!</p>
+                <br />
+                <p>It looks like you are not logged in your account...</p>
+                <br />
+                <a>
+                    Please,
+                    <p asp-area="Identity" asp-page="/Index/Login">Log in</p> with your account details or
+                    <p asp-area="Identity" asp-page="/Index/Register">Register</p> if you still don't have an account.
+                </a>
+                <br />
+            }
             </div>
-        </div>
+            </div>
     }
-    else
-    {
-        <p class="display-1">Oops!</p>
-        <br />
-        <p>It looks like you are not logged in your account...</p>
-        <br />
-        <p>
-            Please,
-            <a asp-area="Identity" asp-page="/Index/Login">Log in</a> with your account details or
-            <a asp-area="Identity" asp-page="/Index/Register">Register</a> if you still don't have an account.
-        </p>
-        <br />
-    }
-}
+</body>
+</html>
 
 <!--UseTokenModal-->
 <div class="modal fade" id="UseTokenModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

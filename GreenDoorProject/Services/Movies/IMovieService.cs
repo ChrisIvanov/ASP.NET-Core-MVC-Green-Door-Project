@@ -11,7 +11,7 @@
             int currentPage,
             int booksPerPage);
 
-        public MovieDetailsServiceModel Details(string id);
+        public MovieServiceModel Details(string id);
 
         public bool Edit(string id,
                 string movieTitle,

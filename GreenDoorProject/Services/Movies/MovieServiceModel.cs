@@ -1,7 +1,9 @@
 ﻿namespace GreenDoorProject.Services.Movies
 {
     using System;
+    using System.Collections.Generic;
     using GreenDoorProject.Data.Models;
+    using GreenDoorProject.Models.Cinema;
 
     public class MovieServiceModel
     {
@@ -22,5 +24,7 @@
         public Rating Rating { get; set; }
 
         public decimal TicketPrice { get; set; }
+
+        public IEnumerable<ActorViewModel> Actors = new List<ActorViewModel>();
     }
 }
