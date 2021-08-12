@@ -5,7 +5,8 @@
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.Book;
-    
+    using static DataConstants.Info;
+
     public class Book
     {
         public string Id { get; init; } = Guid.NewGuid().ToString();
@@ -18,12 +19,15 @@
         [Range(PagesMinLength, PagesMaxLength)]
         public int Pages { get; set; }
 
+        [Url]
+        [Required]
         public string ImagePath { get; set; }
 
+        [StringLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
 
-        public string RatingId { get; set; }
-        [Range(0, 5)]
+        [Required]
+        [Range(0,10)]
         public double Rating { get; set; }
 
         [Required]

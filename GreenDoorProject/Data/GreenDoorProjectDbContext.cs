@@ -73,6 +73,14 @@
                .HasForeignKey<Member>(m => m.Id)
                .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Membership>()
+                .Property(m => m.Price)
+                .HasColumnType("decimal(2,2)");
+
+            builder.Entity<Patron>()
+                .Property(p => p.Donations)
+                .HasColumnType("decimal(2,2)");
+
             //builder.Entity<Admin>()
             //   .HasMany(a => a.Books)
             //   .WithOne()

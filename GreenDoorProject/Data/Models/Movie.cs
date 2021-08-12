@@ -26,15 +26,14 @@
         [StringLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
 
+        [Url]
         public string ImagePath { get; set; }
 
         public TimeSpan MovieDuration { get; set; }
 
-        public double Rating { get; set; }
-
         [Required]
-        [Range(TicketPriceMaxValue, TicketPriceMinValue)]
-        public decimal TicketPrice { get; set; }
+        [Range(0,10)]
+        public double Rating { get; set; }
 
         public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
     }

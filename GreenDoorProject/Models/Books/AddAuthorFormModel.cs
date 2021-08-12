@@ -21,7 +21,7 @@
         public int YearOfBirth { get; set; }
 
         [Display(Name = "Year of Death(If the author has passed away)")]
-        public int? YearOfDeath { get; set; }
+        public int YearOfDeath { get; set; }
 
         public string Details { get; set; }
     }

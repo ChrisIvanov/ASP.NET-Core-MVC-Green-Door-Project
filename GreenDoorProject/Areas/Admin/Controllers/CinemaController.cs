@@ -46,7 +46,6 @@
                 MovieTitle = movieModel.MovieTitle,
                 Director = movieModel.Director,
                 YearOfRelease = movieModel.YearOfRelease,
-                TicketPrice = movieModel.TicketPrice,
                 MovieDuration = new TimeSpan(movieDuration[0], movieDuration[1], 0),
                 Description = movieModel.Description
             };

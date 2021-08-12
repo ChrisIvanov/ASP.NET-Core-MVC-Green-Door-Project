@@ -22,7 +22,7 @@
         [Required]
         public int YearOfBirth { get; set; }
 
-        public int? YearOfDeath { get; set; }
+        public int YearOfDeath { get; set; }
 
         [StringLength(DefaultClassInfoMaxLength)]
         public string Details { get; set; }

@@ -35,6 +35,8 @@
         [Display(Name = "Image URL")]
         public string ImagePath { get; set; }
 
+        [Required]
+        [Range(0,10)]
         public double Rating { get; set; }
 
         [Required]

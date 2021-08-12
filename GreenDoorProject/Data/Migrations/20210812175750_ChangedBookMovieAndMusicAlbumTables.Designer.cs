@@ -4,14 +4,16 @@ using GreenDoorProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GreenDoorProject.Data.Migrations
 {
     [DbContext(typeof(GreenDoorProjectDbContext))]
-    partial class GreenDoorProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210812175750_ChangedBookMovieAndMusicAlbumTables")]
+    partial class ChangedBookMovieAndMusicAlbumTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,7 +195,7 @@ namespace GreenDoorProject.Data.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(2,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -265,7 +267,7 @@ namespace GreenDoorProject.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Donations")
-                        .HasColumnType("decimal(2,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Token")
                         .HasColumnType("int");

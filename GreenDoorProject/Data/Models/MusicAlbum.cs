@@ -19,11 +19,7 @@
         public string AlbumTitle { get; set; }
 
         [Required]
-        [Range(AlbumPriceMinValue, AlbumPriceMaxValue)]
-        public decimal Price { get; set; }
-
-        public string RatingId { get; set; }
-        [Range(0, 5)]
+        [Range(0, 10)]
         public double Rating { get; set; }
 
         public IEnumerable<Song> Songs { get; set; } = new List<Song>();

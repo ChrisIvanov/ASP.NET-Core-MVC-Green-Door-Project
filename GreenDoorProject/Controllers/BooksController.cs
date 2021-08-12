@@ -159,7 +159,7 @@
                 FirstName = authorModel.FirstName,
                 LastName = authorModel.LastName,
                 YearOfBirth = authorModel.YearOfBirth,
-                YearOfDeath = authorModel.YearOfDeath == null ? null : authorModel.YearOfDeath,
+                YearOfDeath = authorModel.YearOfDeath,
                 Details = authorModel.Details
             };
 

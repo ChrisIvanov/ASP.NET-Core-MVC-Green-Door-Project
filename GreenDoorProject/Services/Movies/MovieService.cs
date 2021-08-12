@@ -45,7 +45,6 @@
                     ImagePath = m.ImagePath,
                     MovieDuration = m.MovieDuration,
                     YearOfRelease = m.YearOfRelease,
-                    TicketPrice = m.TicketPrice,
                     Rating = m.Rating,
                     Description = m.Description
                 })
@@ -86,7 +85,6 @@
                       ImagePath = m.ImagePath ?? string.Empty,
                       Rating = m.Rating,
                       Description = m.Description,
-                      TicketPrice = m.TicketPrice,
                       YearOfRelease = m.YearOfRelease,
                       MovieDuration = m.MovieDuration,
                       Actors = getActors.ToList()
@@ -120,7 +118,6 @@
             movieData.Director = director;
             movieData.ImagePath = imagePath;
             movieData.YearOfRelease = yearOfRelease;
-            movieData.TicketPrice = ticketPrice;
             movieData.MovieDuration = new TimeSpan(movieDurationHours, movieDurationMinutes,0);
             movieData.Description = description;
 
