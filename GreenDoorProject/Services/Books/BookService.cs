@@ -63,8 +63,8 @@
                 BookSorting.BookTitleDescending => booksQuery.OrderByDescending(b => b.BookTitle),
                 BookSorting.AuthorNameAscending => booksQuery.OrderBy(b => b.Author.LastName).ThenBy(b => b.Author.FirstName),
                 BookSorting.AuthorNameDescending => booksQuery.OrderByDescending(b => b.Author.LastName).ThenBy(b => b.Author.FirstName),
-                BookSorting.RatingAscending => booksQuery.OrderByDescending(b => b.Rating.CurrentRating),
-                BookSorting.RatingDescending => booksQuery.OrderByDescending(b => b.Rating.CurrentRating),
+                BookSorting.RatingAscending => booksQuery.OrderByDescending(b => b.Rating),
+                BookSorting.RatingDescending => booksQuery.OrderByDescending(b => b.Rating),
                 _ => booksQuery.OrderByDescending(b => b.Id)
             };
 
@@ -98,10 +98,6 @@
                 .Where(g => g.Id == book.GenreId)
                 .FirstOrDefault();
 
-            var rating = this.data.Ratings
-                .Where(r => r.BookId == id)
-                .FirstOrDefault();
-
             var bookDetails = new BookServiceModel
             {
                 Id = book.Id,
@@ -110,7 +106,7 @@
                 Genre = genre,
                 ImagePath = book.ImagePath,
                 Pages = book.Pages,
-                Rating = rating,
+                Rating = book.Rating,
                 Description = book.Description,
                 Content = book.Content
             };

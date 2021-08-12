@@ -60,8 +60,5 @@
         private bool ExistingMovieCheck(MovieFormModel movieModel)
             => this.data.Movies
                 .Any(m => m.MovieTitle == movieModel.MovieTitle);
-
-        private IEnumerable<Hall> GetHalls()
-            => this.data.Halls.ToList();
     }
 }

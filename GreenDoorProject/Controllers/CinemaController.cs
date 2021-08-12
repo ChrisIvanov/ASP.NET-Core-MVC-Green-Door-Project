@@ -27,10 +27,7 @@
         [HttpGet]
         [Authorize]
         public IActionResult Add()
-            => View(new MovieFormModel
-            {
-                Rating = new Rating()
-            });
+            => View(new MovieFormModel());
 
         [HttpPost]
         [Authorize]
@@ -148,7 +145,7 @@
         {
             if (!data.Movies.Any())
             {
-                var error = "Currently there are no books in the library.";
+                var error = "Currently there are no movies in the video library.";
 
                 var errorModel = new AllMoviesQueryModel
                 {
@@ -182,21 +179,32 @@
         }
 
         [Authorize]
-        public IActionResult Delete([FromRoute] string id)
+        public IActionResult Delete(string id)
         {
-            return View(new MovieServiceModel());
-        }
+            var movie = this.data.Movies.Find(id);
 
-        [HttpDelete]
-        [Authorize]
-        public IActionResult Delete(MovieServiceModel model)
-        {
-            var movie = GetMovie(model.Id);
+            if (movie == null)
+            {
+                this.ModelState.AddModelError(nameof(CinemaController),"There is no movie with this Id in the database.");
+            }
+            else
+            {
+                var actors = this.data.ActorMovies
+                    .Where(m => m.MovieId == movie.Id)
+                    .ToList();
 
-            this.data.Remove(movie);
-            this.data.SaveChanges();
+                if (actors.Any())
+                {
+                    foreach (var actor in actors)
+                    {
+                        this.data.ActorMovies.Remove(actor);
+                    }
+                }
+                this.data.Remove(movie);
+                this.data.SaveChanges();
+            }
 
-            return RedirectToAction("All", "Cinema");
+            return View("All", "Cinema");
         }
 
         [Authorize]
@@ -217,6 +225,7 @@
                 YearOfRelease = movie.YearOfRelease,
                 MovieDuration = movie.MovieDuration.ToString(),
                 TicketPrice = movie.TicketPrice,
+                Rating = movie.Rating,
                 Description = movie.Description
             });
         }
@@ -248,34 +257,6 @@
             return RedirectToAction("All", "Cinema");
         }
 
-        [AllowAnonymous]
-        public IActionResult PayPerView(string movieId)
-        {
-            var movie = GetMovie(movieId);
-
-            return View(new BuyTicketsFormModel
-            {
-                PricePerTicket = movie.TicketPrice
-            });
-        }
-
-        [HttpPut]
-        public IActionResult PayPerView(BuyTicketsFormModel model)
-        {
-            var movie = GetMovie(model.Id);
-
-            var projection = movie.Projections.Where(p => p.Id == model.ProjectionId).FirstOrDefault();
-
-            var numberOfSeats = projection.AvailableSeats;
-
-            if (numberOfSeats >= model.NumberOfTickets)
-            {
-                numberOfSeats -= model.NumberOfTickets;
-            }
-
-            return RedirectToAction("Index", "Home");
-        }
-
         private MovieViewModel GetMovie(string movieId)
         {
             var getMovie = this.data.Movies
@@ -288,29 +269,15 @@
                 MovieTitle = getMovie.MovieTitle,
                 Director = getMovie.Director,
                 ImagePath = getMovie.ImagePath,
-                TicketPrice = getMovie.TicketPrice,
                 MovieDuration = getMovie.MovieDuration.ToString(),
                 Description = getMovie.Description,
-                Rating = getMovie.Rating.CurrentRating.ToString(),
+                Rating = getMovie.Rating,
                 YearOfRelease = getMovie.YearOfRelease,
-                ActorMovies = getMovie.ActorMovies,
-                Projections = getMovie.Projections
+                ActorMovies = getMovie.ActorMovies
             };
 
             return movie;
         }
-
-        private IEnumerable<CinemaHallViewModel> GetCinemaHalls()
-            => this.data.Halls
-            .Select(h => new CinemaHallViewModel
-            {
-                Id = h.Id,
-                Name = h.Name
-            })
-            .ToList();
-
-        private IEnumerable<Hall> GetHalls()
-            => this.data.Halls.ToList();
 
         private bool ExistingMovieCheck(MovieFormModel movieModel)
             => this.data.Movies

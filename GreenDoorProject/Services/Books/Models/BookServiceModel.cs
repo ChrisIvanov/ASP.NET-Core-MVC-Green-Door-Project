@@ -20,7 +20,7 @@
 
         public string AuthorName { get; set; }
 
-        public Rating Rating { get; set; }
+        public double Rating { get; set; }
 
         public byte[] Content { get; set; }
     }

@@ -6,7 +6,6 @@ namespace GreenDoorProject
     using GreenDoorProject.Services.Members;
     using GreenDoorProject.Services.Movies;
     using GreenDoorProject.Services.Patrons;
-    using GreenDoorProject.Services.Ratings;
     using GreenDoorProject.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -53,7 +52,6 @@ namespace GreenDoorProject
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IPatronService, PatronService>();
-            services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<IStatisticsService, StatisticsService>();
         }
 

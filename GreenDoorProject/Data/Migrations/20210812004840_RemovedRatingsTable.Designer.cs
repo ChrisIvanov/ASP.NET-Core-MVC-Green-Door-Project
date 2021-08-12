@@ -4,14 +4,16 @@ using GreenDoorProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GreenDoorProject.Data.Migrations
 {
     [DbContext(typeof(GreenDoorProjectDbContext))]
-    partial class GreenDoorProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210812004840_RemovedRatingsTable")]
+    partial class RemovedRatingsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,6 +158,23 @@ namespace GreenDoorProject.Data.Migrations
                     b.ToTable("Genres");
                 });
 
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Hall", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Halls");
+                });
+
             modelBuilder.Entity("GreenDoorProject.Data.Models.Member", b =>
                 {
                     b.Property<string>("Id")
@@ -290,6 +309,33 @@ namespace GreenDoorProject.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Patrons");
+                });
+
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Projection", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AvailableSeats")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HallId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MovieId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("TimeOfProjection")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HallId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Projections");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.Song", b =>
@@ -598,6 +644,25 @@ namespace GreenDoorProject.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Projection", b =>
+                {
+                    b.HasOne("GreenDoorProject.Data.Models.Hall", "Hall")
+                        .WithMany("Projections")
+                        .HasForeignKey("HallId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GreenDoorProject.Data.Models.Movie", "Movie")
+                        .WithMany("Projections")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Hall");
+
+                    b.Navigation("Movie");
+                });
+
             modelBuilder.Entity("GreenDoorProject.Data.Models.Song", b =>
                 {
                     b.HasOne("GreenDoorProject.Data.Models.MusicAlbum", "MusicAlbum")
@@ -675,9 +740,16 @@ namespace GreenDoorProject.Data.Migrations
                     b.Navigation("Books");
                 });
 
+            modelBuilder.Entity("GreenDoorProject.Data.Models.Hall", b =>
+                {
+                    b.Navigation("Projections");
+                });
+
             modelBuilder.Entity("GreenDoorProject.Data.Models.Movie", b =>
                 {
                     b.Navigation("ActorMovies");
+
+                    b.Navigation("Projections");
                 });
 
             modelBuilder.Entity("GreenDoorProject.Data.Models.MusicAlbum", b =>

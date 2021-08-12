@@ -22,6 +22,8 @@
                 string movieDuration,
                 string description);
 
+        public string Delete(string id);
+
         public IEnumerable<ActorViewModel> GetMovieActors(string movieId);
     }
 }

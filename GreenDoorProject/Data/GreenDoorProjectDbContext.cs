@@ -18,14 +18,11 @@
         public DbSet<Author> Authors { get; init; }
         public DbSet<Book> Books { get; init; }
         public DbSet<Genre> Genres { get; init; }
-        public DbSet<Hall> Halls { get; init; }
         public DbSet<Member> Members { get; init; }
         public DbSet<Membership> Memberships { get; init; }
         public DbSet<Movie> Movies { get; init; }
         public DbSet<MusicAlbum> MusicAlbums { get; init; }
         public DbSet<Patron> Patrons { get; init; }
-        public DbSet<Projection> Projections { get; init; }
-        public DbSet<Rating> Ratings { get; init; }
         public DbSet<Song> Songs { get; init; }
         public DbSet<User> Users { get; set; }
 
@@ -52,18 +49,6 @@
                .HasForeignKey(x => x.MovieId)
                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Projection>()
-                .HasOne(x => x.Hall)
-                .WithMany(y => y.Projections)
-                .HasForeignKey(x => x.HallId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Projection>()
-                .HasOne(x => x.Movie)
-                .WithMany(y => y.Projections)
-                .HasForeignKey(x => x.MovieId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.Entity<Book>()
                 .HasOne(x => x.Genre)
                 .WithMany(y => y.Books)
@@ -87,24 +72,6 @@
                .WithOne()
                .HasForeignKey<Member>(m => m.Id)
                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Book>()
-                .HasOne<Rating>(b => b.Rating)
-                .WithOne(r => r.Book)
-                .HasForeignKey<Book>(r => r.RatingId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Movie>()
-                .HasOne<Rating>(m => m.Rating)
-                .WithOne(r => r.Movie)
-                .HasForeignKey<Movie>(r => r.RatingId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<MusicAlbum>()
-                .HasOne<Rating>(a => a.Rating)
-                .WithOne(r => r.MusicAlbum)
-                .HasForeignKey<MusicAlbum>(r => r.RatingId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             //builder.Entity<Admin>()
             //   .HasMany(a => a.Books)

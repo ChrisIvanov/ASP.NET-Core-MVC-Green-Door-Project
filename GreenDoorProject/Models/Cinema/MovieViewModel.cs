@@ -19,12 +19,10 @@ namespace GreenDoorProject.Models.Cinema
 
         public string MovieDuration { get; set; }
 
-        public string Rating { get; set; }
+        public double Rating { get; set; }
 
         public decimal TicketPrice { get; set; }
 
-        public ICollection<ActorMovie> ActorMovies { get; set; }
-
-        public ICollection<Projection> Projections { get; set; }
+        public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
     }
 }

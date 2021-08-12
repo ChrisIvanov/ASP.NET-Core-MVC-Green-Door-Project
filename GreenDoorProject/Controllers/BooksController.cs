@@ -10,7 +10,6 @@
     using GreenDoorProject.Services.Books;
     using GreenDoorProject.Services.Books.Models;
     using GreenDoorProject.Services.Patrons;
-    using GreenDoorProject.Services.Ratings;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -21,17 +20,14 @@
     {
         private readonly IBookService books;
         private readonly IPatronService patrons;
-        private readonly IRatingService ratings;
         private readonly GreenDoorProjectDbContext data;
 
         public BooksController(
             GreenDoorProjectDbContext data,
-            IBookService books,
-            IRatingService ratings)
+            IBookService books)
         {
             this.data = data;
             this.books = books;
-            this.ratings = ratings;
         }
 
         [HttpGet]
@@ -74,8 +70,7 @@
         {
             return View(new AddBookFormModel
             {
-                Genres = this.GetBookGenres(),
-                Rating = new Rating()
+                Genres = this.GetBookGenres()
             });
         }
 

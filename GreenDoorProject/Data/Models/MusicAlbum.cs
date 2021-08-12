@@ -24,7 +24,7 @@
 
         public string RatingId { get; set; }
         [Range(0, 5)]
-        public Rating Rating { get; set; }
+        public double Rating { get; set; }
 
         public IEnumerable<Song> Songs { get; set; } = new List<Song>();
     }

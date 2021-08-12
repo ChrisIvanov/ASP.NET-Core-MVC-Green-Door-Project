@@ -4,81 +4,32 @@
 @inject UserManager<IdentityUser> UserManager
 @inject IMemberService Members
 @inject IPatronService Patron
-@inject IRatingService Rating  
 
 @model MovieServiceModel
 
-<html>
-<head>
-    <style type="text/css">
-        .checked {
-            color: orange;
-        }
-    </style>
-</head>
-<body>
-    @{
-        var hasRating = Model.Rating != null;
 
-        var userId = User.GetId();
-        <div class="container">
-            <div class="jumbotron">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <div class="row">
-                        <div class="col col-lg-6">
-                            <img src="@Model.ImagePath" alt="@Model.MovieTitle poster" width="400" height="400" />
+@{
+    var userId = User.GetId();
+
+    <div class="container">
+        <div class="jumbotron">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="row">
+                    <div class="col col-lg-6">
+                        <img src="@Model.ImagePath" alt="@Model.MovieTitle poster" width="400" height="400" />
+                    </div>
+                    <div class="col col-lg-6">
+                        <div class="row"><h5>Title: @Model.MovieTitle</h5></div>
+                        <div class="row"><h5>Director: @Model.Director</h5></div>
+                        <div class="row"><h5>Year Of Release: @Model.YearOfRelease</h5></div>
+                        <div class="row">
+                            <h5>Actors: @String.Join(',', Model.Actors.Take(3))</h5>
+                            <a asp-controller="Cinema" asp-action="AllActors" asp-route-id="@Model.Actors"></a>
                         </div>
-                        <div class="col col-lg-6">
-                            <div class="row"><h5>Title: @Model.MovieTitle</h5></div>
-                            <div class="row"><h5>Director: @Model.Director</h5></div>
-                            <div class="row"><h5>Year Of Release: @Model.YearOfRelease</h5></div>
-                            <div class="row">
-                                <h5>Actors: @String.Join(',', Model.Actors.Take(3))</h5>
-                                <a asp-controller="Cinema" asp-action="AllActors" asp-route-id="@Model.Actors"></a>
-                            </div>
-                            <div class="row">
-                                <h5>
-                                    Rating:
-                                    @if (!hasRating)
-                                    {
-                                        <a>Not rated yet. Be the first one to rate this product.</a>
-                                    }
-                                    else
-                                    {
-                                        var rating = Math.Round(Model.Rating.CurrentRating);
-
-                                        for (int i = 1; i <= 5; i++)
-                                        {
-                                            <span class="fa fa-star @(i <= rating ? "checked" : @String.Empty)"></span>
-                                        }
-
-                                        <a>@Model.Rating.CurrentRating from @Model.Rating.CurrentVotesCount</a>
-                                    }
-                                </h5>
-                            </div>
-                            @{
-                                if (!Model.Rating.Votes.Any(u => u.Id == User.GetId()))
-                                {
-                                    <form method="post">
-                                        <h5>
-                                            Rate:
-                                        </h5>
-                                        <label asp-for="@Model.Rating.UserRating"></label>
-                                        <select asp-for="@Model.Rating.UserRating" class="form-control col-md-2">
-                                            @for (int i = 1; i <= 5; i++)
-                                            {
-                                                <option value="@i">@i</option>
-                                            }
-                                        </select>
-                                        <input onclick="@Rating.RateMovie(Model)" class="btn btn-primary" value="Vote" />
-                                    </form>
-                                }
-                                else
-                                {
-                                    <p>You have rated this book.</p>
-                                }
-                            }
+                        <div class="row">
+                            <h5>IMDb Rating: @Model.Rating/10</h5>
+                        </div>                        
                     </div>
                 </div>
                 <div class="row">
@@ -112,11 +63,10 @@
                 </a>
                 <br />
             }
-            </div>
-            </div>
-    }
-</body>
-</html>
+        </div>
+    </div>
+}
+
 
 <!--UseTokenModal-->
 <div class="modal fade" id="UseTokenModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

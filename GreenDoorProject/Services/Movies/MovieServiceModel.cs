@@ -21,7 +21,7 @@
 
         public TimeSpan MovieDuration { get; set; }
 
-        public Rating Rating { get; set; }
+        public double Rating { get; set; }
 
         public decimal TicketPrice { get; set; }
 

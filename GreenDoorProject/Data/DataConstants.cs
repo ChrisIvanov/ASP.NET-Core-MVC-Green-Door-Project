@@ -49,12 +49,6 @@
             internal const int GanreNameMaxLength = 50;
         }
 
-        internal class Hall
-        {
-            internal const int HallNameMinLength = 5;
-            internal const int HallNameMaxLength = 20;
-        }
-
         internal class Membership
         {
             internal const int MembershipNameMinLength = 3;
@@ -89,12 +83,6 @@
 
             internal const int SongNameMinLength = 3;
             internal const int SongNameMaxLength = 30;
-        }
-
-        internal class Projection
-        {
-            internal const int MovieTitleMinLength = 5;
-            internal const int MovieTitleMaxLength = 20;
         }
 
         internal class Song

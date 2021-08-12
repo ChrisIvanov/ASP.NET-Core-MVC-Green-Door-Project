@@ -57,8 +57,8 @@
                 MovieSorting.MovieTitleDescending => movieQuery.OrderByDescending(m => m.MovieTitle),
                 MovieSorting.DirectorNameAscending => movieQuery.OrderBy(m => m.Director),
                 MovieSorting.DirectorNameDescending => movieQuery.OrderByDescending(m => m.Director),
-                MovieSorting.RatingAscending => movieQuery.OrderBy(m => m.Rating.CurrentRating),
-                MovieSorting.RatingDescending => movieQuery.OrderByDescending(m => m.Rating.CurrentRating),
+                MovieSorting.RatingAscending => movieQuery.OrderBy(m => m.Rating),
+                MovieSorting.RatingDescending => movieQuery.OrderByDescending(m => m.Rating),
                 _ => movieQuery.OrderByDescending(b => b.Id)
             };
 
@@ -83,7 +83,7 @@
                       Id = m.Id,
                       MovieTitle = m.MovieTitle,
                       Director = m.Director,
-                      ImagePath = m.ImagePath == null ? string.Empty : m.ImagePath,
+                      ImagePath = m.ImagePath ?? string.Empty,
                       Rating = m.Rating,
                       Description = m.Description,
                       TicketPrice = m.TicketPrice,
@@ -127,6 +127,16 @@
             this.data.SaveChanges();
 
             return true;
+        }
+
+        public string Delete(string id)
+        {
+            var movie = this.data.Movies.Find(id);
+
+            this.data.Movies.Remove(movie);
+            this.data.SaveChanges();
+
+            return "The movie has been removed from the database.".ToString();
         }
 
         public IEnumerable<ActorViewModel> GetMovieActors(string movieId)

@@ -25,8 +25,6 @@
 
             SeedGenres(services);
 
-            SeedHalls(services);
-
             SeedMemberships(services);
 
             //SeedAdministrator(services);
@@ -56,25 +54,6 @@
                 new Membership { Name = "Three Months", Price = 26.99m },
                 new Membership { Name = "Six Months", Price = 50.99m },
                 new Membership { Name = "Annual", Price = 89.99m }
-            });
-
-            data.SaveChanges();
-        }
-
-        private static void SeedHalls(IServiceProvider services)
-        {
-            var data = services.GetRequiredService<GreenDoorProjectDbContext>();
-
-            if (data.Halls.Any())
-            {
-                return;
-            }
-
-            data.Halls.AddRange(new[]
-            {
-                new Hall { Name = "Aurora" },
-                new Hall { Name = "Imagina" },
-                new Hall { Name = "Five Circles" }
             });
 
             data.SaveChanges();
