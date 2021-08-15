@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<Guest> SignInManager
+@inject UserManager<Guest> UserManager
 @inject IMemberService Members
 @inject IPatronService Patron
 
@@ -19,9 +19,11 @@
                     <div class="col col-lg-6">
                         <img src="@Model.ImagePath" alt="@Model.MovieTitle poster" width="400" height="400" />
                     </div>
+
                     <div class="col col-lg-6">
                         <div class="row"><h5>Title: @Model.MovieTitle</h5></div>
                         <div class="row"><h5>Director: @Model.Director</h5></div>
+                        <div class="row"><h5>Movie Duration: @Model.MovieDuration.ToString(@"hh\:mm")</h5></div>
                         <div class="row"><h5>Year Of Release: @Model.YearOfRelease</h5></div>
                         <div class="row">
                             <h5>Actors: @String.Join(',', Model.Actors.Take(3))</h5>
@@ -29,9 +31,10 @@
                         </div>
                         <div class="row">
                             <h5>IMDb Rating: @Model.Rating/10</h5>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col col-lg-12">
                         <h4>Description:</h4>
@@ -39,16 +42,9 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col col-md-12 text-center">
-                        <button type="button"
-                                class="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#UseTokenModal">
-                            Watch online
-                        </button>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#watchMovieModal">
+                    Watch Movie
+                </button>
             }
             else
             {
@@ -67,23 +63,20 @@
     </div>
 }
 
-
-<!--UseTokenModal-->
-<div class="modal fade" id="UseTokenModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- Modal -->
+<div class="modal fade" id="watchMovieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Purchase movie tickets</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="exampleModalLabel">Watch @Model.MovieTitle Now</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Would you like to continue to counter?
+                Continue to movie
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Not yet</button>
-                <button type="button" class="btn btn-primary" asp-controller="Cinema" asp-action="Buy">Yes, please</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >No, thanks</button>
+                <button type="button" class="btn btn-primary" asp-controller="Cinema" asp-action="WatchMovie" asp-route-id="@Model.Id">Watch</button>
             </div>
         </div>
     </div>

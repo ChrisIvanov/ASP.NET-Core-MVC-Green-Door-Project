@@ -1,20 +1,27 @@
 ﻿namespace GreenDoorProject.Controllers
 {
-    using GreenDoorProject.Data;
-    using GreenDoorProject.Data.Models;
-    using GreenDoorProject.Models.Member;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using GreenDoorProject.Data;
+    using GreenDoorProject.Data.Models;
+    using GreenDoorProject.Infrastructure;
+    using GreenDoorProject.Models.Member;
+    using GreenDoorProject.Services.Members;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
     public class MemberController : Controller
     {
         private readonly GreenDoorProjectDbContext data;
+        private readonly IMemberService members;
 
-        public MemberController(GreenDoorProjectDbContext data) 
-            => this.data = data;
+        public MemberController(GreenDoorProjectDbContext data,
+            IMemberService members)
+        { 
+            this.data = data;
+            this.members = members;
+        }
 
         [Authorize]
         public IActionResult BecomeMember()
@@ -27,52 +34,46 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult BecomeMember(string userId, string membershipType)
+        public IActionResult BecomeMember(int membershipId)
         {
-            var user = this.data.Users
-                .Where(u => u.Id == userId)
+            var userId = this.User.GetId();
+
+            if (members.IsMember(userId))
+            {
+                ModelState.AddModelError(string.Empty, "You are already a member.");
+            }
+
+            var guest = this.data.Users
+                .Where(u => u.Id == User.GetId())
                 .FirstOrDefault();
 
-            var price = 0.00m;
+            var membership = this.data.Memberships
+               .Where(m => m.Id == membershipId)
+               .FirstOrDefault();
+
             var membershipDuration = 0;
 
-            if (membershipType == "OneMonth")
-            {
-                price = 9.99m;
-                membershipDuration = 1;
-            }
-            else if (membershipType == "ThreeMonth")
-            {
-                price = 26.99m;
-                membershipDuration = 3;
-            }
-            else if (membershipType == "SixMonth")
-            {
-                price = 50.99m;
-                membershipDuration = 6;
-            }
-            else if (membershipType == "Annual")
-            {
-                price = 89.99m;
-                membershipDuration = 12;
-            }
+            if (membership.Name == "OneMonth")membershipDuration = 1;
+            else if (membership.Name == "ThreeMonth")membershipDuration = 3;
+            else if (membership.Name == "SixMonth")membershipDuration = 6;          
+            else if (membership.Name == "Annual")membershipDuration = 12;
 
-            var membership = new Membership
-            {
-                Name = membershipType,
-                Price = price
-            };
-
-            var memeber = new Member
+            var member = new Member
             {
                 MembershipId = membership.Id,
                 MembershipStart = DateTime.UtcNow,
                 MembershipEnd = DateTime.UtcNow.AddMonths(membershipDuration),
-                UserId = userId
+                UserId = guest.Id
             };
+
+            this.data.SaveChanges();
 
             return View();
         }
+
+        public bool GuestIsMember(string guestId)
+            => this.data.Members
+                    .Any(u => u.UserId == guestId);
 
         private IEnumerable<MembershipTypesViewModel> GetMembershipTypes()
             => this.data.Memberships

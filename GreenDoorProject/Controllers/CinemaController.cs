@@ -10,134 +10,27 @@
     using GreenDoorProject.Services.Movies;
     using GreenDoorProject.Data.Models;
     using GreenDoorProject.Infrastructure;
+    using GreenDoorProject.Services.Patrons;
+    using GreenDoorProject.Services.Members;
 
     public class CinemaController : Controller
     {
         private readonly GreenDoorProjectDbContext data;
         private readonly IMovieService movies;
+        private readonly IMemberService members;
+        private readonly IPatronService patrons;
 
         public CinemaController(
             GreenDoorProjectDbContext data,
-            IMovieService movies)
+            IMovieService movies, 
+            IMemberService members, 
+            IPatronService patrons)
         {
             this.data = data;
             this.movies = movies;
+            this.members = members;
+            this.patrons = patrons;
         }
-
-        [HttpGet]
-        [Authorize]
-        public IActionResult Add()
-            => View(new MovieFormModel());
-
-        [HttpPost]
-        [Authorize]
-        public IActionResult Add(MovieFormModel movieModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(movieModel);
-            }
-
-            if (ExistingMovieCheck(movieModel))
-            {
-                this.ModelState
-                    .AddModelError(
-                        nameof(movieModel.MovieTitle),
-                        "The movie already exists.");
-            }
-
-            var movieDuration = movieModel.MovieDuration
-                .Split(":", StringSplitOptions.RemoveEmptyEntries)
-                .Select(int.Parse)
-                .ToArray();
-
-            var movie = new Movie
-            {
-                MovieTitle = movieModel.MovieTitle,
-                Director = movieModel.Director,
-                YearOfRelease = movieModel.YearOfRelease,
-                ImagePath = movieModel.ImagePath,
-                MovieDuration = new TimeSpan(movieDuration[0], movieDuration[1], 0),
-                Description = movieModel.Description
-            };
-
-            this.data.Movies.Add(movie);
-            this.data.SaveChanges();
-
-            return RedirectToAction("All", "Cinema");
-        }
-
-        [Authorize]
-        public IActionResult AddActor()
-            => View(new ActorFormModel());
-
-        [HttpPost]
-        [Authorize]
-        public IActionResult AddActor(ActorFormModel actorModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(actorModel);
-            }
-
-            var actor = new Actor
-            {
-                FirstName = actorModel.FirstName,
-                LastName = actorModel.LastName,
-                YearOfBirth = actorModel.YearOfBirth,
-                YearOfDeath = actorModel.YearOfDeath,
-                Details = actorModel.Details
-            };
-
-            this.data.Actors.Add(actor);
-            this.data.SaveChanges();
-
-            return RedirectToAction("AddActor", "Cinema");
-        }
-
-        [Authorize]
-        public IActionResult AddActorToMovie()
-        {
-            var actors = this.data.Actors
-                .Select(a => new ActorViewModel
-                {
-                    Id = a.Id,
-                    FirstName = a.FirstName,
-                    LastName = a.LastName
-                })
-                .ToList();
-
-            var movies = this.data.Movies
-                .Select(m => new MovieViewModel
-                {
-                    Id = m.Id,
-                    MovieTitle = m.MovieTitle
-                })
-                .ToList();
-
-            return View(new AddActorToMovieFormModel
-            {
-                Actors = actors,
-                Movies = movies
-            });
-        }
-
-        [HttpPost]
-        [Authorize]
-        public IActionResult AddActorToMovie(AddActorToMovieFormModel model)
-        {
-            var actorMovie = new ActorMovie
-            {
-                ActorId = model.ActorId,
-                MovieId = model.MovieId
-            };
-
-            this.data.ActorMovies.Add(actorMovie);
-            this.data.SaveChanges();
-
-            return RedirectToAction("Index", "Home");
-        }
-
         [HttpGet]
         [Authorize]
         public IActionResult All([FromQuery] AllMoviesQueryModel query)
@@ -177,85 +70,37 @@
             return View(movie);
         }
 
+        [HttpGet]
         [Authorize]
-        public IActionResult Delete(string id)
+        public IActionResult WatchMovie(string movieId)
         {
-            var movie = this.data.Movies.Find(id);
+            var movie = GetMovie(movieId);
 
-            if (movie == null)
+            var userId = this.User.GetId();
+
+            if (members.IsMember(userId))
             {
-                this.ModelState.AddModelError(nameof(CinemaController),"There is no movie with this Id in the database.");
+                return RedirectToAction("WatchMovie", "Cinema");
             }
             else
             {
-                var actors = this.data.ActorMovies
-                    .Where(m => m.MovieId == movie.Id)
-                    .ToList();
-
-                if (actors.Any())
+                if (patrons.IsPatron(userId))
                 {
-                    foreach (var actor in actors)
+                    if (this.patrons.GetTokens(userId) < 1)
                     {
-                        this.data.ActorMovies.Remove(actor);
+                        return RedirectToAction("Index", "Home");
                     }
+
+                    this.patrons.UseToken(userId);
+
+                    return View(movie);
                 }
-                this.data.Remove(movie);
-                this.data.SaveChanges();
             }
 
-            return View("All", "Cinema");
+            return RedirectToAction("BecomeMember", "Member");
         }
 
-        [Authorize]
-        public IActionResult Edit(string id)
-        {
-            //if (!User.IsAdmin())
-            //{
-            //    return RedirectToAction("All", "Cinema");
-            //}
-
-            var movie = this.movies.Details(id);
-
-            return View(new MovieFormModel
-            {
-                MovieTitle = movie.MovieTitle,
-                Director = movie.Director,
-                ImagePath = movie.ImagePath,
-                YearOfRelease = movie.YearOfRelease,
-                MovieDuration = movie.MovieDuration.ToString(),
-                TicketPrice = movie.TicketPrice,
-                Rating = movie.Rating,
-                Description = movie.Description
-            });
-        }
-
-
-        [HttpPost]
-        [Authorize]
-        public IActionResult Edit(MovieFormModel model, string id)
-        {
-            var movie = this.data.Movies
-                .Where(m => m.Id == id)
-                .FirstOrDefault();
-
-            var edited = this.movies.Edit(
-                id,
-                model.MovieTitle,
-                model.Director,
-                model.ImagePath,
-                model.YearOfRelease,
-                model.TicketPrice,
-                model.MovieDuration,
-                model.Description);
-
-            if (!edited)
-            {
-                return BadRequest();
-            }
-
-            return RedirectToAction("All", "Cinema");
-        }
-
+        
         private MovieViewModel GetMovie(string movieId)
         {
             var getMovie = this.data.Movies
@@ -277,10 +122,5 @@
 
             return movie;
         }
-
-        private bool ExistingMovieCheck(MovieFormModel movieModel)
-            => this.data.Movies
-                .Any(m => m.MovieTitle == movieModel.MovieTitle);
-
     }
 }

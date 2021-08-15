@@ -1,8 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using GreenDoorProject.Services.Patrons
+@using GreenDoorProject.Data.Models
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<Guest> SignInManager
+@inject UserManager<Guest> UserManager
 @inject IPatronService Patron
 
 <ul class="navbar-nav">
@@ -14,13 +15,13 @@
         if (userIsPatron)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Patron" asp-action="MyDonations">My Donations</a>
+                <a class="nav-link text-dark">@Patron.GetTokens(userId) Patron Tokens</a>
             </li>
         }
         else
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-controller="Patron" asp-action="BecomePatron">Donate</a>
+                <a class="nav-link text-dark" asp-controller="Patron" asp-action="Donate">Donate</a>
             </li>
         }
 

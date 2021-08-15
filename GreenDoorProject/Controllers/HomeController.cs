@@ -13,14 +13,14 @@
     public class HomeController : Controller
     {
         private readonly IStatisticsService statistics;
-        private readonly GreenDoorProjectDbContext _data;
+        private readonly GreenDoorProjectDbContext data;
 
         public HomeController(
             IStatisticsService statistics,
             GreenDoorProjectDbContext data)
         {
             this.statistics = statistics;
-            _data = data;
+            this.data = data;
         }
 
         public IActionResult Index()
@@ -30,27 +30,6 @@
             var statistics = this.statistics.Total();
 
             return View(statistics);
-        }
-
-
-        [Authorize(Roles = "User, Member")]
-        public IActionResult BecomePatron()
-        {
-            var userId = this.User.GetId();
-
-            var user = this._data.Users
-               .Where(u => u.Id == userId)
-               .FirstOrDefault();
-
-            var patron = new Patron
-            {
-                UserId = userId
-            };
-
-            this._data.Patrons.Add(patron);
-            this._data.SaveChanges();
-
-            return RedirectToAction("Home", "Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

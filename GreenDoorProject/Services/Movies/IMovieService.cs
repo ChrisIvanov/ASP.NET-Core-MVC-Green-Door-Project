@@ -1,7 +1,8 @@
 ﻿namespace GreenDoorProject.Services.Movies
 {
-    using GreenDoorProject.Models.Cinema;
     using System.Collections.Generic;
+    using GreenDoorProject.Models.Cinema;
+    using GreenDoorProject.Services.Movies.Models;
 
     public interface IMovieService
     {
@@ -18,7 +19,6 @@
                 string director,
                 string imagePath,
                 int yearOfRelease,
-                decimal ticketPrice,
                 string movieDuration,
                 string description);
 

@@ -1,0 +1,61 @@
+﻿@model BookFormModel
+
+@{
+    ViewBag.Title = "Add Book";
+}
+
+<div class="container">
+    <div class="jumbotron">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="BookTitle"></label>
+                    <input asp-for="BookTitle" class="form-control" placeholder="Под Игото, Lord Of The Rings" />
+                    <span asp-validation-for="BookTitle" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AuthorFirstName"></label>
+                    <input asp-for="AuthorFirstName" class="form-control" placeholder="Add author's first name..." />
+                    <span asp-validation-for="AuthorFirstName" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AuthorLastName"></label>
+                    <input asp-for="AuthorLastName" class="form-control" placeholder="Add author's last name..." />
+                    <span asp-validation-for="AuthorLastName" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImagePath"></label>
+                    <input asp-for="ImagePath" class="form-control" placeholder="Add an URL to the image..." />
+                    <span asp-validation-for="ImagePath" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GenreId"></label>
+                    <select asp-for="GenreId" class="form-control">
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="GenreId" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Pages"></label>
+                    <input asp-for="Pages" class="form-control" placeholder="Add a value between 5 and 2500" />
+                    <span asp-validation-for="Pages" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" rows="4" class="form-control" placeholder="Add a description for the book"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Content"></label><br />
+                    <input type="file" name="file">
+                </div>
+
+                <input class="btn btn-primary" type="submit" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>

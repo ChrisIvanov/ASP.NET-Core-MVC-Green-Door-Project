@@ -11,23 +11,31 @@
         public PatronService(GreenDoorProjectDbContext data)
             => this.data = data;
 
-        public int CalculateTokens(string userId, int donationAmount)
+        public int CalculateTokens(string userId, decimal donations)
         {
-            var tokens = this.data.Patrons
-                .Where(u => u.Id == userId)
-                .Select(p => p.Token)
-                .FirstOrDefault();
+            var tokens = 0;
 
-            if (donationAmount  >= 5 && donationAmount  < 9.99) tokens += 2;
-            else if (donationAmount >= 10 && donationAmount < 19.99) tokens += 5;
-            else if (donationAmount >= 20 && donationAmount < 29.99) tokens += 12;
-            else if (donationAmount >= 30 && donationAmount < 39.99) tokens += 20;
-            else if (donationAmount >= 40 && donationAmount < 49.99) tokens += 30;
-            else if (donationAmount >= 50 && donationAmount < 59.99) tokens += 45;
-
-            this.data.SaveChanges();
+            if (donations >= 5 && donations < 10) tokens = 2;
+            else if (donations >= 10 && donations < 20) tokens = 5;
+            else if (donations >= 20 && donations < 30) tokens = 12;
+            else if (donations >= 30 && donations < 40) tokens = 20;
+            else if (donations >= 40 && donations < 50) tokens = 35;
+            else if (donations >= 50 && donations < 60) tokens = 45;
 
             return tokens;
+        }
+
+        public bool HasTokens(string patronId)
+        {
+            var tokens = GetTokens(patronId);
+
+            if (tokens > 0)
+            {
+                tokens -= 1;
+                return true;
+            }
+
+            return false;
         }
 
         public int GetTokens(string userId)

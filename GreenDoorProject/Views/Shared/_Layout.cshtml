@@ -1,9 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<Guest> UserManager
+@inject IMemberService Member
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>@ViewData["Title"] - Green Door Project</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Green Door Project</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -17,12 +24,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 @*<div class="row">
-                    <div class="col-sm-6 col-lg-4">
-                        <ul class="nav nav-pills nav-stacked">
-                            
-                        </ul>
-                    </div>
-                </div>*@
+                        <div class="col-sm-6 col-lg-4">
+                            <ul class="nav nav-pills nav-stacked">
+
+                            </ul>
+                        </div>
+                    </div>*@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="dropdown">
@@ -51,11 +58,25 @@
                                 </li>
                             </ul>
                         </li>
-                        @{if (User.Identity.IsAuthenticated)
+                        @{
+                            if (User.Identity.IsAuthenticated)
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Member" asp-action="BecomeMember">Become Member</a>
-                                </li>
+                                var userId = User.GetId();
+
+
+                                if (User.Identity.IsAuthenticated && !Member.IsMember(userId))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-controller="Member" asp-action="BecomeMember">Become Member</a>
+                                    </li>
+                                }
+                                else if (Member.IsMember(userId) && Member.MembershipExpiring(userId))
+                                {
+                                    <li class="nav-item">
+                                        <p>Your membership is expiring.</p>
+                                        <a class="nav-link text-danger" asp-controller="Member" asp-action="BecomeMember">Renew Membership</a>
+                                    </li>
+                                }
                             }
                         }
                     </ul>
@@ -66,9 +87,11 @@
     </header>
 
     <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        <div class="jumbotron">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted" style="background-color: lightgreen">

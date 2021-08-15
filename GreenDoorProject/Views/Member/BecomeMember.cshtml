@@ -3,8 +3,8 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Linq
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<Guest> SignInManager
+@inject UserManager<Guest> UserManager
 @inject IMemberService Member
 
 @model AddMemberFormModel
@@ -34,7 +34,9 @@
                                             <option value="@type.Id">@type.Name - $@type.Price</option>
                                         }
                                     </select>
-                                    <span asp-validation-for="MembershipId" class="small text-danger"></span>                                   
+                                    <span asp-validation-for="MembershipId" class="small text-danger"></span>
+
+                                    <input class="btn btn-primary col-md-12" type="submit" value="Get Membership" />
                                 </div>
                             </form>
                         </div>

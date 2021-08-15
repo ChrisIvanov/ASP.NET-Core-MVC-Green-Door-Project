@@ -1,9 +1,9 @@
-﻿using GreenDoorProject.Services.Movies;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace GreenDoorProject.Models.Cinema
+﻿namespace GreenDoorProject.Models.Cinema
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using GreenDoorProject.Services.Movies.Models;
+
     public class AllMoviesQueryModel
     {
         public string MovieTitle { get; set; }

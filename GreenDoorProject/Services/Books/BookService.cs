@@ -48,7 +48,8 @@
                 {
                     Id = b.Id,
                     BookTitle = b.BookTitle,
-                    AuthorName = new string($"{b.Author.FirstName} {b.Author.LastName}"),
+                    AuthorFirstName = b.Author.FirstName,
+                    AuthorLastName = b.Author.LastName,
                     ImagePath = b.ImagePath,
                     Description = b.Description,
                     Genre = b.Genre,
@@ -91,18 +92,18 @@
 
             var author = this.data.Authors
                 .Where(a => a.Id == book.AuthorId)
-                .Select(a => a.FirstName + " " + a.LastName)
                 .FirstOrDefault();
 
             var genre = this.data.Genres
-                .Where(g => g.Id == book.GenreId)
+                .Where(g => g.Id == book.GenreId) 
                 .FirstOrDefault();
 
             var bookDetails = new BookServiceModel
             {
                 Id = book.Id,
                 BookTitle = book.BookTitle,
-                AuthorName = author,
+                AuthorFirstName = author.FirstName,
+                AuthorLastName = author.LastName,
                 Genre = genre,
                 ImagePath = book.ImagePath,
                 Pages = book.Pages,
@@ -112,6 +113,37 @@
             };
 
             return bookDetails;
+        }
+
+        public bool Edit(string id,
+                string bookTitle,
+                string authorFirstName,
+                string authorLastName,
+                string imagePath,
+                int pages,
+                double rating,
+                string description,
+                byte[] content)
+        {
+            var bookData = this.data.Books.Find(id);
+
+            if (bookData == null)
+            {
+                return false;
+            }
+
+            bookData.BookTitle = bookTitle;
+            bookData.Author.FirstName = authorFirstName;
+            bookData.Author.LastName = authorLastName;
+            bookData.ImagePath = imagePath;
+            bookData.Pages = pages;
+            bookData.Rating = rating;
+            bookData.Description = description;
+            bookData.Content = content;
+
+            this.data.SaveChanges();
+
+            return true;
         }
 
         public IEnumerable<string> AllBookGenres()

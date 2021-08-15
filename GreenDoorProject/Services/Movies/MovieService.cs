@@ -5,6 +5,7 @@
     using System.Linq;
     using GreenDoorProject.Data;
     using GreenDoorProject.Models.Cinema;
+    using GreenDoorProject.Services.Movies.Models;
 
     public class MovieService : IMovieService
     {
@@ -100,7 +101,6 @@
             string director,
             string imagePath,
             int yearOfRelease,
-            decimal ticketPrice,
             string movieDuration,
             string description)
         {

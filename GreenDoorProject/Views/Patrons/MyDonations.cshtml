@@ -1,1 +1,19 @@
-﻿
+﻿@model UserPatronageViewModel
+
+@{ 
+    var totalPatronDays = (DateTime.UtcNow - Model.PatronSince).Days;
+}
+<div class="container">
+    <div class="jumbotron">
+        <div class="row col-md-3 text-center">
+            <p>@Model.Donations</p>
+        </div>
+        <div class="row col-md-3 text-center">
+            <p>@Model.Tokens</p>
+        </div>
+        <div class="row col-md-3 text-center">
+            <p>@Model.PatronSince.ToString(@"dd/MMM/yyyy") (Total days being a patron: (@totalPatronDays)</p>
+        </div>
+        
+    </div>
+</div>

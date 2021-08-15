@@ -1,20 +1,26 @@
 ﻿namespace GreenDoorProject.Controllers
 {
+    using System.Linq;
     using GreenDoorProject.Data;
     using GreenDoorProject.Data.Models;
     using GreenDoorProject.Infrastructure;
+    using GreenDoorProject.Models.Books;
     using GreenDoorProject.Models.Patron;
+    using GreenDoorProject.Services.Patrons;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
 
     public class PatronController : Controller
     {
         private readonly GreenDoorProjectDbContext data;
+        private readonly IPatronService patronage;
 
-        public PatronController(GreenDoorProjectDbContext data)
+        public PatronController(
+            GreenDoorProjectDbContext data, 
+            IPatronService patrons)
         {
             this.data = data;
+            this.patronage = patrons;
         }
 
         public IActionResult Donate()
@@ -26,40 +32,36 @@
         {
             var userId = this.User.GetId();
 
-            var patron = this.data.Patrons
-                .Where(p => p.UserId == userId)
-                .FirstOrDefault();
-
             decimal donations = model.DonationAmount;
-            int tokens = 0;
 
-            if (donations >= 5 && donations < 10) tokens = 2;
-            else if (donations >= 10 && donations < 20) tokens = 5;
-            else if (donations >= 20 && donations < 30) tokens = 12;
-            else if (donations >= 30 && donations < 40) tokens = 20;
-            else if (donations >= 40 && donations < 50) tokens = 35;
-            else if (donations >= 50 && donations < 60) tokens = 45;
-
-            if (patron == null)
+            if (!patronage.IsPatron(userId))
             {
-                var patorn = new Patron
+                var patron = new Patron
                 {
                     UserId = userId,
                     Donations = model.DonationAmount,
-                    Token = tokens
+                    Token = patronage.CalculateTokens(userId, donations)
                 };
+
+                this.data.Patrons.Add(patron);
             }
             else
             {
+                var patron = this.data.Patrons
+                .Where(p => p.UserId == userId)
+                .FirstOrDefault();
+
                 patron.Donations += model.DonationAmount;
-                patron.Token += tokens;
+                patron.Token += patronage.CalculateTokens(userId, donations);
             }
 
-            return RedirectToAction();
+            this.data.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Patron")]
         public IActionResult MyDonations()
         {
             var userId = this.User.GetId();
@@ -71,31 +73,13 @@
             var userPatronage = new UserPatronageViewModel
             {
                 Tokens = patron.Token,
-                Donations = patron.Donations
+                Donations = patron.Donations,
+                PatronSince = patron.PatronSince
             };
 
             return View(userPatronage);
         }
 
-        [HttpPut]
-        [Authorize]
-        public string UseToken()
-        {
-            var userId = this.User.GetId();
-
-            var patron = this.data.Patrons
-                .Where(p => p.UserId == userId)
-                .FirstOrDefault();
-
-            if (patron.Token > 0)
-            {
-                patron.Token -= 1;
-                return "You have used 1 token. Have a pleasant day.";
-            }
-            else
-            {
-                return "You have no tokens left. Consider becoming a member.";
-            }
-        }
+       
     }
 }

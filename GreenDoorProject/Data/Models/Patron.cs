@@ -14,5 +14,7 @@
         public decimal Donations { get; set; }
         
         public int Token { get; set; }
+
+        public DateTime PatronSince { get; set; } = DateTime.UtcNow;
     }
 }

@@ -1,7 +1,8 @@
 ﻿namespace GreenDoorProject.Services.Statistics
 {
-    using GreenDoorProject.Data;
     using System.Linq;
+    using GreenDoorProject.Data;
+    using GreenDoorProject.Services.Statistics.Models;
 
     public class StatisticsService : IStatisticsService
     {
@@ -15,7 +16,7 @@
             var totalBooks = this.data.Books.Count();
             var totalMovies = this.data.Movies.Count();
             var totalMusicAlbums = this.data.MusicAlbums.Count();
-            var totalUsers = this.data.Users.Count();
+            var totalGuests = this.data.Genres.Count();
             var totalMembers = this.data.Members.Count();
             var totalPatrons = this.data.Patrons.Count();
 
@@ -24,7 +25,7 @@
                 TotalBooks = totalBooks,
                 TotalMovies = totalMovies,
                 TotalMusicAlbums = totalMusicAlbums,
-                TotalUsers = totalUsers,
+                TotalGuests = totalGuests,
                 TotalMembers = totalMembers,
                 TotalPatrons = totalPatrons
             };

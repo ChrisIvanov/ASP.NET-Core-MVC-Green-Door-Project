@@ -1,5 +1,6 @@
 ﻿namespace GreenDoorProject.Services.Members
 {
+    using System;
     using System.Linq;
     using GreenDoorProject.Data;
 
@@ -14,8 +15,29 @@
             => this.data.Members
             .Any(m => m.UserId == userId);
 
-        //add expiration date for the membership
-        //and a notification for expiring membership
-        //in the last week before expiration
+        public bool MembershipExpiring(string userId)
+        {
+            var membership = this.data.Members
+                .Where(u => u.UserId == userId)
+                .FirstOrDefault();
+
+            var membershipEnd = membership.MembershipEnd.ToShortDateString();
+            var dateToday = DateTime.Now.ToShortDateString();
+
+            if (int.Parse(membershipEnd) - int.Parse(dateToday) < 7)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void RemoveMember(string userId)
+        {
+            var member = this.data.Members.Find(userId);
+
+            this.data.Members.Remove(member);
+            this.data.SaveChanges();
+        }
     }
 }

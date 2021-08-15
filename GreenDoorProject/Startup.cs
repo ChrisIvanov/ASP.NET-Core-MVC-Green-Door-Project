@@ -1,6 +1,7 @@
 namespace GreenDoorProject
 {
     using GreenDoorProject.Data;
+    using GreenDoorProject.Data.Models;
     using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Services.Books;
     using GreenDoorProject.Services.Members;
@@ -32,7 +33,7 @@ namespace GreenDoorProject
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<Guest>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
@@ -45,8 +46,8 @@ namespace GreenDoorProject
             services.AddControllersWithViews(options
                 => options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>());
 
-            services.Configure<ApiBehaviorOptions>(options 
-                => options.SuppressModelStateInvalidFilter = true);
+            services.AddScoped(typeof(UserManager<Guest>));
+            services.AddScoped(typeof(SignInManager<Guest>));
 
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<IMovieService, MovieService>();

@@ -16,6 +16,16 @@
 
         BookServiceModel Details(string id);
 
+        public bool Edit(string id,
+                string bookTitle,
+                string authorFirstName,
+                string authorLastName,
+                string imagePath,
+                int pages,
+                double rating,
+                string description,
+                byte[] content);
+
         IEnumerable<string> AllBookGenres();
 
         string GetAuthorId(string firstName, string lastName);

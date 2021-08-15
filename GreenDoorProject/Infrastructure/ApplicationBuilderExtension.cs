@@ -20,14 +20,11 @@
             using var scopedServices = app.ApplicationServices.CreateScope();
             var services = scopedServices.ServiceProvider;
 
-            
             MigrateDatabase(services);
 
             SeedGenres(services);
-
             SeedMemberships(services);
-
-            //SeedAdministrator(services);
+            SeedAdministrator(services);
 
             return app;
         }
@@ -85,13 +82,13 @@
 
         private static void SeedAdministrator(IServiceProvider services)
         {
-            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = services.GetRequiredService<UserManager<Guest>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
             Task
                 .Run(async () =>
                 {
-                    if (!await roleManager.RoleExistsAsync(AdministratorRoleName))
+                    if (await roleManager.RoleExistsAsync(AdministratorRoleName))
                     {
                         return;
                     }
@@ -100,19 +97,19 @@
 
                     await roleManager.CreateAsync(role);
 
-                    const string adminEmail = "admin@admin.com";
+                    const string adminEmail = "admin@gdp.com";
                     const string adminPassword = "admin12";
 
-                    var user = new User
+                    var guest = new Guest
                     {
                         Email = adminEmail,
                         UserName = adminEmail,
                         FullName = "Admin"
                     };
 
-                    await userManager.CreateAsync(user, adminPassword);
+                    await userManager.CreateAsync(guest, adminPassword);
 
-                    await userManager.AddToRoleAsync(user, role.Name);
+                    await userManager.AddToRoleAsync(guest, role.Name);
                 })
                 .GetAwaiter()
                 .GetResult();

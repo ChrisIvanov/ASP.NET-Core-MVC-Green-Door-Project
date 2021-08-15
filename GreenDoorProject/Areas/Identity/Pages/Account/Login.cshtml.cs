@@ -1,23 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
-namespace GreenDoorProject.Areas.Identity.Pages.Account
+﻿namespace GreenDoorProject.Areas.Identity.Pages.Account
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Threading.Tasks;
+    using GreenDoorProject.Data.Models;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<Guest> signInManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager)
+        public LoginModel(SignInManager<Guest> signInManager)
         {
-            this.userManager = userManager;
             this.signInManager = signInManager;
         }
 
@@ -81,7 +79,6 @@ namespace GreenDoorProject.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

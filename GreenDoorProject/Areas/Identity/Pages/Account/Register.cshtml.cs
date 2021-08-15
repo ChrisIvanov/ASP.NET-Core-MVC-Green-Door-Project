@@ -1,25 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
-
-namespace GreenDoorProject.Areas.Identity.Pages.Account
+﻿namespace GreenDoorProject.Areas.Identity.Pages.Account
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Threading.Tasks;
+    using GreenDoorProject.Data.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+
+    using static Areas.Guest.GuestConstants;
+
+    using static Data.DataConstants.Guest;
+
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<Guest> signInManager;
+        private readonly UserManager<Guest> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<Guest> userManager,
+            SignInManager<Guest> signInManager, 
+            RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
         [BindProperty]
@@ -31,8 +38,11 @@ namespace GreenDoorProject.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Display(Name = "Full Name")]
+            [StringLength(GuestnameMaxLength, MinimumLength = GuestnameMinLength)]
+            public string FullName { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -57,16 +67,27 @@ namespace GreenDoorProject.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser 
+                if (!await roleManager.RoleExistsAsync(GuestRoleName))
+                {
+                    var role = new IdentityRole { Name = GuestRoleName };
+
+                    await roleManager.CreateAsync(role);
+                }
+
+                var guest = new Guest 
                 { 
                     UserName = Input.Email, 
-                    Email = Input.Email 
+                    Email = Input.Email,
+                    FullName = Input.FullName
                 };
-                var result = await this.userManager.CreateAsync(user, Input.Password);
-               
+
+                var result = await this.userManager.CreateAsync(guest, Input.Password);
+
+                await userManager.AddToRoleAsync(guest, GuestRoleName);
+
                 if (result.Succeeded)
                 {
-                    await this.signInManager.SignInAsync(user, isPersistent: false);
+                    await this.signInManager.SignInAsync(guest, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
 
@@ -77,6 +98,20 @@ namespace GreenDoorProject.Areas.Identity.Pages.Account
             }
 
             return Page();
+        }
+
+        private static void SeedAdministrator(string guestId)
+        {
+            Task
+                .Run(async () =>
+                {
+
+                    await userManager.CreateAsync(guest, adminPassword);
+
+                    
+                })
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }

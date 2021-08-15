@@ -1,0 +1,23 @@
+﻿@model DonationsViewModel
+
+<div class="container">
+    <div class="jumbotron">
+        <div class="row col-md-12 text-center">
+            <h5>By donating to the Green Door Project you are helping us to upkeep and improve our service.</h5>
+            <h5>We will be glad to grant you partial access to some of our content and a certain amount of complementary tokens for your use only.</h5>
+
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="DonationAmount"></label>
+                    <input asp-for="DonationAmount" class="form-control" placeholder="Enter the desired amount in USD..." />
+                    <span asp-validation-for="DonationAmount" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PersonalNote"></label>
+                    <textarea asp-for="PersonalNote" rows="4" class="form-control" placeholder="Add your opinion or recommendation for us here"></textarea>
+                    <span asp-validation-for="PersonalNote" class="small text-danger"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

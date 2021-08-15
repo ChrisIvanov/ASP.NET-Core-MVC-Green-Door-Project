@@ -1,140 +1,75 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Linq
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<Guest> SignInManager
+@inject UserManager<Guest> UserManager
 @inject IMemberService Members
 @inject IPatronService Patron
 
 @model BookServiceModel
 
-<html>
-<head>
-    <style type="text/css">
-        .checked {
-            color: orange;
+
+
+@{var userId = User.GetId(); }
+
+<div class="container">
+    <div class="jumbotron">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="row">
+                <div class="col col-lg-6">
+                    <img src="@Model.ImagePath" alt="Book cover photo" width="400" height="400" />
+                </div>
+                <div class="col col-lg-6">
+                    <div class="row"><h5>Title: @Model.BookTitle</h5></div>
+                    <div class="row"><h5>Author: @Model.AuthorFirstName @Model.AuthorLastName</h5></div>
+                    <div class="row"><h5>Genre: @Model.Genre.Name</h5></div>
+                    <div class="row"><h5>Pages: @Model.Pages</h5></div>
+                    <div class="row"><h5>Rating: @Model.Rating</h5></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-lg-12">
+                    <h4>Description:</h4>
+                    <h6>@Model.Description</h6>
+                </div>
+            </div>
         }
-    </style>
-</head>
-<body>
-    @{
-        var userId = User.GetId();
 
-        <div class="container">
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <div class="jumbotron">
-                    <div class="row">
-                        <div class="col col-lg-6">
-                            <img src="@Model.ImagePath" alt="Book cover photo" width="400" height="400" />
-                        </div>
-                        <div class="col col-lg-6">
-                            <div class="row"><h5>Title: @Model.BookTitle</h5></div>
-                            <div class="row"><h5>Author: @Model.AuthorName</h5></div>
-                            <div class="row"><h5>Genre: @Model.Genre.Name</h5></div>
-                            <div class="row"><h5>Pages: @Model.Pages</h5></div>
-                            <div class="row">
-                                <h5>
-                                    Rating:
-                                   
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-lg-12">
-                            <h4>Description:</h4>
-                            <h6>@Model.Description</h6>
-                        </div>
-                    </div>
-
-                    @if (Members.IsMember(userId))
-                    {
-                        <div class="row justify-content-md-center">
-                            <div class="col col-md-3 text-center">
-                                <a asp-controller="Books"
-                                   asp-action="Read"
-                                   asp-route-id="@Model.Id"
-                                   class="btn btn-primary stretched-link">Read book</a>
-                            </div>
-                        </div>
-
-
-                    }
-                    else if (Patron.IsPatron(userId) && Patron.GetTokens(userId) > 0)
-                    {
-                        <div class="row">
-                            <div class="col col-md-3 text-center">
-                                <button type="button"
-                                        class="btn btn-primary"
-                                        data-toggle="modal"
-                                        data-target="#UseTokenModal">
-                                    Read book
-                                </button>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="row justify-content-md-center">
-                            <div class="col col-md-3 text-center">
-                                <button type="button"
-                                        class="btn btn-primary"
-                                        data-toggle="modal"
-                                        data-target="#BecomeMemberModal">
-                                    Read book
-                                </button>
-                            </div>
-                        </div>
-                    }
+        @if (Members.IsMember(userId) || (Patron.IsPatron(userId) && Patron.HasTokens(userId)))
+        {
+            <div class="row justify-content-md-center">
+                <div class="col col-md-3 text-center">
+                    <a asp-controller="Books"
+                       asp-action="Read"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-primary">Read book</a>
                 </div>
-            }
-        </div>
-    }
+            </div>
+        }
+        else
+        {
 
-    <!-- BecomeMemberModal -->
-    <div class="modal fade" id="BecomeMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">You are not a Member</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    You must purchase a Membership in order to read this book
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" asp-page="/Members/BecomeMember">Become Member Now!</button>
-                </div>
+        }
+    </div>
+</div>
+
+
+<div class="modal fade" id="becomeMemberModal" tabindex="-1" aria-labelledby="becomeMemberModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">You are not a member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Only members and active patrons can watch this movie.
+                Consider becoming a member.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, thanks</button>
+                <button type="button" class="btn btn-primary" asp-controller="Cinema" asp-action="WatchMovie" asp-route-id="@Model.Id">Save changes</button>
             </div>
         </div>
     </div>
-
-    <!--UseTokenModal-->
-    <div class="modal fade" id="UseTokenModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">You are a Patron</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Would you like to use a Patron Token to read the contents of this book?
-                    You have: @Patron.GetTokens(userId) Patron Tokens left.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" asp-controller="Books" asp-action="Read">Use Token!</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</body>
-</html>
+</div>

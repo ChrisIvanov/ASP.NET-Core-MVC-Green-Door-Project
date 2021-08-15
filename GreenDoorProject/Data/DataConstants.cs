@@ -91,13 +91,13 @@
             internal const int SongNameMaxLength = 20;
         }
 
-        internal class User
+        internal class Guest
         {
             internal const int FullNameMinLength = 3;
             internal const int FullNameMaxLength = 50;
 
-            internal const int UsernameMinLength = 3;
-            internal const int UsernameMaxLength = 20;
+            internal const int GuestnameMinLength = 3;
+            internal const int GuestnameMaxLength = 20;
 
             internal const int PasswordMinLength = 6;
             internal const int PasswordMaxLength = 20;

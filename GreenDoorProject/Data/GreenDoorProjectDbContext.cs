@@ -1,11 +1,10 @@
 ﻿namespace GreenDoorProject.Data
 {
     using GreenDoorProject.Data.Models;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class GreenDoorProjectDbContext : IdentityDbContext
+    public class GreenDoorProjectDbContext : IdentityDbContext<Guest>
     {
         public GreenDoorProjectDbContext
             (DbContextOptions<GreenDoorProjectDbContext> options)
@@ -24,7 +23,6 @@
         public DbSet<MusicAlbum> MusicAlbums { get; init; }
         public DbSet<Patron> Patrons { get; init; }
         public DbSet<Song> Songs { get; init; }
-        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -62,24 +60,24 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Patron>()
-                .HasOne<IdentityUser>()
+                .HasOne<Guest>()
                 .WithOne()
                 .HasForeignKey<Patron>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Member>()
-               .HasOne<IdentityUser>()
+               .HasOne<Guest>()
                .WithOne()
                .HasForeignKey<Member>(m => m.Id)
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Membership>()
                 .Property(m => m.Price)
-                .HasColumnType("decimal(2,2)");
+                .HasColumnType("decimal(18,2)");
 
             builder.Entity<Patron>()
                 .Property(p => p.Donations)
-                .HasColumnType("decimal(2,2)");
+                .HasColumnType("decimal(18,2)");
 
             //builder.Entity<Admin>()
             //   .HasMany(a => a.Books)
