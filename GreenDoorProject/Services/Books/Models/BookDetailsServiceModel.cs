@@ -16,8 +16,8 @@
 
         public string Genre { get; set; }
 
-        public byte[] Content { get; set; }
-
         public string Author { get; set; }
+
+        public byte[] Contents { get; set; }
     }
 }

@@ -20,10 +20,8 @@
 
         public string Description { get; set; }
 
-        public byte[] Contents { get; set; }
-
         public double Rating { get; set; }
 
-        public byte[] Content { get; set; }
+        public byte[] Contents { get; set; }
     }
 }

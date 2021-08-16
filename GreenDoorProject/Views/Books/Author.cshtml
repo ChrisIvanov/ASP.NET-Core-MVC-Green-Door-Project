@@ -1,3 +1,62 @@
-﻿@model AuthorDetailsViewModel 
+﻿@model AuthorDetailsViewModel
 
+@inject UserManager<Guest> UserManager
+@inject SignInManager<Guest> SignInManager
 
+@{
+    ViewBag.Title = Model.FullName;
+}
+
+<div class="container">
+    <div class="jumbotron">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="row">
+                <div class="col col-lg-6">
+                    <img src="@Model.ImagePath" alt="Book cover photo" width="400" height="400" />
+                </div>
+                <div class="col col-lg-6">
+                    <div class="row"><h5>Author: @Model.FullName</h5></div>
+                    <div class="row"><h5>Year of birth: @Model.YearOfBirth</h5></div>
+                    @if (Model.YearOfDeath != null)
+                    {
+                        <div class="row"><h5>Year of death: @Model.YearOfBirth</h5></div>
+                    }
+
+                    <div class="row">
+                        <h5>Famous works: </h5>
+                        @foreach (var book in Model.AuthorBooks)
+                        {
+                            <h5>@book</h5>
+                        }
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-lg-12">
+                    <h4>Author biography:</h4>
+                    <h6>@Model.Details</h6>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="text-black-50">
+                <h5>Oops!</h5>
+                <h5>Looks like you are not logged in.</h5>
+                <h5>
+                    Please
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
+                        <span class="glyphicon glyphicon-register"></span>Register
+                    </a>
+                    if you dont have an account or
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">
+                        <span class="glyphicon glyphicon-log-in"></span>Login
+                    </a>
+                    with your Green Door credentials.
+                </h5>
+            </div>
+        }
+    </div>
+</div>

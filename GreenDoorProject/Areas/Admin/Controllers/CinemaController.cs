@@ -11,7 +11,11 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    public class CinemaController : AdminController
+    using static AdminConstants;
+
+    [Area(AdminAreaName)]
+    [Authorize(Roles = AdministratorRoleName)]
+    public class CinemaController : Controller
     {
         private readonly GreenDoorProjectDbContext data;
         private readonly IMovieService movies;

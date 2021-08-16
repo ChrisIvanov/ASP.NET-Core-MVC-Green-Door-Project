@@ -13,7 +13,12 @@
     using System.IO;
     using Microsoft.AspNetCore.Http;
 
-    public class BooksController : AdminController
+    using static AdminConstants;
+    using GreenDoorProject.Services.Books.Models;
+
+    [Area(AdminAreaName)]
+    [Authorize(Roles = AdministratorRoleName)]
+    public class BooksController : Controller
     {
         private readonly IBookService books;
         private readonly GreenDoorProjectDbContext data;
@@ -24,6 +29,55 @@
         {
             this.data = data;
             this.books = books;
+        }
+
+        public IActionResult AdminAll([FromQuery] AllBooksQueryModel query) 
+        {
+            if (!data.Books.Any())
+            {
+                var error = "Currently there are no books in the library.";
+
+                var errorModel = new AllBooksQueryModel
+                {
+                    ModelError = error
+                };
+
+                return View(errorModel);
+            }
+
+            var queryResult = this.books.All(
+                query.Genre,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllBooksQueryModel.BooksPerPage,
+                query.ShowOnlyAuthors);
+
+            var bookGenres = this.books.AllBookGenres();
+
+            var totalBooks = queryResult.TotalBooks;
+
+            query.Genres = bookGenres;
+            query.Books = queryResult.Books;
+            query.TotalBooks = totalBooks;
+            query.ShowOnlyAuthors = queryResult.ShowOnly
+            return View(query);
+        }
+
+        public IActionResult AdminAllAuthors()
+        {
+            if (!data.Authors.Any())
+            {
+                return RedirectToAction("AdminAll", "Books");
+            }
+
+            var authors = this.data.Authors.ToList();
+
+            return View(new AuthorDetailsViewModel
+            {
+                Id = authors.Id,
+                FullName = authors.Full
+            });
         }
 
         [HttpGet]
@@ -84,7 +138,7 @@
                 ImagePath = bookModel.ImagePath,
                 Pages = bookModel.Pages,
                 Description = bookModel.Description,
-                Content = fileInBytes,
+                Contents = fileInBytes,
                 AuthorId = authorId
             };
 
@@ -93,7 +147,7 @@
 
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("AdminAll", "Books");
         }
 
         [Authorize]
@@ -128,7 +182,7 @@
             this.data.Authors.Add(author);
             this.data.SaveChanges();
 
-            return RedirectToAction("Add", "Books");
+            return RedirectToAction("AdminAllAuthors", "Books");
         }
 
         [Authorize]
@@ -139,7 +193,7 @@
                 ModelState.AddModelError
                     (string.Empty, "You are not authorized to make changes to the website content.");
 
-                return RedirectToAction("All", "Cinema");
+                return RedirectToAction("AdminAll", "Books");
             }
 
             var book = this.books.Details(id);
@@ -154,7 +208,7 @@
                 Pages = book.Pages,
                 Rating = book.Rating,
                 Description = book.Description,
-                Content = book.Content
+                Contents = book.Contents
             });
         }
 
@@ -176,14 +230,40 @@
                 book.Pages,
                 book.Rating,
                 book.Description,
-                book.Content);
+                book.Contents);
 
             if (!edited)
             {
                 return BadRequest();
             }
 
-            return RedirectToAction("All", "Books");
+            return RedirectToAction("AdminAll", "Books");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditAuthor(AuthorFormModel model, string id)
+        {
+
+            var author = this.data.Authors
+                .Where(b => b.Id == id)
+                .FirstOrDefault();
+
+            var edited = this.books.EditAuhtor(
+                id,
+                author.FirstName,
+                author.LastName,
+                author.ImagePath,
+                author.YearOfBirth,
+                author.YearOfDeath,
+                author.Details);
+
+            if (!edited)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("AdminAllAuthors", "Books");
         }
 
         [Authorize]
@@ -214,7 +294,36 @@
                 this.data.SaveChanges();
             }
 
-            return View("All", "Cinema");
+            return View("AdminAll", "Books");
+        }
+
+        public IActionResult DeleteAuthor(string id)
+        {
+            var author = this.data.Authors.Find(id);
+
+            if (author == null)
+            {
+                this.ModelState.AddModelError(nameof(BooksController), "There is no author with this Id in the database.");
+            }
+            else
+            {
+                var books = this.data.Books
+                    .Where(b => b.Author == author)
+                    .ToList();
+
+                if (books.Any())
+                {
+                    foreach (var book in books)
+                    {
+                        this.data.Books.Remove(book);
+                    }
+                }
+
+                this.data.Authors.Remove(author);             
+                this.data.SaveChanges();
+            }
+
+            return View("AdminAllAuthors", "Books");
         }
 
         private bool ExistingBookCheck(BookFormModel bookModel)

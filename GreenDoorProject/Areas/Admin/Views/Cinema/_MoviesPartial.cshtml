@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MovieServiceModel>
+
+@{
+    var i = 1;
+}
+
+<div class="jumbotron">
+    <div class="row">
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var movie in Model)
+                {
+                    <tr>
+                        <th scope="row">i</th>
+                        <td>@movie.ImagePath</td>
+                        <td>@movie.MovieTitle</td>
+                        <td><a asp-controller="Books" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary">Details</a></td>
+                        <td><a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-danger">Edit</a></td>
+                        <td><a asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-warning">Delete</a></td>
+                    </tr>
+
+                    @i++;
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -5,7 +5,11 @@
     using GreenDoorProject.Services.Members;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    
+
+    using static AdminConstants;
+
+    [Area(AdminAreaName)]
+    [Authorize(Roles = AdministratorRoleName)]
     public class MemberController : Controller
     {
         private readonly GreenDoorProjectDbContext data;

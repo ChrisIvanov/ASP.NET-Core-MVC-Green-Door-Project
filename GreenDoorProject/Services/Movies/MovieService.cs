@@ -62,7 +62,6 @@
                 _ => movieQuery.OrderByDescending(b => b.Id)
             };
 
-
             return new MovieQueryServiceModel
             {
                 TotalBooks = totalBooks,

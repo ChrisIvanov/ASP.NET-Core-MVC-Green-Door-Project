@@ -1,0 +1,45 @@
+﻿@model AllMoviesQueryModel
+
+@{
+    ViewData["Title"] = "All Movies";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ModelError))
+{
+    <div class="text-center alert-info">
+        <h3>@Model.ModelError</h3>
+    </div>
+}
+else
+{
+    <form method="get">
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label asp-for="SearchTerm"></label>
+                <input asp-for="SearchTerm" class="form-control" placeholder="Search..." />
+            </div>
+
+            <div class="form-group col-md-4">
+                <div class="form-group">
+                    <label asp-for="Sorting"></label>
+                    <select asp-for="Sorting" class="form-control">
+                        <option value="0" selected>Movie Title Ascending</option>
+                        <option value="1">Movie Title Descenging</option>
+                        <option value="2">Director Name Ascending</option>
+                        <option value="3">Director Name Descending</option>
+                        <option value="4">Rating Ascending</option>
+                        <option value="5">Rating Descending</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary d-none" value="Search" />
+    </form>
+    <div class="container">
+        <div class="jumbotron">
+
+            <partial name="_MoviesPartial" model="@Model.Movies" />
+
+        </div>
+    </div>
+}

@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using System.Linq
 
 @inject SignInManager<Guest> SignInManager
 @inject UserManager<Guest> UserManager
@@ -7,8 +6,6 @@
 @inject IPatronService Patron
 
 @model BookServiceModel
-
-
 
 @{var userId = User.GetId(); }
 
@@ -49,11 +46,12 @@
         }
         else
         {
-
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#becomeMemberModal">
+                Read book
+            </button>
         }
     </div>
 </div>
-
 
 <div class="modal fade" id="becomeMemberModal" tabindex="-1" aria-labelledby="becomeMemberModal" aria-hidden="true">
     <div class="modal-dialog">

@@ -99,19 +99,5 @@
 
             return Page();
         }
-
-        private static void SeedAdministrator(string guestId)
-        {
-            Task
-                .Run(async () =>
-                {
-
-                    await userManager.CreateAsync(guest, adminPassword);
-
-                    
-                })
-                .GetAwaiter()
-                .GetResult();
-        }
     }
 }

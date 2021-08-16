@@ -19,7 +19,8 @@
             string searchTerm,
             BookSorting sorting,
             int currentPage,
-            int booksPerPage)
+            int booksPerPage,
+            bool showOnlyAuthors)
         {
             var booksQuery = this.data.Books.AsQueryable();
 
@@ -75,12 +76,29 @@
                 .Distinct()
                 .ToList();
 
+            var authors = new List<AuthorDetailsViewModel>();
+
+            if (showOnlyAuthors)
+            {
+                authors = this.data.Authors.Select(a => new AuthorDetailsViewModel
+                {
+                    FullName = a.FirstName + " " + a.LastName,
+                    ImagePath = a.ImagePath,
+                    YearOfBirth = a.YearOfBirth,
+                    YearOfDeath = a.YearOfDeath,
+                    Details = a.Details
+                })
+                .ToList();
+            }
+
             return new BookQueryServiceModel
             {
                 TotalBooks = totalBooks,
                 CurrentPage = currentPage,
                 BooksPerPage = booksPerPage,
-                Books = books
+                ShowOnlyAuthors = showOnlyAuthors
+                Books = books,
+                Authors = authors
             };
         }
 
@@ -95,7 +113,7 @@
                 .FirstOrDefault();
 
             var genre = this.data.Genres
-                .Where(g => g.Id == book.GenreId) 
+                .Where(g => g.Id == book.GenreId)
                 .FirstOrDefault();
 
             var bookDetails = new BookServiceModel
@@ -109,7 +127,7 @@
                 Pages = book.Pages,
                 Rating = book.Rating,
                 Description = book.Description,
-                Content = book.Content
+                Contents = book.Contents
             };
 
             return bookDetails;
@@ -139,7 +157,35 @@
             bookData.Pages = pages;
             bookData.Rating = rating;
             bookData.Description = description;
-            bookData.Content = content;
+            bookData.Contents = content;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool EditAuhtor(
+            string id,
+            string firstName,
+            string lastName,
+            string imagePath,
+            int yearOfBirth,
+            int yearOfDeath,
+            string details)
+        {
+            var authorData = this.data.Authors.Find(id);
+
+            if (authorData == null)
+            {
+                return false;
+            }
+
+            authorData.FirstName = firstName;
+            authorData.LastName = lastName;
+            authorData.ImagePath = imagePath;
+            authorData.YearOfBirth = yearOfBirth;
+            authorData.YearOfDeath = yearOfDeath;
+            authorData.Details = details;
 
             this.data.SaveChanges();
 

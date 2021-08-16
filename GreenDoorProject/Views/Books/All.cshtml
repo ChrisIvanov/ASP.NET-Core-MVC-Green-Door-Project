@@ -1,95 +1,120 @@
 ﻿@model AllBooksQueryModel
 
-@using GreenDoorProject.Services.Books
+@inject SignInManager<Guest> SignInManager
 
 @{
     ViewData["Title"] = "All Books";
 }
 
-@if (!string.IsNullOrWhiteSpace(Model.ModelError))
-{
-    <div class="text-center alert-info">
-        <h4>@Model.ModelError</h4>
-    </div>
-}
-else
-{
-    <form method="get">
-        <div class="row">
-            <div class="form-group col-md-4">
-                <div class="form-group">
-                    <label asp-for="Genre"></label>
-                    <select asp-for="Genre" class="form-control">
-                        @foreach (var genre in Model.Genres)
-                        {
-                            <option value="@genre">@genre</option>
-                        }
-                    </select>
+<div class="container">
+    <div class="jumbotron">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            @if (!string.IsNullOrWhiteSpace(Model.ModelError))
+            {
+                <div class="text-center alert-info">
+                    <h4>@Model.ModelError</h4>
                 </div>
-            </div>
+            }
+            else
+            {
+                <form method="get">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Genre"></label>
+                                <select asp-for="Genre" class="form-control">
+                                    @foreach (var genre in Model.Genres)
+                                    {
+                                        <option value="@genre">@genre</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
 
-            <div class="form-group col-md-4">
-                <label asp-for="SearchTerm"></label>
-                <input asp-for="SearchTerm" class="form-control" placeholder="Search..." />
-            </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="SearchTerm"></label>
+                            <input asp-for="SearchTerm" class="form-control" placeholder="Search..." />
+                        </div>
 
-            <div class="form-group col-md-4">
-                <div class="form-group">
-                    <label asp-for="Sorting"></label>
-                    <select asp-for="Sorting" class="form-control">
-                        <option value="0" selected>Book Title Ascending</option>
-                        <option value="1">Book Title Descenging</option>
-                        <option value="2">Author Name Ascending</option>
-                        <option value="3">Author Name Descending</option>
-                        <option value="4">Rating Ascending</option>
-                        <option value="5">Rating Descending</option>
-                    </select>
+                        <div class="form-group col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Sorting"></label>
+                                <select asp-for="Sorting" class="form-control">
+                                    <option value="0" selected>Book Title Ascending</option>
+                                    <option value="1">Book Title Descenging</option>
+                                    <option value="2">Author Name Ascending</option>
+                                    <option value="3">Author Name Descending</option>
+                                    <option value="4">Rating Ascending</option>
+                                    <option value="5">Rating Descending</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-primary d-none" value="Search" />
+                </form>
+
+                <h1 style="margin: 2%; text-align: center;">@ViewData["Title"]</h1>
+
+                var previousPage = Model.CurrentPage - 1;
+                if (previousPage < 1)
+                {
+                    previousPage = 1;
+                }
+
+                var lastPage = Math.Ceiling((double)Model.TotalBooks / AllBooksQueryModel.BooksPerPage);
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+                           asp-controller="Books"
+                           asp-action="All"
+                           asp-route-currentPage="@previousPage"
+                           asp-route-genre="@Model.Genre"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sorting="@Model.Sorting">&lt;&lt;</a>
+                    </div>
+
+                    @{var shouldButtonBeDisabled = Model.CurrentPage == lastPage ||
+                                                                    !Model.Books.Any();
+                    }
+
+                    <div class="col-md-6">
+                        <a class="btn btn-primary float-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+                           asp-controller="Books"
+                           asp-action="All"
+                           asp-route-currentPage="@(Model.CurrentPage++)"
+                           asp-route-genre="@Model.Genre"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-sorting="@Model.Sorting">&gt;&gt;</a>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <input type="submit" class="btn btn-primary d-none" value="Search" />
-    </form>
 
-    <h1 style="margin: 2%; text-align: center;">@ViewData["Title"]</h1>
+                if (!Model.Books.Any())
+                {
+                    <h2 class="text-center">There are no books that match your search criteria.</h2>
+                }
 
-    var previousPage = Model.CurrentPage - 1;
-    if (previousPage < 1)
-    {
-        previousPage = 1;
-    }
-
-    var lastPage = Math.Ceiling((double)Model.TotalBooks / AllBooksQueryModel.BooksPerPage);
-
-    <div class="row">
-        <div class="col-md-6">
-            <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
-               asp-controller="Books"
-               asp-action="All"
-               asp-route-currentPage="@previousPage"
-               asp-route-genre="@Model.Genre"
-               asp-route-searchTerm="@Model.SearchTerm"
-               asp-route-sorting="@Model.Sorting">&lt;&lt;</a>
-        </div>
-
-        @{var shouldButtonBeDisabled = Model.CurrentPage == lastPage ||
-                                              !Model.Books.Any();
+                <partial name="_BooksPartial" model="@Model.Books" />
+            }
         }
-
-        <div class="col-md-6">
-            <a class="btn btn-primary float-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
-               asp-controller="Books"
-               asp-action="All"
-               asp-route-currentPage="@(Model.CurrentPage++)"
-               asp-route-genre="@Model.Genre"
-               asp-route-searchTerm="@Model.SearchTerm"
-               asp-route-sorting="@Model.Sorting">&gt;&gt;</a>
-        </div>
+        else
+        {
+            <div class="text-black-50">
+                <h5>Oops!</h5>
+                <h5>Looks like you are not logged in.</h5>
+                <h5>
+                    Please
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">
+                        <span class="glyphicon glyphicon-register"></span>Register
+                    </a>
+                    if you dont have an account or
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">
+                        <span class="glyphicon glyphicon-log-in"></span>Login
+                    </a>
+                    with your Green Door credentials.
+                </h5>
+            </div>
+        }
     </div>
-
-    if (!Model.Books.Any())
-    {
-        <h2 class="text-center">There are no books that match your search criteria.</h2>
-    }
-
-    <partial name="_BooksPartial" model="@Model.Books" />
-}
+</div>

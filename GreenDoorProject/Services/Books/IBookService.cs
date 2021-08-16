@@ -12,7 +12,8 @@
             string searchTerm,
             BookSorting sorting,
             int currentPage,
-            int booksPerPage);
+            int booksPerPage,
+            bool showOnlyAuthors);
 
         BookServiceModel Details(string id);
 
@@ -25,6 +26,14 @@
                 double rating,
                 string description,
                 byte[] content);
+
+        public bool EditAuhtor(string id,
+                string firstName,
+                string lastName,
+                string imagePath,
+                int yearOfBirth,
+                int yearOfDeath,
+                string details);
 
         IEnumerable<string> AllBookGenres();
 

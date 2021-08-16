@@ -47,7 +47,7 @@
         public string Description { get; set; }
 
         [Required]
-        public byte[] Content { get; set; }
+        public byte[] Contents { get; set; }
 
     }
 }

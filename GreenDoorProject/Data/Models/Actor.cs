@@ -20,6 +20,10 @@
         public string LastName { get; set; }
 
         [Required]
+        [Url]
+        public string ImagePath { get; set; }
+
+        [Required]
         [Range(YearOfBirthMinValue, YearOfBirthMaxValue)]
         public int YearOfBirth { get; set; }
 

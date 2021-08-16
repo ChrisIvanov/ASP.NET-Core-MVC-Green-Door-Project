@@ -12,6 +12,10 @@
 
         public string ModelError { get; init; }
 
-        public IEnumerable<BookServiceModel> Books { get; init; }
+        public bool ShowOnlyAuthors { get; init; }
+
+        public IEnumerable<BookServiceModel> Books { get; init; } = new List<BookServiceModel>();
+
+        public IEnumerable<AuthorDetailsViewModel> Authors { get; init; } = new List<AuthorDetailsViewModel>();
     }
 }

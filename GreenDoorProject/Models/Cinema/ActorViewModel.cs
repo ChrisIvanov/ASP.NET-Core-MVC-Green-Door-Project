@@ -8,6 +8,8 @@
 
         public string LastName { get; set; }
 
+        public string ImagePath { get; set; }
+
         public int YearOfBirth { get; set; }
 
         public int? YearOfDeath { get; set; }

@@ -14,7 +14,9 @@
         public string SearchTerm { get; set; }
 
         public BookSorting Sorting { get; set; }
-        
+
+        public bool ShowOnlyAuthors { get; set; }
+
         public int CurrentPage { get; set; }
 
         public const int BooksPerPage = 20;
@@ -24,5 +26,7 @@
         public int TotalBooks { get; set; }
         
         public IEnumerable<BookServiceModel> Books { get; set; }
+
+        public IEnumerable<AuthorDetailsViewModel> Authors { get; set; }
     }
 }
