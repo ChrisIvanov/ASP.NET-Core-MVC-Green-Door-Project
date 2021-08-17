@@ -19,9 +19,13 @@
         public string AlbumTitle { get; set; }
 
         [Required]
+        [Url]
+        public string ImagePath { get; set; }
+
+        [Required]
         [Range(0, 10)]
         public double Rating { get; set; }
 
-        public IEnumerable<Song> Songs { get; set; } = new List<Song>();
+        public ICollection<Song> Songs { get; set; } = new List<Song>();
     }
 }

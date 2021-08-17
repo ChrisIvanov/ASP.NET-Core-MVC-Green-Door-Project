@@ -6,6 +6,7 @@ namespace GreenDoorProject
     using GreenDoorProject.Services.Books;
     using GreenDoorProject.Services.Members;
     using GreenDoorProject.Services.Movies;
+    using GreenDoorProject.Services.Music;
     using GreenDoorProject.Services.Patrons;
     using GreenDoorProject.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
@@ -50,6 +51,7 @@ namespace GreenDoorProject
             services.AddScoped(typeof(SignInManager<Guest>));
 
             services.AddTransient<IBookService, BookService>();
+            services.AddTransient<IMusicService, MusicService>();
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IPatronService, PatronService>();

@@ -4,42 +4,57 @@
     ViewData["Title"] = "All Movies";
 }
 
-@if (!string.IsNullOrWhiteSpace(Model.ModelError))
-{
-    <div class="text-center alert-info">
-        <h3>@Model.ModelError</h3>
-    </div>
-}
-else
-{
-    <form method="get">
-        <div class="row">
-            <div class="form-group col-md-4">
-                <label asp-for="SearchTerm"></label>
-                <input asp-for="SearchTerm" class="form-control" placeholder="Search..." />
-            </div>
+@{
+    if (!string.IsNullOrWhiteSpace(Model.ModelError))
+    {
+        <div class="text-center alert-info">
+            <h3>@Model.ModelError</h3>
+        </div>
+    }
+    else
+    {
+        if (User.IsAdmin())
+        {
 
-            <div class="form-group col-md-4">
-                <div class="form-group">
-                    <label asp-for="Sorting"></label>
-                    <select asp-for="Sorting" class="form-control">
-                        <option value="0" selected>Movie Title Ascending</option>
-                        <option value="1">Movie Title Descenging</option>
-                        <option value="2">Director Name Ascending</option>
-                        <option value="3">Director Name Descending</option>
-                        <option value="4">Rating Ascending</option>
-                        <option value="5">Rating Descending</option>
-                    </select>
+            <form method="get">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label asp-for="SearchTerm"></label>
+                        <input asp-for="SearchTerm" class="form-control" placeholder="Search..." />
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Sorting"></label>
+                            <select asp-for="Sorting" class="form-control">
+                                <option value="0" selected>Movie Title Ascending</option>
+                                <option value="1">Movie Title Descenging</option>
+                                <option value="2">Director Name Ascending</option>
+                                <option value="3">Director Name Descending</option>
+                                <option value="4">Rating Ascending</option>
+                                <option value="5">Rating Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" class="btn btn-primary d-none" value="Search" />
+            </form>
+            <div class="container">
+                <div class="jumbotron">
+
+                    <partial name="_MoviesPartial" model="@Model.Movies" />
+
                 </div>
             </div>
-        </div>
-        <input type="submit" class="btn btn-primary d-none" value="Search" />
-    </form>
-    <div class="container">
-        <div class="jumbotron">
-
-            <partial name="_MoviesPartial" model="@Model.Movies" />
-
-        </div>
-    </div>
+        }
+        else
+        {
+            <div class="text-black-50">
+                <h5>Oops!</h5>
+                <h5>You are not authorized to view the contents of this web page.</h5>
+                <h5>Please contact us for more information.</h5>
+                <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Return to Home Page</a>
+            </div>
+        }
+    }
 }

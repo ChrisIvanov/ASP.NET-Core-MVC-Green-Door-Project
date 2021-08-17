@@ -23,15 +23,6 @@
             this.members = members;
         }
 
-        [Authorize]
-        public IActionResult RemoveMember(string userId)
-        {
-            if (User.IsAdmin())
-            {
-                members.RemoveMember(userId);
-            }
-
-            return RedirectToAction("Index", "Admin");
-        }
+        
     }
 }

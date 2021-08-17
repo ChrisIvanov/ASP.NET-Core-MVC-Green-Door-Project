@@ -1,0 +1,47 @@
+﻿@model AllMusicQueryModel
+
+@{
+    var i = 1;
+
+    if (User.IsAdmin())
+    {
+        <table class="table">
+            <thead>
+                <tr class="table">
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table">
+                    @foreach (var song in Model.Songs)
+                    {
+                        <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                            <h6>@i</h6>
+                        </td>
+                        <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                            <h6>@song.Name</h6>
+                        </td>
+                        <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                            <h6>(@song.SongDuration)</h6>
+                        </td>
+                        i++;
+
+                        <td><a asp-area="Admin" asp-controller="Music" asp-action="EditSong" asp-route-id="@song.Id" class="btn btn-danger">Edit</a></td>
+                        <td><a asp-area="Admin" asp-controller="Music" asp-action="DeleteSong" asp-route-id="@song.Id" class="btn btn-warning">Delete</a></td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="text-black-50">
+            <h5>Oops!</h5>
+            <h5>You are not authorized to view the contents of this web page.</h5>
+            <h5>Please contact us for more information.</h5>
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Return to Home Page</a>
+        </div>
+    }
+}

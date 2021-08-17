@@ -9,7 +9,6 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
 
     using static Areas.Guest.GuestConstants;
-
     using static Data.DataConstants.Guest;
 
     [AllowAnonymous]

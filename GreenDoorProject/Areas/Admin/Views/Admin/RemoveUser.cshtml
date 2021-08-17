@@ -1,0 +1,15 @@
+﻿@model UserDetails
+@{
+}
+
+<div class="container">
+    <div class="jumbotron">
+        <div class="row col col-md-12 text-center">
+            <h5>Are you sure you want to remove @Model.UserName from the database?</h5><br />
+        </div>
+        <div class="row col col-md-12">
+            <a asp-area="Admin" asp-controller="Books" asp-action="Index" class="btn btn-primary">No</a>
+            <a asp-area="Admin" asp-controller="Books" asp-action="DeleteSong" asp-route-id="@Model.Id" class="btn btn-danger">Yes</a>
+        </div>
+    </div>
+</div>

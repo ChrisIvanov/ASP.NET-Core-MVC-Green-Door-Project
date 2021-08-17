@@ -96,7 +96,7 @@
                 TotalBooks = totalBooks,
                 CurrentPage = currentPage,
                 BooksPerPage = booksPerPage,
-                ShowOnlyAuthors = showOnlyAuthors
+                ShowOnlyAuthors = showOnlyAuthors,
                 Books = books,
                 Authors = authors
             };

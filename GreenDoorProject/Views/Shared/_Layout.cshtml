@@ -16,78 +16,67 @@
 </head>
 <body style="background-image: url(https://i.pinimg.com/736x/bd/0c/a7/bd0ca7165e9db6cf3fb141afd5397965--turquoise-door-purple-door.jpg)">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-secondary box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Green Door Project</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                @*<div class="row">
-                        <div class="col-sm-6 col-lg-4">
-                            <ul class="nav nav-pills nav-stacked">
+                <div class="row col-md-5">
+                    <div class="row col-md-6">
+                        <a class="navbar-brand bg-success" asp-area="" asp-controller="Home" asp-action="Index">Green Door Project</a>
+                    </div>
+                    <div class="row col-md-6">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span >Menu</span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu">
 
-                            </ul>
+                                <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="All">Books</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Cinema" asp-action="All">Movies</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Music" asp-action="All">Music</a>
+
+                                @if (User.IsAdmin())
+                                {
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="Add">Add Book</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="AddAuthor">Add Author</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="Add">Add Movie</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="AddActor">Add Actor</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="AddActorToMovie">Add Actor to Movie</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Music" asp-action="AdminAdd">Add Music Album</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Music" asp-action="AddActorToMovie">Add Actor to Movie</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="AddActorToMovie">Add Actor to Movie</a>
+                                }
+
+                            </div>
                         </div>
-                    </div>*@
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown">Menu</a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Cinema" asp-action="Add">Add Movie</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Cinema" asp-action="All">All Movies</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Cinema" asp-action="AddActor">Add Actor</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Cinema" asp-action="AddActorToMovie">Add Actor to Movie</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Books" asp-action="Add">Add Book</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Books" asp-action="All">All Books</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Books" asp-action="AddAuthor">Add Author</a>
-                                </li>
-                            </ul>
-                        </li>
-                        @{
-                            if (User.Identity.IsAuthenticated)
-                            {
-                                var userId = User.GetId();
-
-
-                                if (User.Identity.IsAuthenticated && !Member.IsMember(userId))
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-controller="Member" asp-action="BecomeMember">Become Member</a>
-                                    </li>
-                                }
-                                else if (Member.IsMember(userId) && Member.MembershipExpiring(userId))
-                                {
-                                    <li class="nav-item">
-                                        <p>Your membership is expiring.</p>
-                                        <a class="nav-link text-danger" asp-controller="Member" asp-action="BecomeMember">Renew Membership</a>
-                                    </li>
-                                }
-                            }
-                        }
-                    </ul>
-                    <partial name="_LoginPartial" />
+                    </div>
                 </div>
+
+                @{
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        var userId = User.GetId();
+
+                        if (!Member.IsMember(userId))
+                        {
+                            <div class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Member" asp-action="BecomeMember"></a>
+                            </div>
+                        }
+                        else if (Member.MembershipExpiring(userId))
+                        {
+                            <div class="nav-item">
+                                <p>Your membership is expiring.</p>
+                                <a class="nav-link text-danger" asp-controller="Member" asp-action="BecomeMember">Renew Membership</a>
+                            </div>
+                        }
+                    }
+                }
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>
 
     <div class="container">
-        <div class="jumbotron">
+        <div class="jumbotron bg-dark">
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>

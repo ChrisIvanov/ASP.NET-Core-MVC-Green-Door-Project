@@ -22,5 +22,7 @@
         public string ModelError { get; set; }
 
         public int TotalBooks { get; set; }
+
+        public bool ShowOnlyAuthors { get; set; }
     }
 }

@@ -1,0 +1,34 @@
+﻿@model AllMusicQueryModel
+
+@{
+    if (User.IsAdmin())
+    {
+        <div class="row">
+            @foreach (var album in Model.Albums)
+            {
+                <div class="col-md-3">
+                    <div class="card border border-info">
+                        <img class="card-img-top" src="@album.ImagePath" alt="@album.AlbumTitle by @album.Artist" width="250" height="300" />
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-center">@album.AlbumTitle</h5>
+                            <h5 class="card-body text-center">@album.Artist</h5>
+
+                            <a asp-area="Admin" asp-controller="Music" asp-action="AlbumDetails" asp-route-id="@album.Id" class="btn btn-danger">Details</a>
+                            <a asp-area="Admin" asp-controller="Music" asp-action="Edit" asp-route-id="@album.Id" class="btn btn-danger">Edit</a>
+                            <a asp-area="Admin" asp-controller="Music" asp-action="Delete" asp-route-id="@album.Id" class="btn btn-warning">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-black-50">
+            <h5>Oops!</h5>
+            <h5>You are not authorized to view the contents of this web page.</h5>
+            <h5>Please contact us for more information.</h5>
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Return to Home Page</a>
+        </div>
+    }
+}

@@ -1,0 +1,98 @@
+﻿@inject SignInManager<Guest> SignInManager
+@inject UserManager<Guest> UserManager
+@inject IMemberService Members
+@inject IPatronService Patron
+
+@using Microsoft.AspNetCore.Identity
+
+@model MusicServiceModel
+
+@{
+    var userId = User.GetId();
+    var i = 1;
+}
+
+<div class="container">
+    <div class="jumbotron">
+        @{
+            if (SignInManager.IsSignedIn(User))
+            { <div class="row">
+                    <div class="col col-lg-6">
+                        <img src="@Model.ImagePath" alt="Book cover photo" width="400" height="400" />
+                    </div>
+
+                    <div class="col col-lg-6">
+                        <div class="row"><h5>Album Title: @Model.AlbumTitle</h5></div>
+                        <div class="row"><h5>Artist: @Model.Artist </h5></div>
+                        <div class="row"><h5>Rating: @Model.Rating</h5></div>
+                    </div>
+
+                    <h4>Songs:</h4>
+                    <table class="table">
+                        <thead>
+                            <tr class="table">
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Last</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table">
+                                @foreach (var song in Model.Songs)
+                                {
+                                    <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                                        <h6>@i</h6>
+                                    </td>
+                                    <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                                        <h6>@song.Name</h6>
+                                    </td>
+                                    <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                                        <h6>(@song.SongDuration)</h6>
+                                    </td>
+                                    i++;
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    @if (Members.IsMember(userId) || (Patron.IsPatron(userId) && Patron.HasTokens(userId)))
+                    {
+                        <div class="row justify-content-md-center">
+                            <div class="col col-md-3 text-center">
+                                <a asp-controller="Music"
+                                   asp-action="Play"
+                                   asp-route-id="@Model.Id"
+                                   class="btn btn-primary">Play album</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#becomeMemberModal">
+                            Read book
+                        </button>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="becomeMemberModal" tabindex="-1" aria-labelledby="becomeMemberModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">You are not a member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Only members and active patrons can watch this movie.
+                Consider becoming a member.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, thanks</button>
+                <button type="button" class="btn btn-primary" asp-controller="Member" asp-action="BecomeMember" asp-route-id="@Model.Id">Become Member</button>
+            </div>
+        </div>
+    </div>
+</div>

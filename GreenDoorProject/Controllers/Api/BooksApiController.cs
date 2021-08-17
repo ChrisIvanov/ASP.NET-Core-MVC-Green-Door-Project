@@ -21,6 +21,7 @@
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
-                query.BooksPerPage);
+                query.BooksPerPage,
+                query.ShowOnlyAuthors);
     }
 }

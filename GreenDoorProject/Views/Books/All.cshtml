@@ -7,13 +7,12 @@
 }
 
 <div class="container">
-    <div class="jumbotron">
         @if (SignInManager.IsSignedIn(User))
         {
             @if (!string.IsNullOrWhiteSpace(Model.ModelError))
             {
                 <div class="text-center alert-info">
-                    <h4>@Model.ModelError</h4>
+                    <h3>@Model.ModelError</h3>
                 </div>
             }
             else
@@ -116,5 +115,4 @@
                 </h5>
             </div>
         }
-    </div>
 </div>

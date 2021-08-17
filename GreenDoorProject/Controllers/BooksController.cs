@@ -51,7 +51,8 @@
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
-                AllBooksQueryModel.BooksPerPage);
+                AllBooksQueryModel.BooksPerPage,
+                query.ShowOnlyAuthors);
 
             var bookGenres = this.books.AllBookGenres();
 
@@ -85,7 +86,7 @@
                 {
                     Title = b.BookTitle,
                     Author = b.Author.FirstName + " " + b.Author.LastName,
-                    Contents = b.Content
+                    Contents = b.Contents
                 })
                 .FirstOrDefault();
 

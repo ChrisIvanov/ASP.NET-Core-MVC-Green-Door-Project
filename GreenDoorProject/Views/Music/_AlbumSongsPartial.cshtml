@@ -1,0 +1,32 @@
+﻿@model IEnumerable<SongsDetailsViewModel>
+
+@{
+    var i = 1;
+}
+
+<table class="table">
+    <thead>
+        <tr class="table">
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Song Duration</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="table">
+            @foreach (var song in Model)
+            {
+                <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                    <h6>@i</h6>
+                </td>
+                <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                    <h6>@song.Name</h6>
+                </td>
+                <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                    <h6>(@song.SongDuration)</h6>
+                </td>
+                i++;
+            }
+        </tr>
+    </tbody>
+</table>

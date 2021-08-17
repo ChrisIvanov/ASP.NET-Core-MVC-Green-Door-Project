@@ -1,0 +1,52 @@
+﻿@model AlbumFormModel
+
+@{
+    ViewBag.Title = "Album Form";
+}
+
+@{
+    if (User.IsAdmin())
+    {
+        <div class="container">
+            <div class="jumbotron">
+                <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+                    <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label asp-for="AlbumTitle"></label>
+                            <input asp-for="AlbumTitle" class="form-control" placeholder="Dark Side of The Moon, Fat of  The Land..." />
+                            <span asp-validation-for="AlbumTitle" class="small text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Artist"></label>
+                            <input asp-for="Artist" class="form-control" placeholder="Pink Floyd, The Prodigy..." />
+                            <span asp-validation-for="Artist" class="small text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ImagePath"></label>
+                            <input asp-for="ImagePath" class="form-control" placeholder="Add an URL to the image..." />
+                            <span asp-validation-for="ImagePath" class="small text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Rating"></label>
+                            <input asp-for="Rating" class="form-control" placeholder="0 - 10" />
+                            <span asp-validation-for="Rating" class="small text-danger"></span>
+                        </div>
+
+                        <input class="btn btn-primary" type="submit" value="Save" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-black-50">
+            <h5>Oops!</h5>
+            <h5>You are not authorized to view the contents of this web page.</h5>
+            <h5>Please contact us for more information.</h5>
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Return to Home Page</a>
+        </div>
+    }
+}

@@ -1,0 +1,44 @@
+﻿@model AllUsers
+
+@{
+    var i = 1;
+}
+
+<div class="container">
+    <div class="jumbotron">
+        <table class="table">
+            <thead>
+                <tr class="table">
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table">
+                    @foreach (var user in Model.Users)
+                    {
+                        var isMember = user.IsMemeber;
+                        var isPatron = user.IsPatron;
+
+                        <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                            <h6>@i</h6>
+                        </td>
+                        <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                            <h6>@user.UserName</h6>
+                        </td>
+                        <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                            <h6>@isMember</h6>
+                        </td>
+                        <td class="table-@((i % 2 == 0) ? "secondary" : "success")">
+                            <h6>@isPatron</h6>
+                        </td>
+                        i++;
+
+                        <td><a asp-area="Admin" asp-controller="Music" asp-action="DeleteSong" asp-route-id="@user.Id" class="btn btn-warning">Delete</a></td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -48,19 +48,18 @@
             }
             else
             {
-                <p class="display-1">Oops!</p>
+                <h5 class="display-1">Oops!</h5>
                 <br />
-                <p>It looks like you are not logged in your account...</p>
+                <h6>It looks like you are not logged in your account...</h6>
                 <br />
-                <a>
+                <h6>
                     Please,
-                    <p asp-area="Identity" asp-page="/Index/Login">Log in</p> with your account details or
-                    <p asp-area="Identity" asp-page="/Index/Register">Register</p> if you still don't have an account.
-                </a>
-                <br />
-            }
-        </div>
+                    <a asp-area="Identity" asp-page="/Index/Login">Log in</a>with your account details or
+                    <a asp-area="Identity" asp-page="/Index/Register">Register</a>if you still don't have an account.
+                </h6> <br />
+                }
     </div>
+</div>
 }
 
 <!-- Modal -->
@@ -75,7 +74,7 @@
                 Continue to movie
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >No, thanks</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, thanks</button>
                 <button type="button" class="btn btn-primary" asp-controller="Cinema" asp-action="WatchMovie" asp-route-id="@Model.Id">Watch</button>
             </div>
         </div>

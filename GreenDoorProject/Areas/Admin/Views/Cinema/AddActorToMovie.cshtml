@@ -3,37 +3,53 @@
     ViewBag.Title = "Add Actor To Movie";
 }
 
-<div class="container">
-    <div class="jumbotron">
-        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-            <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+@{
+    if (User.IsAdmin())
+    {
 
-            <form method="post">
-                <div class="form-group">
-                    <label asp-for="ActorId"></label>
-                    <select asp-for="ActorId" class="form-control">
-                        @foreach (var actor in Model.Actors)
-                        {
-                            var actorName = actor.FirstName + " " + actor.LastName;
 
-                            <option value="@actor.Id">@actorName</option>
-                        }
-                    </select>
+        <div class="container">
+            <div class="jumbotron">
+                <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+                    <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+
+                    <form method="post">
+                        <div class="form-group">
+                            <label asp-for="ActorId"></label>
+                            <select asp-for="ActorId" class="form-control">
+                                @foreach (var actor in Model.Actors)
+                                {
+                                    var actorName = actor.FirstName + " " + actor.LastName;
+
+                                    <option value="@actor.Id">@actorName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MovieId"></label>
+                            <select asp-for="MovieId" class="form-control">
+                                @foreach (var movie in Model.Movies)
+                                {
+                                    <option value="@movie.Id">@movie.MovieTitle</option>
+                                }
+                            </select>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Save" />
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label asp-for="MovieId"></label>
-                    <select asp-for="MovieId" class="form-control">
-                        @foreach (var movie in Model.Movies)
-                        {
-                            <option value="@movie.Id">@movie.MovieTitle</option>
-                        }
-                    </select>
-                </div>
-                <input class="btn btn-primary" type="submit" value="Save" />
-            </form>
+            </div>
         </div>
-    </div>
-</div>
+    }
+    else
+    {
+        <div class="text-black-50">
+            <h5>Oops!</h5>
+            <h5>You are not authorized to view the contents of this web page.</h5>
+            <h5>Please contact us for more information.</h5>
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Return to Home Page</a>
+        </div>
+    }
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

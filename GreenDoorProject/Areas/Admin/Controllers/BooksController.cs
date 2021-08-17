@@ -60,7 +60,8 @@
             query.Genres = bookGenres;
             query.Books = queryResult.Books;
             query.TotalBooks = totalBooks;
-            query.ShowOnlyAuthors = queryResult.ShowOnly
+            query.ShowOnlyAuthors = queryResult.ShowOnlyAuthors;
+
             return View(query);
         }
 
@@ -73,15 +74,27 @@
 
             var authors = this.data.Authors.ToList();
 
-            return View(new AuthorDetailsViewModel
+            var retrunAuthors = new List<AuthorDetailsViewModel>();
+
+            foreach (var author in authors)
             {
-                Id = authors.Id,
-                FullName = authors.Full
-            });
+                retrunAuthors.Add(new AuthorDetailsViewModel
+                {
+                    Id = author.Id,
+                    FullName = author.FirstName + " " + author.LastName,
+                    ImagePath = author.ImagePath,
+                    YearOfBirth = author.YearOfBirth,
+                    YearOfDeath = author.YearOfDeath,
+                    Details = author.Details
+                });
+            }
+            
+
+            return View(retrunAuthors);
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public IActionResult Add()
         {
             return View(new BookFormModel
@@ -216,7 +229,6 @@
         [Authorize]
         public IActionResult Edit(BookFormModel model, string id)
         {
-
             var book = this.data.Books
                 .Where(b => b.Id == id)
                 .FirstOrDefault();

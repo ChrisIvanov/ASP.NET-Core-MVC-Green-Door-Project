@@ -1,0 +1,38 @@
+﻿@model SongFormModel
+
+@{
+    if (User.IsAdmin())
+    {
+        <div class="container">
+            <div class="jumbotron">
+                <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+                    <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label asp-for="Name"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Another birck in the wall, Breathe..." />
+                            <span asp-validation-for="Name" class="small text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SongDuration"></label>
+                            <input asp-for="SongDuration" class="form-control" placeholder="2:30" />
+                            <span asp-validation-for="SongDuration" class="small text-danger"></span>
+                        </div>
+
+                        <input class="btn btn-primary" type="submit" value="Save" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-black-50">
+            <h5>Oops!</h5>
+            <h5>You are not authorized to view the contents of this web page.</h5>
+            <h5>Please contact us for more information.</h5>
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Return to Home Page</a>
+        </div>
+    }
+}

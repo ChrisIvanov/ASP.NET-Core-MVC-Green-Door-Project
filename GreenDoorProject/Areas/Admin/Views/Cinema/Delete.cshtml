@@ -2,12 +2,26 @@
 
 <div class="container">
     <div class="jumbotron">
-        <div class="row col col-md-12 text-center">
-            <h5>Are you sure you want to remove @Model.MovieTitle from the database?</h5><br />
-        </div>
-        <div class="row col col-md-12">
-            <a asp-controller="Cinema" asp-action="All" class="btn btn-primary">No</a>
-            <a asp-controller="Cinema" asp-action="Delete" asp-route-id="@Model" class="btn btn-danger">Yes</a>
-        </div>
+        @{
+            if (User.IsAdmin())
+            {
+            <div class="row col col-md-12 text-center">
+                <h5>Are you sure you want to remove @Model.MovieTitle from the database?</h5><br />
+            </div>
+            <div class="row col col-md-12">
+                <a asp-controller="Cinema" asp-action="All" class="btn btn-primary">No</a>
+                <a asp-controller="Cinema" asp-action="Delete" asp-route-id="@Model" class="btn btn-danger">Yes</a>
+            </div>
+            }
+            else
+            {
+            <div class="text-black-50">
+                <h5>Oops!</h5>
+                <h5>You are not authorized to view the contents of this web page.</h5>
+                <h5>Please contact us for more information.</h5>
+                <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Return to Home Page</a>
+            </div>
+            }
+        }
     </div>
 </div>
