@@ -8,8 +8,8 @@
 @model BookServiceModel
 
 @{
-    var userId = User.GetId(); 
- }
+    var userId = User.GetId();
+}
 
 <div class="container">
     <div class="jumbotron">
@@ -49,28 +49,10 @@
         }
         else
         {
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#becomeMemberModal">
-                Read book
-            </button>
+            <h4>You are not a member</h4>
+            <h5>Only members and active patrons can read this book.</h5>
+            <h5>Consider becoming a member.</h5>
+            <button type="button" class="btn btn-primary" asp-area="" asp-controller="Members" asp-action="BecomeMember" asp-route-id="@Model.Id">Become Member</button>
         }
-    </div>
-</div>
-
-<div class="modal fade" id="becomeMemberModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">You are not a member</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                Only members and active patrons can watch this movie.
-                Consider becoming a member.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, thanks</button>
-                <button type="button" class="btn btn-primary" asp-area="" asp-controller="Members" asp-action="BecomeMember" asp-route-id="@Model.Id">Become Member</button>
-            </div>
-        </div>
     </div>
 </div>

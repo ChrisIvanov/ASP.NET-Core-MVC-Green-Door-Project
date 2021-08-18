@@ -55,7 +55,7 @@
                         </tbody>
                     </table>
 
-                    @if (Members.IsMember(userId) || (Patron.IsPatron(userId) && Patron.HasTokens(userId)))
+                    @if (Members.IsMember(userId) || (Patron.IsPatron(userId) && Patron.HasTokens(userId)) || User.IsAdmin())
                     {
                         <div class="row justify-content-md-center">
                             <div class="col col-md-3 text-center">
@@ -68,31 +68,13 @@
                     }
                     else
                     {
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#becomeMemberModal">
-                            Play album
-                        </button>
+                    <h4>You are not a member</h4>
+                    <h5>Only members and active patrons can play music.</h5>
+                    <h5>Consider becoming a member.</h5>
+                    <button type="button" class="btn btn-primary" asp-area="" asp-controller="Members" asp-action="BecomeMember" asp-route-id="@Model.Id">Become Member</button>
                     }
                 </div>
             }
         }
-    </div>
-</div>
-
-<div class="modal fade" id="becomeMemberModal" tabindex="-1" aria-labelledby="becomeMemberModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">You are not a member</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Only members and active patrons can watch this movie.
-                Consider becoming a member.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, thanks</button>
-                <button type="button" class="btn btn-primary" asp-area="" asp-controller="Member" asp-action="BecomeMember" asp-route-id="@Model.Id">Become Member</button>
-            </div>
-        </div>
     </div>
 </div>

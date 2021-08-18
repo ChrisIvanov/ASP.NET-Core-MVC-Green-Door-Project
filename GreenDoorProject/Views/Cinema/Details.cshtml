@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                if (User.IsAdmin() || Members.IsMember(userId) || (Patron.IsPatron(userId) && Patron.HasTokens(userId)))
+                if (User.IsAdmin() || Members.IsMember(userId) || (Patron.IsPatron(userId) && Patron.HasTokens(userId)) || User.IsAdmin())
                 {
                     <a type="button" class="btn btn-primary" asp-area="" asp-controller="Cinema" asp-action="WatchMovie">
                         Watch Movie
@@ -54,20 +54,17 @@
                     <br />
                     <h6>It looks like you do not have enough tokens...</h6>
                     <br />
-                    <h6>Please, consider becoming a member and get exclusive membership offer for unlimited usage of our content.
-                        <a class="btn btn-primary" asp-area="Member" asp-page="BecomeMember">Become Member</a></h6> <br />
+                    <h6>
+                        Please, consider becoming a member and get exclusive membership offer for unlimited usage of our content.
+                        <a class="btn btn-primary" asp-area="Member" asp-page="BecomeMember">Become Member</a>
+                    </h6> <br />
                 }
                 else
                 {
-                    <h5 class="display-1">Oops!</h5>
-                    <br />
-                    <h6>It looks like you are not logged in your account...</h6>
-                    <br />
-                    <h6>
-                        Please,
-                        <a asp-area="Identity" asp-page="/Index/Login">Log in</a>with your account details or
-                        <a asp-area="Identity" asp-page="/Index/Register">Register</a>if you still don't have an account.
-                    </h6> <br />
+                    <h4>You are not a member</h4>
+                    <h5>Only members and active patrons can watch this movie.</h5>
+                    <h5>Consider becoming a member.</h5>
+                    <button type="button" class="btn btn-primary" asp-area="" asp-controller="Members" asp-action="BecomeMember" asp-route-id="@Model.Id">Become Member</button>
                 }
             }
 
