@@ -10,7 +10,9 @@
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@album.AlbumTitle</h5>
                     <h5 class="card-body text-center">@album.Artist</h5>
-                    <a asp-controller="Books" asp-action="Details" asp-route-id="@album.Id" class="btn btn-primary">Details</a>
+                    <div class="row justify-content-center">
+                        <a asp-area="" asp-controller="Music" asp-action="PlayMusic" class="btn btn-primary">Play album</a>
+                    </div>
                 </div>
             </div>
         </div>

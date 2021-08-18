@@ -1,5 +1,7 @@
 ﻿namespace GreenDoorProject.Services.Patrons
 {
+    using GreenDoorProject.Models.Patron;
+    
     public interface IPatronService
     {
         bool IsPatron(string userId);
@@ -8,7 +10,7 @@
 
         bool HasTokens(string patronId);
 
-        int GetTokens(string userId);
+        UserPatronageViewModel GetTokens(string userId);
 
         void UseToken(string userId);
     }

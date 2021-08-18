@@ -6,6 +6,6 @@
 
         public string Author { get; set; }
 
-        public byte[] Contents { get; set; }
+        public string Contents { get; set; }
     }
 }

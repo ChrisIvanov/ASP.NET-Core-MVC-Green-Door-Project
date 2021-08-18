@@ -42,41 +42,35 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#watchMovieModal">
-                    Watch Movie
-                </button>
-            }
-            else
-            {
-                <h5 class="display-1">Oops!</h5>
-                <br />
-                <h6>It looks like you are not logged in your account...</h6>
-                <br />
-                <h6>
-                    Please,
-                    <a asp-area="Identity" asp-page="/Index/Login">Log in</a>with your account details or
-                    <a asp-area="Identity" asp-page="/Index/Register">Register</a>if you still don't have an account.
-                </h6> <br />
+                if (User.IsAdmin() || Members.IsMember(userId) || (Patron.IsPatron(userId) && Patron.HasTokens(userId)))
+                {
+                    <a type="button" class="btn btn-primary" asp-area="" asp-controller="Cinema" asp-action="WatchMovie">
+                        Watch Movie
+                    </a>
                 }
-    </div>
+                else if (!Patron.HasTokens(userId))
+                {
+                    <h5 class="display-1">Oops!</h5>
+                    <br />
+                    <h6>It looks like you do not have enough tokens...</h6>
+                    <br />
+                    <h6>Please, consider becoming a member and get exclusive membership offer for unlimited usage of our content.
+                        <a class="btn btn-primary" asp-area="Member" asp-page="BecomeMember">Become Member</a></h6> <br />
+                }
+                else
+                {
+                    <h5 class="display-1">Oops!</h5>
+                    <br />
+                    <h6>It looks like you are not logged in your account...</h6>
+                    <br />
+                    <h6>
+                        Please,
+                        <a asp-area="Identity" asp-page="/Index/Login">Log in</a>with your account details or
+                        <a asp-area="Identity" asp-page="/Index/Register">Register</a>if you still don't have an account.
+                    </h6> <br />
+                }
+            }
+
+        </div>
 </div>
 }
-
-<!-- Modal -->
-<div class="modal fade" id="watchMovieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Watch @Model.MovieTitle Now</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Continue to movie
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, thanks</button>
-                <button type="button" class="btn btn-primary" asp-controller="Cinema" asp-action="WatchMovie" asp-route-id="@Model.Id">Watch</button>
-            </div>
-        </div>
-    </div>
-</div>

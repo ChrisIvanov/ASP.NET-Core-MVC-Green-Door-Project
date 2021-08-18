@@ -68,7 +68,7 @@
             builder.Entity<Member>()
                .HasOne<Guest>()
                .WithOne()
-               .HasForeignKey<Member>(m => m.Id)
+               .HasForeignKey<Member>(m => m.UserId)
                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Membership>()
@@ -78,42 +78,6 @@
             builder.Entity<Patron>()
                 .Property(p => p.Donations)
                 .HasColumnType("decimal(18,2)");
-
-            //builder.Entity<Admin>()
-            //   .HasMany(a => a.Books)
-            //   .WithOne()
-            //   .HasForeignKey(a => a.AdminId)
-            //   .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<Admin>()
-            //   .HasMany(a => a.Games)
-            //   .WithOne()
-            //   .HasForeignKey(a => a.AdminId)
-            //   .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<Admin>()
-            //   .HasMany(a => a.Movies)
-            //   .WithOne()
-            //   .HasForeignKey(a => a.AdminId)
-            //   .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<Admin>()
-            //   .HasMany(a => a.Music)
-            //   .WithOne()
-            //   .HasForeignKey(a => a.AdminId)
-            //   .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<Admin>()
-            //   .HasMany(a => a.Projections)
-            //   .WithOne()
-            //   .HasForeignKey(a => a.AdminId)
-            //   .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<Admin>()
-            //   .HasMany(a => a.Songs)
-            //   .WithOne()
-            //   .HasForeignKey(a => a.AdminId)
-            //   .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

@@ -4,7 +4,6 @@
     using GreenDoorProject.Data;
     using GreenDoorProject.Data.Models;
     using GreenDoorProject.Infrastructure;
-    using GreenDoorProject.Models.Books;
     using GreenDoorProject.Models.Patron;
     using GreenDoorProject.Services.Patrons;
     using Microsoft.AspNetCore.Authorization;
@@ -13,14 +12,14 @@
     public class PatronController : Controller
     {
         private readonly GreenDoorProjectDbContext data;
-        private readonly IPatronService patronage;
+        private readonly IPatronService patrons;
 
         public PatronController(
             GreenDoorProjectDbContext data, 
             IPatronService patrons)
         {
             this.data = data;
-            this.patronage = patrons;
+            this.patrons = patrons;
         }
 
         public IActionResult Donate()
@@ -34,13 +33,13 @@
 
             decimal donations = model.DonationAmount;
 
-            if (!patronage.IsPatron(userId))
+            if (!patrons.IsPatron(userId))
             {
                 var patron = new Patron
                 {
                     UserId = userId,
                     Donations = model.DonationAmount,
-                    Token = patronage.CalculateTokens(userId, donations)
+                    Token = patrons.CalculateTokens(userId, donations)
                 };
 
                 this.data.Patrons.Add(patron);
@@ -52,7 +51,7 @@
                 .FirstOrDefault();
 
                 patron.Donations += model.DonationAmount;
-                patron.Token += patronage.CalculateTokens(userId, donations);
+                patron.Token += patrons.CalculateTokens(userId, donations);
             }
 
             this.data.SaveChanges();
@@ -61,23 +60,28 @@
         }
 
         [HttpGet]
-        [Authorize(Roles = "Patron")]
+        [Authorize]
         public IActionResult MyDonations()
         {
-            var userId = this.User.GetId();
+            var userId = User.GetId();
 
-            var patron = this.data.Patrons
+            if (patrons.IsPatron(userId))
+            {
+                var patron = this.data.Patrons
                 .Where(p => p.UserId == userId)
                 .FirstOrDefault();
 
-            var userPatronage = new UserPatronageViewModel
-            {
-                Tokens = patron.Token,
-                Donations = patron.Donations,
-                PatronSince = patron.PatronSince
-            };
+                var userPatronage = new UserPatronageViewModel
+                {
+                    Tokens = patron.Token,
+                    Donations = patron.Donations,
+                    PatronSince = patron.PatronSince
+                };
 
-            return View(userPatronage);
+                return View(userPatronage);
+            }
+
+            return BadRequest();
         }
 
        

@@ -19,6 +19,11 @@ namespace GreenDoorProject.Models.Cinema
         public string LastName { get; set; }
 
         [Required]
+        [Display(Name = "Image URL")]
+        [Url]
+        public string ImagePath { get; set; }
+
+        [Required]
         [Display(Name = "Year Of Birth")]
         [Range(YearOfBirthMinValue, YearOfBirthMaxValue)]
         public short YearOfBirth { get; set; }

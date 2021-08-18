@@ -15,7 +15,7 @@ namespace GreenDoorProject.Services.Music
             int booksPerPage,
             bool showOnlySongs);
 
-        MusicServiceModel Details(string id);
+        //MusicServiceModel Details(string id);
 
         bool Edit(string id,
                 string title,

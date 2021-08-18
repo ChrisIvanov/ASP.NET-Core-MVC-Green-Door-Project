@@ -33,10 +33,6 @@
         [Required]
         public double Rating { get; set; }
 
-        [Required]
-        [Range(TicketPriceMinValue, TicketPriceMaxValue)]
-        public decimal TicketPrice { get; set; }
-
         public ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
     }
 }

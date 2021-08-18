@@ -8,16 +8,15 @@
 
 
         <div class="jumbotron">
-            <div class="row">
+            <div class="row col-md-12">
                 <table class="table table-dark table-striped">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Details</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
+                            <th scope="col" class="col col-md-9">Title</th>
+                            <th scope="col" class="col col-md-1">Details</th>
+                            <th scope="col" class="col col-md-1">Edit</th>
+                            <th scope="col" class="col col-md-1">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,12 +24,11 @@
                         @foreach (var movie in Model)
                         {
                             <tr>
-                                <th scope="row">i</th>
-                                <td>@movie.ImagePath</td>
+                                <th scope="row">@i</th>
                                 <td>@movie.MovieTitle</td>
                                 <td><a asp-controller="Books" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary">Details</a></td>
-                                <td><a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-danger">Edit</a></td>
-                                <td><a asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-warning">Delete</a></td>
+                                <td><a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-warning">Edit</a></td>
+                                <td><a asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-danger">Delete</a></td>
                             </tr>
 
                             i++;

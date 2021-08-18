@@ -23,7 +23,7 @@
         public string ImagePath { get; set; }
 
         [Required]
-        [Range(0, 10)]
+        [Range(0.00, 10.00)]
         public double Rating { get; set; }
 
         public IEnumerable<SongFormModel> Songs { get; set; } = new List<SongFormModel>();

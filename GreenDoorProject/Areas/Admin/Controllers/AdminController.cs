@@ -56,7 +56,7 @@
                 guestList.Users.Add(currGuest);
             }
 
-            return View();
+            return View(guestList);
         }
 
         [Authorize]
@@ -76,7 +76,7 @@
 
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

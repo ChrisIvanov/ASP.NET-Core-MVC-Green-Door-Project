@@ -46,8 +46,7 @@
         [MaxLength(DefaultClassInfoMaxLength)]
         public string Description { get; set; }
 
-        [Required]
-        public byte[] Contents { get; set; }
-
+        [Display(Name = "Content")]
+        public byte[] Content { get; set; }
     }
 }

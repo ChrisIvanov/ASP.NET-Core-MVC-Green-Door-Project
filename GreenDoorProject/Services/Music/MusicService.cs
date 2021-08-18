@@ -12,6 +12,11 @@ namespace GreenDoorProject.Services.Music
     {
         private readonly GreenDoorProjectDbContext data;
 
+        public MusicService(GreenDoorProjectDbContext data)
+        {
+            this.data = data;
+        }
+
         public MusicQueryServiceModel All(
             string searchTerm,
             MusicSorting sorting,
@@ -83,34 +88,36 @@ namespace GreenDoorProject.Services.Music
                 Songs = songList
             };
         }
-        public MusicServiceModel Details(string id)
-        {
-            var album = this.data.MusicAlbums.Find(id);
+        //public MusicServiceModel Details(string id)
+        //{
+        //    var album = this.data.MusicAlbums.Find(id);
 
-            var modelSongs = new List<SongsDetailsViewModel>();
+        //    var modelSongs = new List<SongsDetailsViewModel>();
 
-            foreach (var song in album.Songs)
-            {
-                var modelSong = new SongsDetailsViewModel
-                {
-                    Name = song.Name,
-                    SongDuration = song.SongDuration,
-                    AlbumId = song.MusicAlbumId
-                };
+        //    if (album.Songs != null)
+        //    {
+        //        foreach (var song in album.Songs)
+        //        {
+        //            var modelSong = new SongsDetailsViewModel
+        //            {
+        //                Name = song.Name,
+        //                SongDuration = song.SongDuration,
+        //                AlbumId = song.MusicAlbumId
+        //            };
 
-                modelSongs.Add(modelSong);
-            }
-
-            return new MusicServiceModel
-            {
-                Id = album.Id,
-                AlbumTitle = album.AlbumTitle,
-                Artist = album.Artist,
-                ImagePath = album.ImagePath,
-                Rating = album.Rating,
-                Songs = modelSongs
-            };
-        }
+        //            modelSongs.Add(modelSong);
+        //        }
+        //    }
+        //    return new MusicServiceModel
+        //    {
+        //        Id = album.Id,
+        //        AlbumTitle = album.AlbumTitle,
+        //        Artist = album.Artist,
+        //        ImagePath = album.ImagePath,
+        //        Rating = album.Rating,
+        //        Songs = modelSongs
+        //    };
+        //}
 
         public bool Edit(string id,
            string albumTitle,

@@ -17,6 +17,12 @@
         public string LastName { get; set; }
 
         [Required]
+        [Url]
+        [Display(Name = "Image")]
+        public string ImagePath { get; set; }
+
+
+        [Required]
         [Display(Name = "Year of Birth")]
         public int YearOfBirth { get; set; }
 

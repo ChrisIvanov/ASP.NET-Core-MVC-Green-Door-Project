@@ -21,10 +21,10 @@
                 .Where(u => u.UserId == userId)
                 .FirstOrDefault();
 
-            var membershipEnd = membership.MembershipEnd.ToShortDateString();
-            var dateToday = DateTime.Now.ToShortDateString();
+            var membershipEnd = membership.MembershipEnd;
+            var dateToday = DateTime.Now;
 
-            if (int.Parse(membershipEnd) - int.Parse(dateToday) < 7)
+            if (membershipEnd.Subtract(dateToday).TotalDays < 7)
             {
                 return true;
             }

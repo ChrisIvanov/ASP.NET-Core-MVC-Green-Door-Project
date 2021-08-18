@@ -41,6 +41,11 @@
                     <span asp-validation-for="GenreId" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="Rating"></label>
+                    <input asp-for="Rating" class="form-control" placeholder="Add a value between 0 and 10" />
+                    <span asp-validation-for="Rating" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="Pages"></label>
                     <input asp-for="Pages" class="form-control" placeholder="Add a value between 5 and 2500" />
                     <span asp-validation-for="Pages" class="small text-danger"></span>
@@ -50,7 +55,6 @@
                     <textarea asp-for="Description" rows="4" class="form-control" placeholder="Add a description for the book"></textarea>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Contents"></label><br />
                     <input type="file" name="file">
                 </div>
 

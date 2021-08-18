@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using GreenDoorProject.Data;
+    using GreenDoorProject.Models.Patron;
     using Microsoft.AspNetCore.Identity;
 
     public class PatronService : IPatronService
@@ -27,7 +28,7 @@
 
         public bool HasTokens(string patronId)
         {
-            var tokens = GetTokens(patronId);
+            var tokens = GetTokens(patronId).Tokens;
 
             if (tokens > 0)
             {
@@ -38,9 +39,16 @@
             return false;
         }
 
-        public int GetTokens(string userId)
-            => this.data.Patrons.Where(u => u.Id == userId)
-            .Select(t => t.Token).FirstOrDefault();
+        public UserPatronageViewModel GetTokens(string userId)
+        {
+            var tokens = this.data.Patrons.Where(u => u.UserId == userId).FirstOrDefault();
+
+            return new UserPatronageViewModel
+            {
+                
+                Tokens = tokens.Token
+            };
+        }
 
         public void UseToken(string userId)
         {

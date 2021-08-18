@@ -16,9 +16,10 @@
         private readonly GreenDoorProjectDbContext data;
         private readonly IMemberService members;
 
-        public MemberController(GreenDoorProjectDbContext data,
+        public MemberController(
+            GreenDoorProjectDbContext data,
             IMemberService members)
-        { 
+        {
             this.data = data;
             this.members = members;
         }
@@ -34,13 +35,15 @@
 
         [HttpPost]
         [Authorize]
-        public IActionResult BecomeMember(int membershipId)
+        public IActionResult BecomeMember(AddMemberFormModel model)
         {
             var userId = this.User.GetId();
 
             if (members.IsMember(userId))
             {
                 ModelState.AddModelError(string.Empty, "You are already a member.");
+
+                return RedirectToAction("Index", "Home");
             }
 
             var guest = this.data.Users
@@ -48,15 +51,15 @@
                 .FirstOrDefault();
 
             var membership = this.data.Memberships
-               .Where(m => m.Id == membershipId)
+               .Where(m => m.Id == int.Parse(model.MembershipTypeId))
                .FirstOrDefault();
 
             var membershipDuration = 0;
 
-            if (membership.Name == "OneMonth")membershipDuration = 1;
-            else if (membership.Name == "ThreeMonth")membershipDuration = 3;
-            else if (membership.Name == "SixMonth")membershipDuration = 6;          
-            else if (membership.Name == "Annual")membershipDuration = 12;
+            if (membership.Name == "One Month") membershipDuration = 1;
+            else if (membership.Name == "Three Months") membershipDuration = 3;
+            else if (membership.Name == "Six Months") membershipDuration = 6;
+            else if (membership.Name == "Annual") membershipDuration = 12;
 
             var member = new Member
             {
@@ -66,9 +69,10 @@
                 UserId = guest.Id
             };
 
+            this.data.Members.Add(member);
             this.data.SaveChanges();
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         public bool GuestIsMember(string guestId)

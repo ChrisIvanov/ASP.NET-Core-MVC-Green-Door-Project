@@ -8,7 +8,8 @@
         public string MembershipType { get; set; }
     
         [Display(Name = "Membership type")]
-        public string MembershipId { get; set; }
+        public string MembershipTypeId { get; set; }
+
         public IEnumerable<MembershipTypesViewModel> MembershipTypes { get; set; }
     }
 }

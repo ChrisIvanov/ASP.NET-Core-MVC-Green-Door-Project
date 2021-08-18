@@ -1,6 +1,8 @@
 ﻿namespace GreenDoorProject.Controllers
 {
+    using System;
     using System.Linq;
+    using System.Text;
     using GreenDoorProject.Data;
     using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Models.Books;
@@ -76,23 +78,39 @@
 
         [HttpGet]
         [Authorize]
-        public IActionResult ReadBook(string bookId)
+        public IActionResult AuthorDetails(string id)
+        {
+            var author = this.data.Authors.Find(id);
+
+            return View(new AuthorDetailsViewModel
+            {
+                FullName = author.FirstName + " " + author.LastName,
+                YearOfBirth = author.YearOfBirth,
+                YearOfDeath = author.YearOfDeath,
+                ImagePath = author.ImagePath,
+                Details = author.Details,
+                AuthorBooks = author.AuthorBooks
+            });
+        }
+        [HttpGet]
+        [Authorize]
+        public IActionResult ReadBook([FromRoute] string id)
         {
             var books = this.data.Books.AsQueryable();
 
             var book = books
-                .Where(b => b.Id == bookId)
+                .Where(b => b.Id == id)
                 .Select(b => new BookContentsViewModel
                 {
                     Title = b.BookTitle,
                     Author = b.Author.FirstName + " " + b.Author.LastName,
-                    Contents = b.Contents
+                    Contents = Encoding.UTF8.GetString(b.Content)
                 })
                 .FirstOrDefault();
 
             var userId = User.GetId();
 
-            if (members.IsMember(userId))
+            if (members.IsMember(userId) || User.IsAdmin())
             {
                 return View(book);
             }
@@ -100,7 +118,7 @@
             {
                 if (patrons.IsPatron(userId))
                 {
-                    if (this.patrons.GetTokens(userId) < 1)
+                    if (this.patrons.GetTokens(userId).Tokens < 1)
                     {
                         return RedirectToAction("Index", "Home");
                     }

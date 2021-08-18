@@ -127,10 +127,30 @@
                 Pages = book.Pages,
                 Rating = book.Rating,
                 Description = book.Description,
-                Contents = book.Contents
+                Contents = book.Content
             };
 
             return bookDetails;
+        }
+
+        public AuthorDetailsViewModel AuthorDetails(string id)
+        {
+            var author = this.data.Authors
+                .Where(a => a.Id == id)
+                .FirstOrDefault();
+
+            var authorDetails = new AuthorDetailsViewModel
+            {
+                Id = author.Id,
+                FullName = author.FirstName + " " + author.LastName,
+                ImagePath = author.ImagePath,
+                YearOfBirth = author.YearOfBirth,
+                YearOfDeath = author.YearOfDeath,
+                Details = author.Details,
+                AuthorBooks = author.AuthorBooks
+            };
+
+            return authorDetails;
         }
 
         public bool Edit(string id,
@@ -157,7 +177,7 @@
             bookData.Pages = pages;
             bookData.Rating = rating;
             bookData.Description = description;
-            bookData.Contents = content;
+            bookData.Content = content;
 
             this.data.SaveChanges();
 

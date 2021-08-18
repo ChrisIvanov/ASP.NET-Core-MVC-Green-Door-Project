@@ -1,13 +1,9 @@
 ﻿namespace GreenDoorProject.Controllers
 {
-    using System.Linq;
     using System.Diagnostics;
     using GreenDoorProject.Data;
-    using GreenDoorProject.Data.Models;
-    using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Models;
     using GreenDoorProject.Services.Statistics;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : Controller

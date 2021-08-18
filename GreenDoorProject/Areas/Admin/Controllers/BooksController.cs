@@ -111,6 +111,8 @@
             file.CopyTo(fileInMemory);
             var fileInBytes = fileInMemory.ToArray();
 
+            bookModel.Content = fileInBytes;
+
             if (!this.data.Genres.Any(g => g.Id == bookModel.GenreId))
             {
                 this.ModelState.AddModelError(nameof(bookModel.GenreId), "Genre does not exist.");
@@ -151,7 +153,7 @@
                 ImagePath = bookModel.ImagePath,
                 Pages = bookModel.Pages,
                 Description = bookModel.Description,
-                Contents = fileInBytes,
+                Content = fileInBytes,
                 AuthorId = authorId
             };
 
@@ -187,6 +189,7 @@
             {
                 FirstName = authorModel.FirstName,
                 LastName = authorModel.LastName,
+                ImagePath = authorModel.ImagePath,
                 YearOfBirth = authorModel.YearOfBirth,
                 YearOfDeath = authorModel.YearOfDeath,
                 Details = authorModel.Details
@@ -195,7 +198,7 @@
             this.data.Authors.Add(author);
             this.data.SaveChanges();
 
-            return RedirectToAction("AdminAllAuthors", "Books");
+            return RedirectToAction("AdminAll", "Books");
         }
 
         [Authorize]
@@ -221,7 +224,7 @@
                 Pages = book.Pages,
                 Rating = book.Rating,
                 Description = book.Description,
-                Contents = book.Contents
+                Content = book.Contents
             });
         }
 
@@ -242,7 +245,7 @@
                 book.Pages,
                 book.Rating,
                 book.Description,
-                book.Contents);
+                book.Content);
 
             if (!edited)
             {

@@ -3,8 +3,6 @@
 @inject UserManager<Guest> UserManager
 @inject IMemberService Member
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,59 +16,88 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-secondary box-shadow mb-3">
             <div class="container">
-                <div class="row col-md-5">
-                    <div class="row col-md-6">
-                        <a class="navbar-brand bg-success" asp-area="" asp-controller="Home" asp-action="Index">Green Door Project</a>
+                <div class="row col-xl-12">
+                    <div class="col col-sm-3">
+                        <a class="navbar-brand btn btn-success" asp-area="" asp-controller="Home" asp-action="Index">Green Door Project</a>
                     </div>
-                    <div class="row col-md-6">
+                    <div class="col col-sm-3">
                         <div class="dropdown">
                             <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span >Menu</span>
+                                <span>Menu</span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-
                                 <a class="dropdown-item" asp-area="" asp-controller="Books" asp-action="All">Books</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Cinema" asp-action="All">Movies</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Music" asp-action="All">Music</a>
-
-                                @if (User.IsAdmin())
-                                {
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="Add">Add Book</a>
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="AddAuthor">Add Author</a>
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="Add">Add Movie</a>
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="AddActor">Add Actor</a>
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="AddActorToMovie">Add Actor to Movie</a>
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Music" asp-action="AdminAdd">Add Music Album</a>
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Music" asp-action="AddActorToMovie">Add Actor to Movie</a>
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="AddActorToMovie">Add Actor to Movie</a>
-                                }
-
                             </div>
                         </div>
                     </div>
                 </div>
-
                 @{
-                    if (User.Identity.IsAuthenticated)
+                    if (User.IsAdmin())
+                    {
+                        <div class="row">
+                            <div class="col col-md-12">
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span>Add Items (Admin)</span>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="Add">Add Book</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="AddAuthor">Add Author</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="Add">Add Movie</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="AddActor">Add Actor</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Cinema" asp-action="AddActorToMovie">Add Actor to Movie</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Music" asp-action="AdminAdd">Add Music Album</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Music" asp-action="AddSong">Add Song</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col col-md-3">
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span>All Items (Admin)</span>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                        <a class="dropdown-item bg-light" asp-area="Admin" asp-controller="Books" asp-action="AdminAll">All Books</a>
+                                        <a class="dropdown-item bg-light" asp-area="Admin" asp-controller="Books" asp-action="AdminAllAuthors">All Author</a>
+                                        <a class="dropdown-item bg-white" asp-area="Admin" asp-controller="Cinema" asp-action="AdminAll">All Movies</a>
+                                        <a class="dropdown-item bg-white" asp-area="Admin" asp-controller="Cinema" asp-action="AdminAllActors">All Actors</a>
+                                        <a class="dropdown-item bg-transparent" asp-area="Admin" asp-controller="Music" asp-action="AdminAll">All Music</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+                <div class="col col-sm-2">
+
+                    @if (User.Identity.IsAuthenticated)
                     {
                         var userId = User.GetId();
 
                         if (!Member.IsMember(userId))
                         {
                             <div class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Member" asp-action="BecomeMember"></a>
+                                <a class="nav-link text-dark btn btn-success" asp-area="" asp-controller="Member" asp-action="BecomeMember">Become Member</a>
                             </div>
                         }
                         else if (Member.MembershipExpiring(userId))
                         {
                             <div class="nav-item">
                                 <p>Your membership is expiring.</p>
-                                <a class="nav-link text-danger" asp-controller="Member" asp-action="BecomeMember">Renew Membership</a>
+                                <a class="nav-link text-danger btn btn-success" asp-area="" asp-controller="Member" asp-action="BecomeMember">Renew Membership</a>
                             </div>
                         }
                     }
-                }
-                <partial name="_LoginPartial" />
+                </div>
+                <div class="row">
+                    <div class="col col-sm-4">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
             </div>
         </nav>
     </header>

@@ -7,6 +7,7 @@
 }
 
 <div class="container">
+    <div class="jumbotron">
         @if (SignInManager.IsSignedIn(User))
         {
             @if (!string.IsNullOrWhiteSpace(Model.ModelError))
@@ -17,6 +18,7 @@
             }
             else
             {
+
                 <form method="get">
                     <div class="row">
                         <div class="form-group col-md-4">
@@ -75,7 +77,7 @@
                     </div>
 
                     @{var shouldButtonBeDisabled = Model.CurrentPage == lastPage ||
-                                                                    !Model.Books.Any();
+                                                                                !Model.Books.Any();
                     }
 
                     <div class="col-md-6">
@@ -115,4 +117,5 @@
                 </h5>
             </div>
         }
+    </div>
 </div>

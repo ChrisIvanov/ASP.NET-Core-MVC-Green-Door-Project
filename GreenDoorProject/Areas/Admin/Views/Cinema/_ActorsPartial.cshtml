@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ActorViewModel>
+
+@{
+    var i = 1;
+
+    if (User.IsAdmin())
+    {
+        <div class="jumbotron">
+            <div class="row col-md-12">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" class="col col-md-9">Full Name</th>
+                            <th scope="col" class="col col-md-1">Details</th>
+                            <th scope="col" class="col col-md-1">Edit</th>
+                            <th scope="col" class="col col-md-1">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var actor in Model)
+                        {
+                            <tr>
+                                <th scope="row">@i</th>
+                                <td>@actor.FirstName @actor.LastName</td>
+                                <td><a asp-area="" asp-controller="Cinema" asp-action="Details" asp-route-id="@actor.Id" class="btn btn-primary">Details</a></td>
+                                <td><a asp-area="Admin" asp-controller="Cinema" asp-action="Edit" asp-route-id="@actor.Id" class="btn btn-warning">Edit</a></td>
+                                <td><a asp-area="Admin" asp-controller="Cinema" asp-action="DeleteActor" asp-route-id="@actor.Id" class="btn btn-danger">Delete</a></td>
+                            </tr>
+
+                            i++;
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-black-50">
+            <h5>Oops!</h5>
+            <h5>You are not authorized to view the contents of this web page.</h5>
+            <h5>Please contact us for more information.</h5>
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Return to Home Page</a>
+        </div>
+    }
+}

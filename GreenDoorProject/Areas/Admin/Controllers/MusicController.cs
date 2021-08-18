@@ -31,7 +31,7 @@
         {
             if (!data.MusicAlbums.Any())
             {
-                var error = "Currently there are no books in the library.";
+                var error = "Currently there is no music in the music library.";
 
                 var errorModel = new AllMusicQueryModel
                 {
@@ -61,14 +61,14 @@
 
         [HttpGet]
         [Authorize]
-        public IActionResult Add()
+        public IActionResult AdminAdd()
         {
             return View(new AlbumFormModel());
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AlbumFormModel albumModel)
+        public IActionResult AdminAdd(AlbumFormModel albumModel)
         {
             if (!ModelState.IsValid)
             {
@@ -95,7 +95,7 @@
             this.data.MusicAlbums.Add(album);
             this.data.SaveChanges();
 
-            return RedirectToAction("AdminAll", "Music");
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -234,6 +234,39 @@
             this.data.SaveChanges();
 
             return RedirectToAction("AdminAll", "Music");
+        }
+
+        public IActionResult AlbumDetails(string id)
+        {
+            var album = this.data.MusicAlbums.Find(id);
+
+            var modelSongs = new List<SongsDetailsViewModel>();
+
+            if (album.Songs != null)
+            {
+                foreach (var song in album.Songs)
+                {
+                    var modelSong = new SongsDetailsViewModel
+                    {
+                        Name = song.Name,
+                        SongDuration = song.SongDuration,
+                        AlbumId = song.MusicAlbumId
+                    };
+
+                    modelSongs.Add(modelSong);
+                }
+            }
+            var albumDetails = new MusicServiceModel
+            {
+                Id = album.Id,
+                AlbumTitle = album.AlbumTitle,
+                Artist = album.Artist,
+                ImagePath = album.ImagePath,
+                Rating = album.Rating,
+                Songs = modelSongs
+            };
+
+            return View(albumDetails);
         }
 
         private bool ExistingMusicAlbum(AlbumFormModel albumModel)

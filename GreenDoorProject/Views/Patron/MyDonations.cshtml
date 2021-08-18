@@ -6,14 +6,17 @@
 <div class="container">
     <div class="jumbotron">
         <div class="row col-md-3 text-center">
-            <p>@Model.Donations</p>
+            <p>Total Donations: @Model.Donations</p>
         </div>
         <div class="row col-md-3 text-center">
-            <p>@Model.Tokens</p>
+            <p>Patron Tokens: @Model.Tokens</p>
         </div>
         <div class="row col-md-3 text-center">
             <p>@Model.PatronSince.ToString(@"dd/MMM/yyyy") (Total days being a patron: (@totalPatronDays)</p>
         </div>
-        
+
+        <h6>Make a new donation: </h6>
+        <a class="btn btn-primary" asp-controller="Patron" asp-action="Donate">Donate now</a>
+
     </div>
 </div>

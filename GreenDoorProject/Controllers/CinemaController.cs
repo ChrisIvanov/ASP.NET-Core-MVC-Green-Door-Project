@@ -1,17 +1,15 @@
 ﻿namespace GreenDoorProject.Controllers
 {
-    using System;
     using System.Linq;
-    using System.Collections.Generic;
     using GreenDoorProject.Data;
+    using GreenDoorProject.Infrastructure;
     using GreenDoorProject.Models.Cinema;
+    using GreenDoorProject.Services.Movies;
+    using GreenDoorProject.Services.Members;
+    using GreenDoorProject.Services.Patrons;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
-    using GreenDoorProject.Services.Movies;
-    using GreenDoorProject.Data.Models;
-    using GreenDoorProject.Infrastructure;
-    using GreenDoorProject.Services.Patrons;
-    using GreenDoorProject.Services.Members;
+    using GreenDoorProject.Services.Movies.Models;
 
     public class CinemaController : Controller
     {
@@ -72,28 +70,26 @@
 
         [HttpGet]
         [Authorize]
-        public IActionResult WatchMovie(string movieId)
+        public IActionResult WatchMovie(string id)
         {
-            var movie = GetMovie(movieId);
-
             var userId = this.User.GetId();
 
             if (members.IsMember(userId))
             {
-                return RedirectToAction("WatchMovie", "Cinema");
+                return View();
             }
             else
             {
                 if (patrons.IsPatron(userId))
                 {
-                    if (this.patrons.GetTokens(userId) < 1)
+                    if (this.patrons.GetTokens(userId).Tokens < 1)
                     {
                         return RedirectToAction("Index", "Home");
                     }
 
                     this.patrons.UseToken(userId);
 
-                    return View(movie);
+                    return View();
                 }
             }
 
@@ -101,10 +97,10 @@
         }
 
         
-        private MovieViewModel GetMovie(string movieId)
+        private MovieViewModel GetMovie(string id)
         {
             var getMovie = this.data.Movies
-                 .Where(m => m.Id == movieId)
+                 .Where(m => m.Id == id)
                  .FirstOrDefault();
 
             var movie = new MovieViewModel

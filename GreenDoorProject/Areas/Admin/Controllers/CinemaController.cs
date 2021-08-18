@@ -26,6 +26,62 @@
             this.movies = movies;
         }
 
+        public IActionResult AdminAll([FromQuery] AllMoviesQueryModel query)
+        {
+            if (!data.Movies.Any())
+            {
+                var error = "Currently there are no movies in the video library.";
+
+                var errorModel = new AllMoviesQueryModel
+                {
+                    ModelError = error
+                };
+
+                return View(errorModel);
+            }
+
+            var queryResult = this.movies.All(
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllMoviesQueryModel.MoviesPerPage);
+
+            var totalMovies = query.TotalMovies;
+
+            query.Movies = queryResult.Movies;
+            query.TotalMovies = totalMovies;
+
+            return View(query);
+
+        }
+
+        public IActionResult AdminAllActors()
+        {
+            if (!data.Actors.Any())
+            {
+                return RedirectToAction("AdminAll", "Cinema", new { area = "" });
+            }
+
+            var actors = this.data.Actors.ToList();
+
+            var returnActors = new List<ActorViewModel>();
+
+            foreach (var actor in actors)
+            {
+                returnActors.Add(new ActorViewModel
+                {
+                    Id = actor.Id,
+                    FirstName = actor.FirstName,
+                    LastName = actor.LastName,
+                    ImagePath = actor.ImagePath,
+                    YearOfBirth = actor.YearOfBirth,
+                    YearOfDeath = actor.YearOfDeath,
+                    Details = actor.Details
+                });
+            }
+
+            return View(returnActors);
+        }
 
         [Authorize]
         public IActionResult Add()
@@ -66,7 +122,7 @@
             this.data.Movies.Add(movie);
             this.data.SaveChanges();
 
-            return RedirectToAction("All", "Cinema");
+            return RedirectToAction("AdminAll", "Cinema");
         }
 
         [Authorize]
@@ -82,10 +138,22 @@
                 return View(actorModel);
             }
 
+            var actorExists = this.data.Actors
+                .Where(a => a.FirstName == actorModel.FirstName
+                         && a.LastName == actorModel.LastName)
+                .FirstOrDefault();
+
+            if (actorExists != null)
+            {
+                ModelState.AddModelError(actorModel.FirstName + " " + actorModel.LastName, "Actor is already in the database.");
+                return RedirectToAction("AdminAllActors", "Cinema");
+            }
+
             var actor = new Actor
             {
                 FirstName = actorModel.FirstName,
                 LastName = actorModel.LastName,
+                ImagePath = actorModel.ImagePath,
                 YearOfBirth = actorModel.YearOfBirth,
                 YearOfDeath = actorModel.YearOfDeath,
                 Details = actorModel.Details
@@ -94,7 +162,7 @@
             this.data.Actors.Add(actor);
             this.data.SaveChanges();
 
-            return RedirectToAction("AddActor", "Cinema");
+            return RedirectToAction("AdminAllActors", "Cinema");
         }
 
         [Authorize]
@@ -148,7 +216,7 @@
                 ModelState.AddModelError
                     (string.Empty, "You are not authorized to make changes to the website content.");
 
-                return RedirectToAction("All", "Cinema");
+                return RedirectToAction("AdminAll", "Cinema");
             }
 
             var movie = this.movies.Details(id);
@@ -187,7 +255,7 @@
                 return BadRequest();
             }
 
-            return RedirectToAction("All", "Cinema");
+            return RedirectToAction("AdminAll", "Cinema");
         }
 
         [Authorize]
@@ -216,7 +284,35 @@
                 this.data.SaveChanges();
             }
 
-            return View("All", "Cinema");
+            return View("AdminAll", "Cinema");
+        }
+
+        public IActionResult DeleteActor(string id)
+        {
+            var actor = this.data.Actors.Find(id);
+
+            if (actor == null)
+            {
+                ModelState.AddModelError(nameof(CinemaController), "Actor is not in the database.");
+                return RedirectToAction("AdminAllActors", "Cinema");
+            }
+
+            var actorsMovies = this.data.ActorMovies
+                .Where(m => m.ActorId == id)
+                .ToList();
+
+            if (actorsMovies.Any())
+            {
+                foreach (var actorMovie in actorsMovies)
+                {
+                    this.data.ActorMovies.Remove(actorMovie);
+                }
+            }
+
+            this.data.Actors.Remove(actor);
+            this.data.SaveChanges();
+
+            return RedirectToAction("AdminAllActors", "Cinema");
         }
 
         private bool MovieExists(MovieFormModel movieModel)

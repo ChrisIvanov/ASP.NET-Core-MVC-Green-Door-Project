@@ -20,6 +20,11 @@
                     <span asp-validation-for="LastName" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="ImagePath"></label>
+                    <input asp-for="ImagePath" class="form-control" placeholder="URL to image..." />
+                    <span asp-validation-for="ImagePath" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="YearOfBirth"></label>
                     <input asp-for="YearOfBirth" class="form-control" placeholder="e.g. 1955" />
                     <span asp-validation-for="YearOfBirth" class="small text-danger"></span>
